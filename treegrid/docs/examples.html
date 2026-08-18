@@ -1,0 +1,29 @@
+
+
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+		<link href="../dist/css/jquery.treegrid.css" rel="stylesheet">
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="../dist/js/jquery.treegrid.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.tree-basic').treegrid();
+		});
+		</script>
+<table class="table table-bordered tree-basic">
+	<tbody>
+		<tr class="treegrid-1 expanded"><td>Root node</td><td>Additional info</td></tr>
+		<tr class="treegrid-2 treegrid-parent-1"><td>Node 1-1</td><td>Additional info</td></tr>
+		<tr class="treegrid-3 treegrid-parent-1"><td>Node 1-2</td><td>Additional info</td></tr>
+		<tr class="treegrid-4 treegrid-parent-3"><td>Node 1-2-1</td><td>Additional info</td></tr>
+		<tr class="treegrid-5 treegrid-parent-3"><td>Node 1-2-2</td><td>Additional info</td></tr>
+		<tr class="treegrid-6"><td>Root node</td><td>Additional info</td></tr>
+		<tr class="treegrid-7 treegrid-parent-6"><td>Node 2-1</td><td>Additional info</td></tr>
+	</tbody>
+</table>
+	
+	</body>
+</html>

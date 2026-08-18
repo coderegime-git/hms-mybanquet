@@ -1,0 +1,31 @@
+call me sir
+
+117
+145
+159
+169
+172
+179
+185
+198
+
+
+Notice: Undefined index: paid_days in E:\xampp\htdocs\mypay\views\payslip-printout.php on line 117
+
+Notice: Undefined index: paid_days in E:\xampp\htdocs\mypay\views\payslip-printout.php on line 145
+
+Notice: Undefined index: el in E:\xampp\htdocs\mypay\views\payslip-printout.php on line 159
+
+Notice: Undefined index: desig_name in E:\xampp\htdocs\mypay\views\payslip-printout.php on line 166
+
+Notice: Undefined index: cl in E:\xampp\htdocs\mypay\views\payslip-printout.php on line 172
+
+Notice: Undefined index: bankacc_num in E:\xampp\htdocs\mypay\views\payslip-printout.php on line 179
+
+Notice: Undefined index: lop in E:\xampp\htdocs\mypay\views\payslip-printout.php on line 185
+
+Notice: Undefined index: esi_no in E:\xampp\htdocs\mypay\views\payslip-printout.php on line 198
+FPDF error: Some data has already been output, can't send PDF file
+
+
+

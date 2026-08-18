@@ -1,0 +1,202 @@
+@media screen and (min-width: 1920px) and (max-width: 2200px) {
+.login{ padding: 5px 5px 5px;
+  width: 190px;
+   background: white;
+  border-radius: 3px;
+    border:1px solid #d5d5d5;}
+.DashbrdDiv{width:1200px;
+margin:0 0 0 190px;
+}
+.dashBrdTable{
+	margin:65px 0 0 134px;
+}
+.spWrap{
+	overflow:auto;height:671px;border:1px solid #888888;width:300px;
+}
+#dashBrdTbl{
+margin:65px 0 0 130px;
+}
+.finlSET{text-align:center;box-shadow:0px 0px 0px 6px #EFEFEF;width:184px;}
+	.dashMaster{
+		margin:7px 0 0 170px;
+	}
+	.button_example{
+		padding:4px 36px;
+	}
+	.buttExam_sngl{
+		padding:4px 26px;
+	}
+	
+	.btnSS{
+		width:307px;
+	}
+	
+	.btnDisA{
+		width:307px;
+	}
+	.btnSS:hover {
+		width:307px;
+	}
+	.btnDisA:hover {
+		width:307px;
+	}
+	
+	
+}
+
+
+
+
+
+@media screen and (min-width: 1500px) and (max-width: 1600px) {
+	.btnSS{
+		width:251px;
+	}
+	.btnDisA{
+		width:251px;
+	}
+	.btnSS:hover {
+		width:251px;
+		
+	}
+	.btnDisA:hover{
+		width:251px;
+	}
+	
+}
+
+
+@media screen and (min-width: 1200px) and (max-width: 1366px) {
+	
+	.login{ padding: 5px 5px 5px;
+  width: 230px;
+   background: white;
+  border-radius: 3px;
+    border:1px solid #d5d5d5;} 
+.DashbrdDiv{
+/* width:1114px; */
+/* margin:0 0 0 52px; */
+}
+.dashBrdTable{
+	margin:65px 0 0 3px;
+}
+#dashBrdTbl{
+	margin:29px 0 0 50px;
+}
+
+.finlSET{text-align:center;box-shadow:0px 0px 0px 6px #EFEFEF;width:184px;}
+	.dashMaster{
+		margin:7px 0 0 170px;
+	}
+	.button_example{
+		padding:4px 36px;
+	}
+	.buttExam_sngl{
+		padding:4px 25px;
+	}
+}
+
+
+
+@media screen and (min-width: 1018px) and (max-width: 1279px) {
+	.btnSS{
+		width:185px;
+	}
+	.btnDisA{
+		width:185px;
+	}
+	.btnSS:hover {
+		width:185px;
+		
+	}
+	.btnDisA:hover{
+		width:185px;
+	}
+	#hdWel{
+	margin:0 0 0 -332px;
+}
+
+}
+	
+@media screen and (min-width: 1280px) and (max-width: 1348px) {
+.login{ padding: 5px 5px 5px;
+  width: 190px;
+   background: white;
+  border-radius: 3px;
+    border:1px solid #d5d5d5;}
+.DashbrdDiv{width:1045px;}
+.finlSET{text-align:center;box-shadow:0px 0px 0px 6px #EFEFEF;width:184px;}
+	.dashMaster{
+		margin:7px 0 0 270px;
+	}
+}
+
+/* @media screen and (min-width: 600px) and (max-width: 1280px) {
+
+.DashbrdDiv{width:1000px;}
+
+} */
+
+@media screen and (min-width: 900px) and (max-width: 1023px) {
+	.btnSS{
+		width:150px;
+	}
+	.btnDisA{
+		width:150px;
+	}
+	.btnSS:hover {
+		width:150px;
+	}
+	.btnDisA:hover {
+		width:150px;
+	}
+	#addcustomer{
+		width:810px;
+	}
+
+}
+
+@media screen and (min-width: 800px) and (max-width: 900px) {
+	.btnSS{
+		width:120px;
+	}
+	.btnDisA{
+		width:120px;
+	}
+	.btnSS:hover {
+		width:120px;
+	}
+	.btnDisA:hover {
+		width:120px;
+	}
+
+} 
+
+@media screen and (min-width: 768px) and (max-width: 799px) {
+	.btnSS{
+		width:100px;
+	}
+	.btnDisA{
+		width:120px;
+	}
+	.btnSS:hover {
+		width:120px;
+	}
+	.btnDisA:hover {
+		width:120px;
+	}
+
+}
+@media screen and (min-width: 600px) and (max-width: 767px) {
+
+}
+@media screen and (min-width: 480px) and (max-width: 599px) {
+
+}
+@media screen and (min-width: 320px) and (max-width: 479px) {
+
+}
+@media screen and (min-width: 240px) and (max-width: 319px) {
+
+}
+

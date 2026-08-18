@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>jQuery Easy Tree Example</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/easyTree.css">
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="src/easyTree.js"></script>
+<style>
+body {
+background: #eee;
+}
+</style>
+</head>
+
+
+
+<table style="float:left;width:12%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
+						
+	<tbody>
+		<td>	
+	<div style="margin:0px 0 0 0px;">
+		<!--<button type="submit" id="send" name="send" class="butExample bnkSbt frstChr" style="width:100px;" onclick="return checkformSubmit();"><img src="../../images/saves.png" class="sbtBtnImg frstChr"/>&nbsp;&nbsp;<span class="btnUndLine">A</span>menities</button>-->
+		
+		<a href="view-room-booking.php"><button type="button" id="update" style="width:125px;" class="butExmple bnkSbt" onclick="return checkPropertyMasterq();"><span class="btnUndLine">A</span>menities</button></a><br/>
+		
+		<a href="#" target="_blank"><button type="button" id="hallsts"  style="width:125px;" class="butExmple" style="" onclick="hall_sts()"><span class="btnUndLine">O</span>ther Inst.</button></a>
+		
+		<!--<button type="reset" id="rest" class="butExample" style="width:100px;" onclick="cancel_ed()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
+			
+		<a href="<?php echo $home_path; ?>/dashboard.php"><button type="button" id="exit" name="exit" class="butExample" style="width:100px;" onClick="self.close();" ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>-->
+	</div>
+	</td>
+	</tr>
+	</tbody>
+</table>
+
+
+
+<body>
+<div id="jquery-script-menu">
+<div class="jquery-script-center">
+<ul>
+<li><a href="http://www.jqueryscript.net/layout/Nice-Tree-View-Plugin-with-jQuery-Bootstrap-3-Easy-Tree.html">Download This Plugin</a></li>
+<li><a href="http://www.jqueryscript.net/">Back To jQueryScript.Net</a></li>
+</ul>
+<div class="jquery-script-ads"><script type="text/javascript"><!--
+google_ad_client = "ca-pub-2783044520727903";
+/* jQuery_demo */
+google_ad_slot = "2780937993";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script></div>
+<div class="jquery-script-clear"></div>
+</div>
+</div>
+<div class="col-md-3" style="margin-top:150px;">
+<h3 class="text-success">Easy Tree Example</h3>
+<div class="easy-tree">
+<ul>
+<li>Example 1</li>
+<li>Example 2</li>
+<li>Example 3
+<ul>
+<li>Example 1</li>
+<li>Example 2
+<ul>
+<li>Example 1</li>
+<li>Example 2</li>
+<li>Example 3</li>
+<li>Example 4</li>
+</ul>
+</li>
+<li>Example 3</li>
+<li>Example 4</li>
+</ul>
+</li>
+<li>Example 0
+<ul>
+<li>Example 1</li>
+<li>Example 2</li>
+<li>Example 3</li>
+<li>Example 4
+<ul>
+<li>Example 1</li>
+<li>Example 2</li>
+<li>Example 3</li>
+<li>Example 4</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<script>
+    (function ($) {
+        function init() {
+            $('.easy-tree').EasyTree({
+                addable: true,
+                editable: true,
+                deletable: true
+            });
+        }
+
+        window.onload = init();
+    })(jQuery)
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection" />
+	    <!-- Javascripts -->
+    <script language="javascript" type="text/javascript" src="js/jquery.js"></script>    
+    <script language="javascript" type="text/javascript" src="js/popup2.3.js"></script> 
+     <script language="javascript" type="text/javascript">
+    		$(document).ready(function(){
+    			
+				$(".popup3").popup({
+					transparentLayer : true,
+					gallery : false,
+					popupID : "popupBox3",
+					contentClass : "popupBox3",
+					onOpen : function() {
+						console.log("opened the box .popup3");
+					},
+					onClose : function() {
+						console.log("closed the box .popup3");
+					}
+				});
+
+			});
+			
+
+    </script>
+
+
+</head>
+
+<body>
+
+      <div id="wrap" style="background:#eee;padding:20px;min-height:100%">
+
+		   <div class="popupBtns">
+      	   		<input type="button" value="ajaxy content" class="popup2" name="ajax.html" title="Ajax Content" />
+      	   		<input type="button" value="DOM element content" class="popup3" name=".popup3Content" title="dom content" />
+      	   </div>
+      	   
+      	   <div class="popupContentWrapper" style="display:none">
+      	   		<div class="popup3Content">
+      	   			<h2>Content for popup 3</h2>
+      	   			<p>lorem ipsum....</p>
+      	   		</div>
+      	   </div>
+      	  
+      </div>  <!-- end of wrap div -->
+      
+</body>
+</html>
