@@ -812,7 +812,7 @@ $roR=mysql_fetch_array($sqR); */
 		
 		<button type="reset" id="rest" class="btn btn-primary btn-sm btn-responsive" style="" onclick="cancel_ed()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
 			
-		<a href="<?php echo $home_path; ?>/dashboard.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>"><button type="button" id="exit" name="exit" class="btn btn-primary btn-sm btn-responsive" style=""  ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
+		<a href="<?php echo $home_path; ?>/transaction/frontdesk/view-fpkot.php?fromdate=<?php echo $curDate;?>&todate=<?php echo $curDate;?>"><button type="button" id="exit" name="exit" class="btn btn-primary btn-sm btn-responsive" style=""  ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
 	</div>
 	</td>
 	</tr>

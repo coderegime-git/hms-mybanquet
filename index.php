@@ -11,12 +11,20 @@ include("config.php");
 	<link rel="stylesheet" href="login-form/css/animate.css">
 	<!-- Custom Stylesheet -->
 	<link rel="stylesheet" href="login-form/css/style.css">
-
-	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>-->
+	<link rel="stylesheet" type="text/css" href="<?php echo $home_path; ?>/css/loader.css">
+	<script type="text/javascript" src="<?php echo $home_path; ?>/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="<?php echo $home_path; ?>/js/loader.js"></script>
 	
 </head>
 
 <body>
+<!-- Global Page Loader Markup -->
+<div id="global-loader-overlay">
+	<div class="global-loader-box">
+		<div class="global-spinner"></div>
+		<div class="global-loader-text">Loading, please wait...</div>
+	</div>
+</div>
 	<div class="container">
 		<div class="top">
 			<h1 id="title" class="hidden"><span id="logo">MY <span>BANQUET</span></span></h1>

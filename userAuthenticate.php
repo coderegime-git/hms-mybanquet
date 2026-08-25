@@ -49,8 +49,7 @@ die(); */
 		
 		$_SESSION['companyId']=$_POST['company_name'];
 		$_SESSION['user']=$UserName;
-		/* $msg='?fromdate='.$fromdate.'&todate='.$fromdate; */
-		header('location:dashboard.php?fromdate='.$fromdate.'&todate='.$fromdate);
+		header('location:preloader.php?fromdate='.$fromdate.'&todate='.$fromdate);
 		}else{	
 		header('location:index.php?msg=Login Failed...');		
 		}	

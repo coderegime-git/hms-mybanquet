@@ -18,9 +18,9 @@ $UsQuery =mysql_query($sql);
 
 
 if($UsQuery){
-header('location:'.$home_path.'/masters/banquet/billing_instruction_bqt.php?msg=Data saved successfully!');
+header('location:'.$home_path.'/masters/banquet/view_bill_inst.php?msg=Data saved successfully!');
 }else {
-header('location:'.$home_path.'/masters/banquet/billing_instruction_bqt.php?msg=Error in insertion');
+header('location:'.$home_path.'/masters/banquet/view_bill_inst.php?msg=Error in insertion');
 }
 
 

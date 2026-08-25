@@ -6,14 +6,15 @@ include("../../header.php");
 
 <script>
 	jQuery(document).ready(function(){
-	jQuery("#roommaster").validationEngine();
+		jQuery("#roommaster").validationEngine();
+		$("#msgFo").fadeOut(5000);
 	});
 	$("input").focus(function () {
      $("").css('outline','yellow solid thin');
 });
-/*  shortcut.add("Ctrl+A",function() { 
- 	 window.location.href = "departments-bqt.php";
-});  */
+ shortcut.add("Ctrl+A",function() { 
+ 	 window.location.href = "item_master_bqt.php";
+}); 
 
 function srchTxtBtn(){
 	$("#searchTxt").val('');
@@ -40,6 +41,13 @@ input[type=text], textarea{
 <body class="bgBODY">
  <form id="taxTypes" name="taxTypes" class="" style=""> 
 <div class="" style="height:500px;overflow:auto;">	
+<?php 	
+if(isset($_GET['msg'])){
+?>
+	<p style="text-align:center;">
+		<label id="msgFo" class="msgNotify"><?php echo $_GET['msg']; ?></label>
+	</p>
+<?php } ?>
 
 
 <div>
@@ -134,7 +142,11 @@ input[type=text], textarea{
 		<a href="edit_itemmaster_bqt.php?item_id=<?php echo $row['item_id']; ?>" style="" class="">Edit</a>&nbsp;
 		</td>
 	</tr>
-	<?php } } ?>	
+	<?php } } else{ ?>	
+	<div style="margin: 21px 0 26px 10px;width:95%;" class="alert alert-success">
+                               You have not created any Item Master details...
+    </div>
+<?php } ?>	
 	
 </table>
 	

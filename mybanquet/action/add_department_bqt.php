@@ -18,10 +18,10 @@ die();  */
 
 $UsQuery =mysql_query($sql);
 if($UsQuery){
-	header('location:'.$home_path.'/masters/banquet/departments-bqt.php?msg=Data saved Successfully!');
+	header('location:'.$home_path.'/masters/banquet/view_department_bqt.php?msg=Data saved Successfully!');
 }
 else{
-	header('location:'.$home_path.'/masters/banquet/departments-bqt.php?msg=Error in insertion');
+	header('location:'.$home_path.'/masters/banquet/view_department_bqt.php?msg=Error in insertion');
 }
 
 

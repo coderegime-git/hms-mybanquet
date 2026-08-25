@@ -12,7 +12,7 @@ include("../../header.php");
      $("").css('outline','yellow solid thin');
 });
  shortcut.add("Ctrl+A",function() { 
- 	 window.location.href = "departments-bqt.php";
+ 	 window.location.href = "menu_group_bqt.php";
 }); 
 
 </script>
@@ -30,7 +30,7 @@ input[type=text], textarea{
  <form id="taxTypes" name="taxTypes" class="" style=""> 
 <div class="" style="height:500px;overflow:auto;">	
 <div style="margin:10px 50px 10px 0px;float:right;">
-		<a href="menu_group_bqt.php"><button type="button" id="add" class="button_example bnkSbt" onclick="return checkUnitMaster();" style="margin:4px 0 -8px 377px;"><img src="../../images/add-contact-iconn.png" class="sbtBtnImg"/>&nbsp;&nbsp;<span class="btnUndLine">A</span>dd Menu Item Sub Category(Bqt)</button></a>
+		<a href="menu_group_bqt.php"><button type="button" id="add" class="button_example bnkSbt" onclick="return checkUnitMaster();" style="margin:4px 0 -8px 377px;"><img src="../../images/add-contact-iconn.png" class="sbtBtnImg"/>&nbsp;&nbsp;<span class="btnUndLine">A</span>dd Menu Group(Bqt)</button></a>
 </div>
 <table class="table table-condensed table-hover table-striped table-bordered frmBgClr" cellpadding="0" cellspacing="0" border="0" class="table" style="margin:0 0 15px 0px;text-align:center;font-size:12px;">
 	<tr class="info">

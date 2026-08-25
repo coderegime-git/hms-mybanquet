@@ -383,13 +383,15 @@ function setMenu() {
 }
 
 function extBUtton(){
-	document.location.href="<?php echo $home_path; ?>/dashboard.php";
+	document.location.href="<?php echo $home_path; ?>/transaction/frontdesk/view-bqtbill-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val=";
 }
 
-function printClear(){
-	
-	/* document.location.href="bqt_billing.php?vucNo="; */
-}
+shortcut.add("Ctrl+V",function() { 
+	window.location.href = "view-bqtbill-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val=";
+});
+shortcut.add("Ctrl+E",function() { 
+	window.location.href = "view-bqtbill-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val=";
+});
 
 
 function sbtBtnN(){
@@ -1065,6 +1067,12 @@ for($cc=$nmD;$cc<4;$cc++){
 <tr>
 <td>
 <a href="#"><button type="button" id="printFlio" class="buttExaS" style="font-weight:bold;" data-toggle="modal" data-target="#myModal" onclick="selBadFeed();"  ><img src="../../images/prtfoli.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">V</span>iew Bill</button></a>
+</td>
+</tr>
+
+<tr>
+<td>
+<a href="view-bqtbill-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val="><button type="button" id="update" class="buttExaS" style="font-weight:bold;"><img src="../../images/audit.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
 </td>
 </tr>
 

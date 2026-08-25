@@ -75,17 +75,17 @@ $(document).ready(function(){
 });
 
  shortcut.add("Ctrl+S",function() { 
-	 $('#taxTypes').attr('action', '../../action/add_tax_type.php');  
+	 $('#taxTypes').attr('action', '<?php echo $home_path;?>/action/add_valid_settle.php');  
 	 $('#taxTypes').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view_define_tax.php";
+	window.location.href = "view_valid_settlement_bqt.php";
 });
  shortcut.add("Ctrl+C",function() { 
   $('#taxTypes').find("input[type=text], textarea").val("");
 });
  shortcut.add("Ctrl+E",function() { 
- window.location.href = "../../dashboard.php";
+ window.location.href = "view_valid_settlement_bqt.php";
 });
 
 function checkTaxCode(){
@@ -208,11 +208,11 @@ if(isset($_GET['msg'])){
 	<div style="margin:0 0 0 1px;">
 		<button type="submit" id="add" class="buttExam_sngl bnkSbt frstChr" style="" onclick="return checkUnitMasterfdf();"><img src="<?php echo $home_path; ?>/images/saves.png" class="sbtBtnImg frstChr"/>&nbsp;&nbsp;<span class="btnUndLine">S</span>ubmit</button>
 		
-		<a href="view_define_tax.php"><button type="button" id="update" class="buttExam_sngl bnkSbt" onclick="return checkPropertyMasterq();"><img src="<?php echo $home_path; ?>/images/audit.png" class="sbtBtnImg "/>&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
+		<a href="view_valid_settlement_bqt.php"><button type="button" id="update" class="buttExam_sngl bnkSbt" onclick="return checkPropertyMasterq();"><img src="<?php echo $home_path; ?>/images/audit.png" class="sbtBtnImg "/>&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
 			
 			<button type="reset" id="rest" class="buttExam_sngl" style="" onclick="cancel_ed()"><img src="<?php echo $home_path; ?>/images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
 			
-			<a href="<?php echo $home_path; ?>/dashboard.php"><button type="button" id="exit" name="exit" class="buttExam_sngl" style="" ><img src="<?php echo $home_path; ?>/images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>	
+			<a href="<?php echo $home_path; ?>/masters/banquet/view_valid_settlement_bqt.php"><button type="button" id="exit" name="exit" class="buttExam_sngl" style="" ><img src="<?php echo $home_path; ?>/images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>	
 	</div>
 	</td>
 	</tr>
@@ -223,5 +223,6 @@ if(isset($_GET['msg'])){
 
 	</div>
 	</div>
+<?php include("../../footer.php"); ?>
 </body>
 </html>

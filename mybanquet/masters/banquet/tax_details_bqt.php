@@ -40,11 +40,11 @@ $(document).ready(function(){
 });
 
  shortcut.add("Ctrl+S",function() { 
-	 $('#taxTypes').attr('action', '../../action/add_session_master.php');  
+	 $('#taxTypes').attr('action', '../../action/add_tax_details.php');  
 	 $('#taxTypes').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view_session_master.php";
+	window.location.href = "view_tax_det.php";
 });
  shortcut.add("Ctrl+C",function() { 
   $('#taxTypes').find("input[type=text], textarea").val("");

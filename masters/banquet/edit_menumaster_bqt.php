@@ -74,17 +74,17 @@ $(document).ready(function(){
 });
 
  shortcut.add("Ctrl+S",function() { 
-	 $('#hotelDefi').attr('action', '../../action/add_fotax_structure.php');  
+	 $('#hotelDefi').attr('action', '<?php echo $home_path;?>/action/update_menu_master.php');  
 	 $('#hotelDefi').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view-fotax-structure.php";
+	window.location.href = "view-menu-master.php";
 });
  shortcut.add("Ctrl+C",function() { 
   $('#hotelDefi').find("input[type=text], textarea").val("");
 });
  shortcut.add("Ctrl+E",function() { 
- window.location.href = "../../dashboard.php";
+ window.location.href = "view-menu-master.php";
 });
 
 

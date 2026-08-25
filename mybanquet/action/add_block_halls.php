@@ -138,10 +138,10 @@ $UsQHg =mysql_query($sqlHg);
 
 	
 if($UsQueCy){
-		header('location:'.$home_path.'/transaction/frontdesk/block_halls.php?msg='.$bookNum.' generated successfully!.');
+		header('location:'.$home_path.'/transaction/frontdesk/view-block-hall.php?msg='.$bookNum.' generated successfully!.');
 	}
 	else{
-		header('location:'.$home_path.'/transaction/frontdesk/block_halls.php?msg=Error in insertion');
+		header('location:'.$home_path.'/transaction/frontdesk/view-block-hall.php?msg=Error in insertion');
 	}	
 }
 

@@ -16,10 +16,10 @@ $sql="insert into bq_bankname(bank_code,bank_name,status,added_by,added_on)";
 die(); */ 
 $UsQuery =mysql_query($sql);
 if($UsQuery){
-	header('location:'.$home_path.'/masters/banquet/bank_namemaster.php?msg=Data saved Successfully!');
+	header('location:'.$home_path.'/masters/banquet/view_bank_name.php?msg=Data saved Successfully!');
 }
 else{
-	header('location:'.$home_path.'/masters/banquet/bank_namemaster.php?msg=Error in insertion');
+	header('location:'.$home_path.'/masters/banquet/view_bank_name.php?msg=Error in insertion');
 }
 
 

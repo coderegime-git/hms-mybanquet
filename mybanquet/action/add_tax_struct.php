@@ -35,10 +35,10 @@ $UsQuery =mysql_query($sql);
 }
  
 if($UsQuery){
-	header('location:'.$home_path.'/masters/banquet/tax_structure_bqt.php?msg=Data saved Successfully!');
+	header('location:'.$home_path.'/masters/banquet/view-fotax-structure.php?msg=Data saved Successfully!');
 }
 else{
-	header('location:'.$home_path.'/masters/banquet/tax_structure_bqt.php?msg=Error in insertion');
+	header('location:'.$home_path.'/masters/banquet/view-fotax-structure.php?msg=Error in insertion');
 }
 	
 

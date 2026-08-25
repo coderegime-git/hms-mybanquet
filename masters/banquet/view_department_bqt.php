@@ -4,77 +4,250 @@ include("../../config.php");
 include("../../header.php");
 ?>
 
-<script>
-	jQuery(document).ready(function(){
-	jQuery("#roommaster").validationEngine();
-	});
-	$("input").focus(function () {
-     $("").css('outline','yellow solid thin');
-});
- shortcut.add("Ctrl+A",function() { 
- 	 window.location.href = "departments-bqt.php";
-}); 
-
-</script>
- 
-<style>
-   label {width: 205px; padding:0 20px 0 20px; display: inline-block;font-weight: bold;color: #000;font-size:12px; } 
-   
-input[type=text], textarea{
- height:26px;
+<style type="text/css">
+/* Payroll (MyPay) Standardized Master View Styling */
+body, body.bgBODY {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
-.table td {text-align:center;} 
-</style>	
+
+.mypay-container {
+    width: 96% !important;
+    max-width: 100% !important;
+    margin: 20px auto 40px auto !important;
+    padding: 0 !important;
+}
+
+/* Action Buttons Bar on Top Right */
+.mypay-actions-bar {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+}
+
+.btn-mypay-add {
+    background-color: #0084b4 !important;
+    color: #ffffff !important;
+    border: 1px solid #00739c !important;
+    border-radius: 3px !important;
+    padding: 4px 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.btn-mypay-add:hover {
+    background-color: #00739c !important;
+    color: #ffffff !important;
+}
+
+.btn-mypay-exit {
+    background-color: #005580 !important;
+    color: #ffffff !important;
+    border: 1px solid #004466 !important;
+    border-radius: 3px !important;
+    padding: 4px 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.btn-mypay-exit:hover {
+    background-color: #004466 !important;
+    color: #ffffff !important;
+}
+
+.mypay-icon-plus {
+    background-color: #28a745 !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+    width: 14px !important;
+    height: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    line-height: 14px !important;
+}
+
+.mypay-icon-exit {
+    color: #f39c12 !important;
+    font-size: 13px !important;
+}
+
+/* View Data Table */
+.mypay-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1px solid #0073B5 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+}
+
+.mypay-table thead tr.banner-row th {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    height: 34px !important;
+    padding: 8px 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: 1px solid #0073B5 !important;
+    vertical-align: middle !important;
+}
+
+.mypay-table thead tr.header-row th {
+    background-color: #f5f5f5 !important;
+    color: #222222 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    text-align: center !important;
+    height: 34px !important;
+    padding: 8px 12px !important;
+    border: 1px solid #e0e0e0 !important;
+    vertical-align: middle !important;
+}
+
+.mypay-table tbody td {
+    padding: 8px 12px !important;
+    border: 1px solid #e0e0e0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #333333 !important;
+    text-align: center !important;
+    background-color: #ffffff !important;
+    height: 34px !important;
+    vertical-align: middle !important;
+}
+
+.mypay-table tbody tr:hover td {
+    background-color: #f8fbfe !important;
+}
+
+.mypay-edit-btn {
+    color: #0084b4 !important;
+    font-size: 16px !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    line-height: 1 !important;
+}
+
+.mypay-edit-btn:hover {
+    color: #005580 !important;
+}
+</style>
+
+<script>
+jQuery(document).ready(function(){
+    $("#msgFo").fadeOut(5000);
+    
+    if(typeof shortcut !== 'undefined') {
+        shortcut.add("Ctrl+A", function() { 
+            window.location.href = "departments-bqt.php";
+        }); 
+
+        shortcut.add("Ctrl+E", function() { 
+            window.location.href = "<?php echo $home_path; ?>/dashboard.php";
+        }); 
+    }
+});
+</script>
 
 <body class="bgBODY">
- <form id="taxTypes" name="taxTypes" class="" style=""> 
-<div class="" style="height:500px;overflow:auto;">	
-<div style="margin:10px 50px 10px 0px;float:right;">
-		<a href="departments-bqt.php"><button type="button" id="add" class="button_example bnkSbt" onclick="return checkUnitMaster();" style="margin:4px 0 -8px 377px;"><img src="../../images/add-contact-iconn.png" class="sbtBtnImg"/>&nbsp;&nbsp;<span class="btnUndLine">A</span>Department(Bqt)</button></a>
-</div>
-<table class="table table-condensed table-hover table-striped table-bordered frmBgClr" cellpadding="0" cellspacing="0" border="0" class="table" style="margin:0 0 15px 0px;text-align:center;font-size:12px;">
-	<tr class="info">
-	
-		<td colspan="13" style="text-align:center;"><h3 class="viewDT" id="Userhd"><b>View Departments(Bqt)</b></h3><b></b></td>
-	</tr>
-	<tr>
-		<th width="80" style="text-align:center;background-color:#F5F5F5;">Sl.no</th>
-		<th width="80" style="text-align:center;background-color:#F5F5F5;">Code</th>
-		<th width="80" style="text-align:center;background-color:#F5F5F5;">Name</th>
-		<th width="80" style="text-align:center;background-color:#F5F5F5;">Status</th>
-		<th width="80" style="text-align:center;background-color:#F5F5F5;">Edit</th>
-	</tr>
-	<?php 
-	$sql=mysql_query("select * from bq_deptmt");
-	$x=0;
-	if(mysql_num_rows($sql)>0) {
-	while($row=mysql_fetch_array($sql)) {
-		$x++;
-		if($row['status']==1){
-			$status="Active";
-		}else{
-			$status="Deactive";
-		}
-				
-	?>
-	<tr>
-		<td width="80" style="text-align:center;"><?php echo $x; ?></td>
-		<td width="80"><?php echo $row['dept_code']; ?></td>
-		<td width="80" class="codesUPPERCase"><?php echo $row['dept_name']; ?></td>
-		<td width="80" class="fstChUPPRCase"><?php echo $status; ?></td>
-		<td width="80">
-		<a href="edit_department_bqt.php?deptmt_id=<?php echo $row['deptmt_id']; ?>" style="" class="">Edit</a>&nbsp;
-		<input type="hidden" id="roomFeatid" name="roomid" value="<?php echo $row['deptmt_id']; ?>"/>
-		</td>
-	</tr>
-	<?php } } else{ ?>	
-	<div style="margin: 21px 0 26px 10px;;width:95%;" class="alert alert-success">
-                               You have not created any Department details...
+
+<div class="mypay-container">
+
+    <?php if(isset($_GET['msg'])){ ?>
+        <p style="text-align:center;margin:10px 0;">
+            <label id="msgFo" style="color:#7B0E0E;font-weight:bold;font-size:13px;"><?php echo htmlspecialchars($_GET['msg']); ?></label>
+        </p>
+    <?php } ?>
+
+    <!-- Top Action Buttons -->
+    <div class="mypay-actions-bar">
+        <a href="departments-bqt.php" class="btn-mypay-add" id="add" title="Add Department (Ctrl+A)">
+            <span class="mypay-icon-plus"><i class="fa fa-plus"></i></span>
+            <span>Add Department</span>
+        </a>
+        <a href="<?php echo $home_path; ?>/dashboard.php" class="btn-mypay-exit" id="exit" title="Exit (Ctrl+E)">
+            <span class="mypay-icon-exit"><i class="fa fa-sign-out"></i></span>
+            <span>Exit</span>
+        </a>
     </div>
-<?php } ?>
-</table>
-	
-	</div>
-	<?php include("../../footer.php"); ?>
-	</body>
- </form>
+
+    <!-- Data Table Matching Payroll Format -->
+    <table class="mypay-table" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr class="banner-row">
+                <th colspan="4">VIEW DEPARTMENTS(BQT)</th>
+            </tr>
+            <tr class="header-row">
+                <th style="width: 20%;">Code</th>
+                <th style="width: 50%;">Name</th>
+                <th style="width: 18%;">Status</th>
+                <th style="width: 12%;">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php 
+        $sql = mysql_query("select * from bq_deptmt order by deptmt_id asc");
+        if($sql && is_resource($sql) && mysql_num_rows($sql) > 0) {
+            while($row = mysql_fetch_array($sql)) {
+                $status = ($row['status'] == 1) ? "Active" : "Passive";
+        ?>
+            <tr>
+                <td><?php echo htmlspecialchars($row['dept_code']); ?></td>
+                <td><?php echo htmlspecialchars($row['dept_name']); ?></td>
+                <td><?php echo $status; ?></td>
+                <td>
+                    <a href="edit_department_bqt.php?deptmt_id=<?php echo $row['deptmt_id']; ?>" class="mypay-edit-btn" title="Edit">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </a>
+                </td>
+            </tr>
+        <?php 
+            } 
+        } else { 
+        ?>
+            <tr>
+                <td colspan="4" style="padding: 16px; color: #777; text-align: center; font-size: 13px;">
+                    No Department records found
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+
+</div>
+
+<?php include("../../footer.php"); ?>
+</body>
+</html>

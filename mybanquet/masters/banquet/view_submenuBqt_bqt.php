@@ -12,7 +12,7 @@ include("../../header.php");
      $("").css('outline','yellow solid thin');
 });
  shortcut.add("Ctrl+A",function() { 
- 	 window.location.href = "departments-bqt.php";
+ 	 window.location.href = "submenu_group_bqt.php";
 }); 
 
 </script>

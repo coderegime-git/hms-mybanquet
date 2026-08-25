@@ -6,13 +6,14 @@ include("../../header.php");
 
 <script>
 	jQuery(document).ready(function(){
-	jQuery("#roommaster").validationEngine();
+		jQuery("#roommaster").validationEngine();
+		$("#msgFo").fadeOut(5000);
 	});
 	$("input").focus(function () {
      $("").css('outline','yellow solid thin');
 });
  shortcut.add("Ctrl+A",function() { 
- 	 window.location.href = "departments-bqt.php";
+ 	 window.location.href = "menu_master_bqt.php";
 }); 
 
 </script>
@@ -29,6 +30,13 @@ input[type=text], textarea{
 <body class="bgBODY">
  <form id="taxTypes" name="taxTypes" class="" style=""> 
 <div class="" style="height:500px;overflow:auto;">	
+<?php 	
+if(isset($_GET['msg'])){
+?>
+	<p style="text-align:center;">
+		<label id="msgFo" class="msgNotify"><?php echo $_GET['msg']; ?></label>
+	</p>
+<?php } ?>
 <div style="margin:10px 50px 10px 0px;float:right;">
 		<a href="menu_master_bqt.php"><button type="button" id="add" class="button_example bnkSbt" onclick="return checkUnitMaster();" style="margin:4px 0 -8px 377px;"><img src="../../images/add-contact-iconn.png" class="sbtBtnImg"/>&nbsp;&nbsp;<span class="btnUndLine">A</span>dd Menu Master(Bqt)</button></a>
 </div>
@@ -73,7 +81,11 @@ input[type=text], textarea{
 		<a href="edit_menumaster_bqt.php?menmas_id=<?php echo $row['menmas_id']; ?>&mencde=<?php echo $row['menu_code']; ?>" style="" class="">Edit</a>&nbsp;
 		</td>
 	</tr>
-	<?php } } ?>	
+	<?php } } else{ ?>	
+	<div style="margin: 21px 0 26px 10px;width:95%;" class="alert alert-success">
+                               You have not created any Menu Master details...
+    </div>
+<?php } ?>	
 	
 </table>
 	

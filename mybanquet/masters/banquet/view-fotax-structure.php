@@ -10,8 +10,7 @@ include("../../header.php");
 	});
 	
  shortcut.add("Ctrl+A",function() { 
-	 $('#taxTypes').attr('action', 'fotax-structure.php');  
-	 $('#taxTypes').submit(); 
+	 window.location.href = "tax_structure_bqt.php";
 }); 
 
 /* shortcut.add("Ctrl+E",function() { 

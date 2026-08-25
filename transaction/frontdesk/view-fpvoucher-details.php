@@ -3,6 +3,10 @@ ob_start();
 error_reporting(0);
 include("../../config.php");
 include("../../header.php");
+
+$sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
+$rowAC=mysql_fetch_array($sqlAC);
+$adtCurDt=trim($rowAC['cur_date']);
 ?>
 <script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
 <link rel="stylesheet" href="<?php echo $home_path;?>/date-picker/jquery-ui.css">
@@ -25,23 +29,19 @@ include("../../header.php");
 	});
 	
 		 $("#msgFo").fadeOut(5000);
-		/* $('#searchBtn').click(function(){
-		item="?val="+$('#searchTxt').val();
-		document.location.href="view-reservroom-booking.php"+item;
-	});  */
 	
 	jQuery("#roommaster").validationEngine();
 	});
+
+shortcut.add("Ctrl+A",function() { 
+	window.location.href = "view-fpvoucher.php";
+}); 
 	
 function clkSubmit() {
 fromdate=$('#from_date').val();
 todate=$('#to_date').val();
 srtx=$('#searchTxt').val();
-/* if(fromdate!="" && todate!="")
-{ */
 document.location="view-fpvoucher-details.php?fromdate="+fromdate+"&todate="+todate+"&val="+srtx;
-/* } */
-
 }
 
 function srcSub(){
@@ -88,16 +88,17 @@ if(isset($_GET['msg'])){
 
 <td><label style="width:80px;"><b>From :</b></label></td>
 <td>
-	<input name="from_date" style="width:100px;margin-bottom:0px;text-align:center;" type="text" class="textbox datepicker" id="from_date"   value="<?php if(isset($_GET['fromdate'])){ echo $_GET['fromdate'];}?>" onChange="showsales()" placeholder="From Date"/>
+	<input name="from_date" style="width:100px;margin-bottom:0px;text-align:center;" type="text" class="textbox datepicker" id="from_date" value="<?php if(isset($_GET['fromdate'])){ echo $_GET['fromdate'];}else{ echo $adtCurDt; }?>" onChange="showsales()" placeholder="From Date"/>
 </td>
 <td><label style="width:70px;"><b>To :</b></label></td>
 <td>
-	<input name="to_date" style="width:100px;margin:0px 10px 0 0;text-align:center;" type="text" class="textbox datepicker1" id="to_date"  value="<?php if(isset($_GET['todate'])){ echo $_GET['todate'];}?>" onChange="showsales()" placeholder="To Date"/>
+	<input name="to_date" style="width:100px;margin:0px 10px 0 0;text-align:center;" type="text" class="textbox datepicker1" id="to_date" value="<?php if(isset($_GET['todate'])){ echo $_GET['todate'];}else{ echo $adtCurDt; }?>" onChange="showsales()" placeholder="To Date"/>
 </td>
 <td style="width:534px;">
-	<input type="text" id="searchTxt" name="searchTxt" placeholder="Guest name" style="margin-left: 30px;width:230px;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius:10px;border:1px solid #0B4F8C;height:32px;" value="<?php if(isset($_GET['val'])) {echo $_GET['val'];}else{echo '';}?>" onclick="srcSub();" />
+	<input type="text" id="searchTxt" name="searchTxt" placeholder="Guest name / FP No / Booking No / Voucher No" style="margin-left: 30px;width:280px;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius:10px;border:1px solid #0B4F8C;height:32px;" value="<?php if(isset($_GET['val'])) {echo $_GET['val'];}else{echo '';}?>" onclick="srcSub();" />
 
-	<input name="submt" style="margin:0 0 0 10px;" type="button" id="submt"  class="btnH" value="Display" onClick="clkSubmit()" />
+	<input name="submt" style="margin:0 0 0 10px;" type="button" id="submt" class="btnH" value="Display" onClick="clkSubmit()" />
+</td>
 	<!--<button type="button" name="searchBtn" id="searchBtn" style="margin:0px 0 0 0px;color:#000;font-size:13px;font-weight:bold;padding:2px;" class="myButSRc btnn"><img src="../../images/audit.png"  class="sbtBtnImg"/>&nbsp;Search&nbsp;</button>-->
 </td>
 <!--<td>
@@ -190,20 +191,22 @@ $cur=$ad[2].'/'.$ad[1].'/'.$ad[0];
 	$tod=$to[2].'-'.$to[1].'-'.$to[0];
 
 if(isset($_GET['fromdate']) && $_GET['fromdate']!='' && isset($_GET['todate']) && $_GET['todate']!='' && isset($_GET['val']) && $_GET['val']!='') {
-$item_where= " where str_to_date(vouchrdate,'%d/%m/%Y') >= '$frm' AND str_to_date(vouchrdate,'%d/%m/%Y') <= '$tod' AND fname='".$_GET['val']."' AND bill_status!='3' order by str_to_date(vouchrdate,'%d/%m/%Y') DESC";
+$v = mysql_real_escape_string($_GET['val']);
+$item_where= " where str_to_date(vouchrdate,'%d/%m/%Y') >= '$frm' AND str_to_date(vouchrdate,'%d/%m/%Y') <= '$tod' AND (fname like '%$v%' OR vouchrno like '%$v%' OR fpno like '%$v%' OR bkno like '%$v%') AND bill_status!='3' order by str_to_date(vouchrdate,'%d/%m/%Y') DESC";
 $sql=mysql_query("select * from bq_opvchrhdr $item_where");
 }else if(isset($_GET['fromdate']) && isset($_GET['todate']) && $_GET['fromdate']!='' && isset($_GET['todate']) && $_GET['todate']!='' && isset($_GET['val']) && $_GET['val']=='') {
-	
 $item_where= " where str_to_date(vouchrdate,'%d/%m/%Y') >= '$frm' AND str_to_date(vouchrdate,'%d/%m/%Y') <= '$tod' AND bill_status!='3' order by str_to_date(vouchrdate,'%d/%m/%Y') DESC";
 $sql=mysql_query("select * from bq_opvchrhdr $item_where");
 }else if(isset($_GET['val']) && $_GET['val']!='') {
-	$item_where= " where fname like '%".$_GET['val']."%' OR city like '%".$_GET['val']."%' AND bill_status!='3' order by str_to_date(vouchrdate,'%d/%m/%Y') DESC";
+	$v = mysql_real_escape_string($_GET['val']);
+	$item_where= " where (fname like '%$v%' OR vouchrno like '%$v%' OR fpno like '%$v%' OR bkno like '%$v%') AND bill_status!='3' order by str_to_date(vouchrdate,'%d/%m/%Y') DESC";
 	$sql=mysql_query("select * from bq_opvchrhdr $item_where");
 }else{
 	$sql=mysql_query("select * from bq_opvchrhdr where bill_status!='3' order by str_to_date(vouchrdate,'%d/%m/%Y') DESC");
 }
 
 $x=0;
+if($sql && mysql_num_rows($sql)>0) {
 while($row=mysql_fetch_array($sql)) {
 $x++;
 
@@ -246,7 +249,15 @@ if($row['bill_status']==1){
 </td>
 
 </tr>
-<?php } ?>	
+<?php } } else { ?>
+<tr>
+	<td colspan="16">
+		<div style="margin: 21px 0 26px 10px;width:95%;" class="alert alert-success">
+			No Voucher records found...
+		</div>
+	</td>
+</tr>
+<?php } ?>
 </table>
 	
 	</div>

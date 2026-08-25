@@ -32,10 +32,10 @@ $dy = $dtr[0].'/'.$dtr[1].'/'.$dtr[2];
 		$UsBl=mysql_query($sqBl); */
 		
 		if($UsQ){
-			header('location:'.$home_path.'/dashboard.php?msg=Hall released Successfully!');
+			header('location:'.$home_path.'/transaction/frontdesk/view-block-hall.php?msg=Hall released Successfully!');
 		}
 		else{
-			header('location:'.$home_path.'/dashboard.php?msg=Error in updation');
+			header('location:'.$home_path.'/transaction/frontdesk/view-block-hall.php?msg=Error in updation');
 		}
 		
 		

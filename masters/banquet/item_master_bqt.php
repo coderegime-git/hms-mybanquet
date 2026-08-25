@@ -51,17 +51,17 @@ $(document).ready(function(){
 });
 
  shortcut.add("Ctrl+S",function() { 
-	 $('#hotelDefi').attr('action', '../../action/add_fotax_structure.php');  
+	 $('#hotelDefi').attr('action', '<?php echo $home_path;?>/action/add_item_master.php');  
 	 $('#hotelDefi').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view-fotax-structure.php";
+	window.location.href = "view_itemmaster_bqt.php";
 });
  shortcut.add("Ctrl+C",function() { 
   $('#hotelDefi').find("input[type=text], textarea").val("");
 });
  shortcut.add("Ctrl+E",function() { 
- window.location.href = "../../dashboard.php";
+ window.location.href = "view_itemmaster_bqt.php";
 });
 
 
@@ -403,7 +403,7 @@ while($rwM=mysql_fetch_array($sqlM)){
 			
 			<button type="reset" id="rest" class="buttExam_sngl" style="" onclick="cancel_ed()"><img src="<?php echo $home_path; ?>/images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
 			
-			<a href="<?php echo $home_path; ?>/dashboard.php"><button type="button" id="exit" name="exit" class="buttExam_sngl" style="" ><img src="<?php echo $home_path; ?>/images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>	
+			<a href="<?php echo $home_path; ?>/masters/banquet/view_itemmaster_bqt.php"><button type="button" id="exit" name="exit" class="buttExam_sngl" style="" ><img src="<?php echo $home_path; ?>/images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>	
 	</div>
 	</td>
 	</tr>

@@ -32,8 +32,7 @@ include("../../header.php");
      $("").css('outline','yellow solid thin');
 });
 shortcut.add("Ctrl+A",function() { 
-	 $('#taxTypes').attr('action', 'define-tax.php');  
-	 $('#taxTypes').submit(); 
+	 window.location.href = "hall-booking.php";
 }); 
 
 /* shortcut.add("Ctrl+E",function() { 

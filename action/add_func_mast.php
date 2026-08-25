@@ -17,9 +17,9 @@ die(); */
 $UsQuery =mysql_query($sql);
 
 if($UsQuery){
-header('location:'.$home_path.'/masters/banquet/function_master_bqt.php?msg=Data saved successfully!');
+header('location:'.$home_path.'/masters/banquet/view_func_mast.php?msg=Data saved successfully!');
 }else {
-header('location:'.$home_path.'/masters/banquet/function_master_bqt.php?msg=Error in insertion');
+header('location:'.$home_path.'/masters/banquet/view_func_mast.php?msg=Error in insertion');
 }
 
 

@@ -2,15 +2,13 @@
 ob_start();
 
 include("../config.php");
-$segment_name=$_GET['segment_name'];
+$segment_name = isset($_GET['segment_name']) ? mysql_real_escape_string(trim($_GET['segment_name'])) : '';
 
-$checkDet=mysql_query("select msname from bqt_mas_mrkseg where msname='$segment_name'");
+$checkDet = mysql_query("select msname from bq_marketseg where msname='$segment_name'");
 
-if (mysql_num_rows($checkDet) > 0) {
-echo 1;
+if ($checkDet && mysql_num_rows($checkDet) > 0) {
+    echo 1;
+} else {
+    echo 0;
 }
-else {
-echo 0;
-}
-
 ?>

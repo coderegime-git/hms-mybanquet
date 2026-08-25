@@ -32,10 +32,11 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 <script type="text/javascript" src="<?php echo $home_path; ?>/js/jquery-1.11.1.min.js"></script>
 <!---//-slider---->
 
-<script src="<?php echo $home_path; ?>/js/shortcut.js" type="text/javascript"></script>
-<link rel="shortcut icon" href="images/rms.png">	
     <link rel="stylesheet" href="<?php echo $home_path; ?>/megamenu-js-master/css/style.css">
     <link rel="stylesheet" href="<?php echo $home_path; ?>/megamenu-js-master/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo $home_path; ?>/css/loader.css">
+    <script type="text/javascript" src="<?php echo $home_path; ?>/js/loader.js"></script>
+    <script type="text/javascript" src="<?php echo $home_path; ?>/js/shortcut.js"></script>
  
 </head>
 <script>
@@ -119,6 +120,31 @@ function checkTime(i) {
 
 </script>
 <body onload="startTime()">
+<!-- Global Page Loader Markup -->
+<div id="global-loader-overlay">
+	<div class="global-loader-box">
+		<div class="global-spinner"></div>
+		<div class="global-loader-text">Loading, please wait...</div>
+	</div>
+</div>
+
+<!-- Centered Blue Success Modal Backdrop & Markup -->
+<div id="global-success-backdrop" onclick="hideSuccessPopup()"></div>
+
+<div id="global-success-popup">
+	<div class="success-popup-header">
+		<div class="success-popup-icon">
+			<i class="fa fa-check"></i>
+		</div>
+		<div class="success-popup-title" id="success-popup-title">SUCCESS</div>
+	</div>
+	<div class="success-popup-body" id="success-popup-message">
+		Data Saved Successfully.
+	</div>
+	<div class="success-popup-footer">
+		<button type="button" class="success-popup-btn" onclick="hideSuccessPopup()">OK</button>
+	</div>
+</div>
 <?php
 $sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
 $rowAC=mysql_fetch_array($sqlAC);

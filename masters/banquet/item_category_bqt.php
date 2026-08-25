@@ -44,7 +44,7 @@ $(document).ready(function(){
 	 $('#taxTypes').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view_itemcategory_bqt.php";
+	window.location.href = "view_categ_bqt.php";
 });
  shortcut.add("Ctrl+C",function() { 
   $('#taxTypes').find("input[type=text], textarea").val("");

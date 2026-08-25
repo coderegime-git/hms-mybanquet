@@ -2,173 +2,347 @@
 ob_start();
 include("../../config.php");
 include("../../header.php");
-/* include("../../menu.php"); */
+
+$bank_id = isset($_GET['bank_id']) ? mysql_real_escape_string($_GET['bank_id']) : '';
+$sql = mysql_query("select * from bq_bankname where bank_id='$bank_id'");
+$row = ($sql && is_resource($sql)) ? mysql_fetch_array($sql) : null;
 ?>
- <!--form validation-->	
+<!-- Form validation -->
 <link rel="stylesheet" href="../../form-valid/validationEngine.jquery.css" type="text/css"/>
-<script src="../../form-valid/jquery-1.7.2.min.js" type="text/javascript"></script>
 <script src="../../form-valid/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>
 <script src="../../form-valid/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $home_path; ?>/js/shortcut.js"></script>
 
-<!-- Datepicker start
-<script src="<?php echo $home_path;?>/date-picker/jquery-1.10.2.js"></script>-->
-<script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
-<link rel="stylesheet" href="<?php echo $home_path;?>/date-picker/jquery-ui.css">
-<!-- End -->
-
-
-<!---//-form valid---->
-<script type="text/javascript">
-$(document).ready(function(){
-	 $(".datepicker" ).datepicker({
-	    changeMonth:true,
-     changeYear:true,
-     yearRange:"-100:+0",
-     dateFormat:"dd-mm-yy"
-  });
-  
-   $(".datepicker1" ).datepicker({
-     changeMonth:true,
-     changeYear:true,
-     yearRange:"-100:+0",
-     dateFormat:"dd-mm-yy"
-  }); 
-  jQuery("#taxTypes").validationEngine();
-	$("#msgFo").fadeOut(5000);
-	$("#msgFoprop").fadeOut(5000);
-
-});
-
-/*  shortcut.add("Ctrl+S",function() { 
-	 $('#taxTypes').attr('action', '../../action/add_market_segment.php');  
-	 $('#taxTypes').submit(); 
-}); 
- shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view_market_segment.php";
-});
- shortcut.add("Ctrl+C",function() { 
-  $('#taxTypes').find("input[type=text], textarea").val("");
-});
- shortcut.add("Ctrl+E",function() { 
- window.location.href = "../../dashboard.php";
-}); */
-
-function checkBankCode() {
-	bank_code=$('#bank_code').val();
-	$.ajax({
-		type:'GET',
-		url:'../../action/repeatBankCode.php',
-			data:{
-			bank_code:bank_code
-			},
-			success:function(data){
-				 /* alert(data); */ 
-				if(data==1){
-					alert('Bank Code already exists!.');
-					$('#bank_code').val('');
-				}
-				else{
-					
-				}
-			}
-	});
+<style type="text/css">
+body, body.bgBODY {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-function checkBankName(){
-	bank_name=$('#bank_name').val();
-	$.ajax({
-		type:'GET',
-		url:'  ../../action/repeatBankName.php',
-			data:{
-			bank_name:bank_name
-			},
-			success:function(data){
-				/*  alert(data); */ 
-				if(data==1){
-					alert('Bank Name already exists!.');
-					$('#bank_name').val('');
-				}
-				else{
-					
-				}
-			}
-	});
+.mypay-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 20px auto 40px auto !important;
+    padding: 0 15px !important;
+    box-sizing: border-box !important;
 }
 
+/* Centered Form Card Matching Standard Design */
+.mypay-card {
+    width: 820px !important;
+    max-width: 95% !important;
+    margin: 0 auto !important;
+    background: #ffffff !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
 
-</script> 
-<body class="bgBODY">
-<div id="invoice" style="">
-	<!--<div class="container" >-->
-	
-<?php 	
-if(isset($_GET['msg'])){
-?>
-	<div style="text-align:center;">
-		<label id="msgFo" class="msgNotify"><?php echo $_GET['msg']; ?></label>
-	</div>
-<?php } ?>
-<p style="text-align:center;">
-		<span id="msgFoprop" class="msgNotifyprop"></span>
-</p>
-<style>
-.spanClr{
-	color: #5b503b;
-    display: block;
-    float: left;
-    font-size: 12px;
-    font-weight: normal;
-    padding: 2px 9px 0 5px;
-		
+.mypay-card-header {
+    background: #0073B5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    height: 38px !important;
+    line-height: 38px !important;
+    padding: 0 15px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 5px 5px 0 0 !important;
+}
+
+form#bankForm {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.mypay-card-body {
+    padding: 25px 45px 25px 45px !important;
+    background: #ffffff !important;
+    margin: 0 !important;
+}
+
+.mypay-form-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 16px !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mypay-form-table tr,
+.mypay-form-table td {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+}
+
+.mypay-form-table td.mypay-label-cell {
+    width: 25% !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #222222 !important;
+    font-weight: normal !important;
+    padding-right: 15px !important;
+    text-align: left !important;
+    line-height: 1.2 !important;
+}
+
+.mypay-form-table td.mypay-label-cell label {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #222222 !important;
+    font-weight: normal !important;
+    display: inline-block !important;
+}
+
+.mypay-form-table td.mypay-label-cell label .req-star {
+    color: #d9534f !important;
+    font-style: normal !important;
+    margin-left: 1px !important;
+    font-weight: bold !important;
+}
+
+.mypay-form-table td.mypay-input-cell {
+    width: 75% !important;
+}
+
+.mypay-input {
+    width: 100% !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    padding: 0 10px !important;
+    border: 1px solid #d0d7de !important;
+    border-radius: 4px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+.mypay-input:focus {
+    border-color: #0084b4 !important;
+    box-shadow: 0 0 3px rgba(0, 132, 180, 0.3) !important;
+}
+
+.mypay-input[readonly] {
+    background-color: #f5f5f5 !important;
+    color: #555555 !important;
+    cursor: not-allowed !important;
+}
+
+.mypay-radio-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #222222 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mypay-radio-label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    cursor: pointer !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #222222 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-weight: normal !important;
+}
+
+.mypay-radio-label input[type="radio"] {
+    margin: 0 !important;
+    cursor: pointer !important;
+    width: 14px !important;
+    height: 14px !important;
+    vertical-align: middle !important;
+}
+
+/* Card Bottom Action Bar */
+.mypay-card-footer {
+    background: #0073B5 !important;
+    height: 44px !important;
+    padding: 0 15px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 0 5px 5px !important;
+}
+
+.btn-mypay-action {
+    background: #005b8a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border-radius: 3px !important;
+    padding: 0 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    line-height: 26px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.btn-mypay-action:hover {
+    background: #00496e !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.btn-mypay-action i {
+    font-size: 12px !important;
+    vertical-align: middle !important;
 }
 </style>
-<?php 
-	$sql=mysql_query("select * from bq_bankname where bank_id='".$_GET['bank_id']."'");
-	$row=mysql_fetch_array($sql);
-?>			
-	<div id="addcustomer" class="frmCentr divBrd frmBgClr" style="width:468px;">
-	<h3 id="Userhd"><b>Bank Master(BQT)</b></h3>
-		<form id="taxTypes" name="taxTypes" enctype="multipart/form-data"  action="<?php echo $home_path;?>/action/update_bankname_master.php" method="post" class="" style="">
-			<input type="hidden" name="bank_id" id="bank_id" value="<?php echo $_GET['bank_id'];?>"/>
-		<div>
-			<table cellpadding="0" cellspacing="0" class="table" border="0" style="margin:4px 0 0 0;" >
-			<tbody>
-					<tr>
-						<td width="" valign="top"><label>Bank Code <em>*</em></label></td>
-						<td valign="top"><input type="text" name="bank_code" id="bank_code" data-validation="required" class="textbox input validate[required] codesUPPERCase tobCode" value="<?php echo $row['bank_code'];?>" readonly /></td>
-					</tr>
-					<tr>
-						<td width="" valign="top"><label>Bank Name<em>*</em></label></td>
-						<td valign="top"><input type="text" name="bank_name" id="bank_name" data-validation="required" class="textbox input validate[required] fstChUPPRCase" value="<?php echo $row['bank_name'];?>"/></td>
-						
-					</tr>
-					<tr>
-						<td><label>Status </label></td>
-						<td width="" valign="top"><input type="radio" name="status" id="status_active" value="1"<?php echo ($row['status']=='1')?'checked':''; ?>   class="textbox fstChUPPRCase" style="width:10px;margin:3px 0 0 0;" checked /><span class="spanClr">Active</span>
-						<input name="status" id="status_passive" type="radio" value="0"<?php echo ($row['status']=='0')?'checked':''; ?>  style="width:10px;margin:3px 0 0 0;float:left;"/><span class="spanClr">Passive</span></td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
-				
-	<table style="border-left:1px solid #ddd;" class="table">
-	<tr>
-		<td>	
-	<div style="margin:0 0 0 0px;">
-		<button type="submit" id="add" class="buttExam_sngl bnkSbt frstChr" style="" onclick="return checkUnitMasterfdf();"><img src="<?php echo $home_path; ?>/images/saves.png" class="sbtBtnImg frstChr"/>&nbsp;&nbsp;<span class="btnUndLine">S</span>ubmit</button>
-		
-		<a href="view_bank_name.php"><button type="button" id="update" class="buttExam_sngl bnkSbt" onclick="return checkPropertyMasterq();"><img src="<?php echo $home_path; ?>/images/audit.png" class="sbtBtnImg "/>&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
-			
-			<button type="reset" id="rest" class="buttExam_sngl" style="" onclick="cancel_ed()"><img src="<?php echo $home_path; ?>/images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
-			
-			<a href="<?php echo $home_path; ?>/dashboard.php"><button type="button" id="exit" name="exit" class="buttExam_sngl" style="" ><img src="<?php echo $home_path; ?>/images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>	
-	</div>
-	</td>
-	</tr>
-	</table>
-	</form>	
-	</div>
-	</div>
-	<?php include("../../footer.php"); ?>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    if(typeof jQuery.fn.validationEngine !== 'undefined') {
+        $("#bankForm").validationEngine();
+    }
+    $("#msgFo").fadeOut(5000);
+    $("#bank_name").focus();
+    
+    if(typeof shortcut !== 'undefined') {
+        shortcut.add("Ctrl+S", function() { 
+            $('#bankForm').attr('action', '<?php echo $home_path;?>/action/update_bankname_master.php');  
+            $('#bankForm').submit(); 
+        }); 
+
+        shortcut.add("Ctrl+V", function() { 
+            window.location.href = "view_bank_name.php";
+        });
+
+        shortcut.add("Ctrl+C", function() { 
+            clearForm();
+        });
+
+        shortcut.add("Ctrl+E", function() { 
+            window.location.href = "<?php echo $home_path; ?>/dashboard.php";
+        });
+    }
+});
+
+function clearForm() {
+    $('#bank_name').val('');
+    $('#status_active').prop('checked', true);
+    $('#bank_name').focus();
+}
+</script>
+
+<body class="bgBODY">
+
+<div class="mypay-container">
+
+    <?php if(isset($_GET['msg'])){ ?>
+        <p style="text-align:center;margin:10px 0;">
+            <label id="msgFo" style="color:#7B0E0E;font-weight:bold;font-size:13px;"><?php echo htmlspecialchars($_GET['msg']); ?></label>
+        </p>
+    <?php } ?>
+
+    <!-- Update Form Card Matching Standard Design -->
+    <div class="mypay-card">
+        <div class="mypay-card-header">
+            UPDATE BANK MASTER(BQT)
+        </div>
+
+        <form id="bankForm" name="bankForm" enctype="multipart/form-data" action="<?php echo $home_path;?>/action/update_bankname_master.php" method="post">
+            <input type="hidden" name="bank_id" id="bank_id" value="<?php echo htmlspecialchars($bank_id);?>"/>
+            
+            <div class="mypay-card-body">
+                <table class="mypay-form-table" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td class="mypay-label-cell">
+                                <label for="bank_code">Bank Code<span class="req-star">*</span> :</label>
+                            </td>
+                            <td class="mypay-input-cell">
+                                <input type="text" name="bank_code" id="bank_code" class="mypay-input" style="text-transform:uppercase;" value="<?php echo htmlspecialchars($row['bank_code']);?>" readonly />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mypay-label-cell">
+                                <label for="bank_name">Bank Name<span class="req-star">*</span> :</label>
+                            </td>
+                            <td class="mypay-input-cell">
+                                <input type="text" name="bank_name" id="bank_name" data-validation-engine="validate[required]" class="mypay-input validate[required]" value="<?php echo htmlspecialchars($row['bank_name']);?>" required />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="mypay-label-cell">
+                                <label>Status :</label>
+                            </td>
+                            <td class="mypay-input-cell">
+                                <div class="mypay-radio-group">
+                                    <label class="mypay-radio-label" for="status_active">
+                                        <input type="radio" name="status" id="status_active" value="1" <?php echo ($row['status'] == '1') ? 'checked' : ''; ?> /> Active
+                                    </label>
+                                    <label class="mypay-radio-label" for="status_passive">
+                                        <input type="radio" name="status" id="status_passive" value="0" <?php echo ($row['status'] == '0') ? 'checked' : ''; ?> /> Passive
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Card Bottom Action Bar -->
+            <div class="mypay-card-footer">
+                <button type="submit" id="add" class="btn-mypay-action" title="Submit (Ctrl+S)">
+                    <i class="fa fa-floppy-o"></i> Submit
+                </button>
+                <a href="view_bank_name.php" class="btn-mypay-action" title="View (Ctrl+V)">
+                    <i class="fa fa-eye"></i> View
+                </a>
+                <button type="button" id="clearBtn" class="btn-mypay-action" onclick="clearForm();" title="Clear (Ctrl+C)">
+                    <i class="fa fa-paint-brush" style="color:#f39c12;"></i> Clear
+                </button>
+                <a href="<?php echo $home_path; ?>/dashboard.php" class="btn-mypay-action" title="Exit (Ctrl+E)">
+                    <i class="fa fa-times" style="color:#e74c3c;"></i> Exit
+                </a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<?php include("../../footer.php"); ?>
 </body>
 </html>

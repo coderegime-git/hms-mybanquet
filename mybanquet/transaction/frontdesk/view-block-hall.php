@@ -33,7 +33,7 @@ if(isset($_POST['act'])){
 <script type="text/javascript" src="<?php echo $home_path; ?>/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+	$("#msgFo").fadeOut(5000);
 	$("[rel=tooltip]").tooltip();
 	$("[rel=popover]").popover({trigger:'hover',html:true});
 				  
@@ -67,81 +67,30 @@ $(':checkbox').click(function(e){
 			}
 			
 		}
-		/* if($(this).attr('id')=="cancelApprove"){
-			if($("input:checked").length>1){ alert("Please select only one row"); return }
-			rk=confirm("Do you want to Cancel");
-			if(rk==true){
-				$('#act').val("cancel");
-				$('#thisform').submit();
-			}
-		} */
 		return;
 	});
 	
-	
 });
-					function setPrint(id,val)
-						{	
-							if($("#"+id).is(":checked"))
-							{  
-								$('.ckPrint').each(function(){
-									a_id=this.id.split('_');
-									if($(this).attr('id') != id)
-									{
-										$(this).attr("disabled",true);
-										$("#ed"+a_id[1]).attr("style","display:none");
-									}
-								});
-							}
-							else
-							{
-								$('.ckPrint').each(function(){
-									a_id=this.id.split('_');
-									$(this).removeAttr("disabled");
-									$("#ed"+a_id[1]).attr("style","display:inline");
-								});
-							}
-							
-							if($('#st_'+val).val() == 1)
-								{
-									/* $("#cancelApprove").attr('style','display:block;margin-left:70px;margin-top:-26px;');  */
-									$("#approve").attr('style','display:none');
-									$(".appV").hide();
-								}else{
-									$("#approve").attr('style','display:block;margin-left:70px;margin-top:-26px;'); 
-									$(".appV").show();
-									/* $("#approve").attr('style','display:block'); */
-									/* $("#cancelApprove").attr('style','display:none');
-									$(".canappV").hide(); */
-								}
-								
-						}
-						
-						function popup()
-						{
-							id=$('.ckPrint:checkbox:checked').val();
-							newwindow=window.open('<?php echo $home_path;?>/operations/vendorAllocationEmail.php?uid='+id,'mywin','left=220,width=500,height=500,');
-							newwindow.focus();
-						}
-						function popupDC()
-						{
-							id=$('.ckPrint:checkbox:checked').val();
-							newwindow=window.open('<?php echo $home_path;?>/operations/sendToVendorAPProve.php?uid='+id,'_blank');
-							newwindow.focus(); 
-						}
-	
+
+shortcut.add("Ctrl+A",function() { 
+	window.location.href = "block_halls.php";
+}); 
 </script>
 
 <link rel="stylesheet" href="<?php echo $home_path;?>/tinybox2/style.css" />
 <script type="text/javascript" src="<?php echo $home_path;?>/tinybox2/tinybox.js"></script>
 
-<!--<form action="<?php /* echo $_SERVER['PHP_SELF']; */ ?>" method="post" id="thisform">-->
 <form action="<?php echo $home_path;?>/action/update-allowance-cancel.php" method="post" id="thisform">
 
 <input type="hidden" id="act" name="act" value="" />
 <body class="bgBODY">
+<?php if(isset($_GET['msg'])){ ?>
+	<p style="text-align:center;">
+		<label id="msgFo" class="msgNotify"><?php echo $_GET['msg']; ?></label>
+	</p>
+<?php } ?>
 	<div style="margin:10px 0 10px 0;float:right;">
-		<a class="button_example" href="block_halls.php">Add Block Halls</a>
+		<a href="block_halls.php"><button type="button" id="add" class="button_example bnkSbt" style="margin:4px 0 -8px 0px;"><img src="../../images/add-contact-iconn.png" class="sbtBtnImg"/>&nbsp;&nbsp;<span class="btnUndLine">A</span>dd Block Halls</button></a>
 	</div>
 <div class="about">
 	<div class="container" style="width:1000px;/* margin:0; */padding:0;">

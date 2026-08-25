@@ -1529,13 +1529,13 @@ for($cc=1;$cc<30;$cc++){
 	<div class="col-md-12  responsive nowrap " style=" padding-left:3px;">
 		<button type="submit" id="send" name="send" class="btn btn-primary btn-sm btn-responsive" style="" onclick="return checkformSubmit();"><img src="../../images/saves.png" class="sbtBtnImg frstChr"/>&nbsp;&nbsp;<span class="btnUndLine">S</span>ubmit</button>
 		
-		<a href="view-fb-creation.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val="><button type="button" id="update" class="btn btn-primary btn-sm btn-responsive" onclick="return checkPropertyMasterq();"><img src="../../images/audit.png" class="sbtBtnImg "/>&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
+		<a href="view-amendments.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val="><button type="button" id="update" class="btn btn-primary btn-sm btn-responsive" onclick="return checkPropertyMasterq();"><img src="../../images/audit.png" class="sbtBtnImg "/>&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
 		
 		<!--<a href="#" target="_blank"><button type="button" id="hallsts" class="butExample" style="" onclick="hall_sts()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">U</span>pdate</button></a>-->
 		
 			<button type="reset" id="rest" class="btn btn-primary btn-sm btn-responsive" style="" onclick="cancel_ed()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
 			
-		<a href="<?php echo $home_path; ?>/dashboard.php"><button type="button" id="exit" name="exit" class="btn btn-primary btn-sm btn-responsive" style="" ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
+		<a href="<?php echo $home_path; ?>/transaction/frontdesk/view-amendments.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val="><button type="button" id="exit" name="exit" class="btn btn-primary btn-sm btn-responsive" style="" ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
 		
 	</div>
 	</td>

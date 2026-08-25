@@ -51,7 +51,7 @@ $(document).ready(function(){
 });
 
  shortcut.add("Ctrl+S",function() { 
-	 $('#hotelDefi').attr('action', '../../action/add_fotax_structure.php');  
+	 $('#hotelDefi').attr('action', '../../action/add_tax_struct.php');  
 	 $('#hotelDefi').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 

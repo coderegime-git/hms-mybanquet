@@ -448,10 +448,10 @@ $UsQLk =mysql_query($sqlLk);
 if($UsQuery){
 $link = "<script>window.open('$home_path/transaction/view/print-fp-creation.php?fpNum=$fpNum&amend=$fpAme', '_blank','width=1000,height=700')</script>";
 echo $link;
-$link1 = "<script>window.open('$home_path/transaction/frontdesk/view-fb-creation.php?fromdate=$curDate&todate=$curDate&val=', '_self','')</script>";
+$link1 = "<script>window.open('$home_path/transaction/frontdesk/view-amendments.php?fromdate=$curDate&todate=$curDate&val=', '_self','')</script>";
 echo $link1;
 } else {
-header('location:'.$home_path.'/transaction/frontdesk/view-fpvoucher.php?msg=Error in insertion');
+header('location:'.$home_path.'/transaction/frontdesk/view-amendments.php?msg=Error in insertion');
 }
 
 

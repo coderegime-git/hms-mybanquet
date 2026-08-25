@@ -12,7 +12,7 @@ include("../../header.php");
      $("").css('outline','yellow solid thin');
 });
  shortcut.add("Ctrl+A",function() { 
- 	 window.location.href = "market-segment-master.php";
+ 	 window.location.href = "tax_master_bqt.php";
 }); 
 
 </script>

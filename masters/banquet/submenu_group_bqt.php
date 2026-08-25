@@ -40,11 +40,11 @@ $(document).ready(function(){
 });
 
  shortcut.add("Ctrl+S",function() { 
-	 $('#taxTypes').attr('action', '../../action/add_itemcategory_bqt.php');  
+	 $('#taxTypes').attr('action', '../../action/add_subMnuGrpCode_bqt.php');  
 	 $('#taxTypes').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view_itemcategory_bqt.php";
+	window.location.href = "view_submenuBqt_bqt.php";
 });
  shortcut.add("Ctrl+C",function() { 
   $('#taxTypes').find("input[type=text], textarea").val("");

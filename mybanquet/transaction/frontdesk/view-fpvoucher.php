@@ -307,17 +307,17 @@ if(ratetaxincl.checked) {
 });
 
  shortcut.add("Ctrl+S",function() { 
-	 $('#hotelDefi').attr('action', '../../action/add_room_booking.php');  
+	 $('#hotelDefi').attr('action', '<?php echo $home_path;?>/action/add_voucher_detail.php');  
 	 $('#hotelDefi').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view_hotel_definition.php";
+	window.location.href = "view-fpvoucher-details.php";
 });
  shortcut.add("Ctrl+C",function() { 
   $('#hotelDefi').find("input[type=text], textarea").val("");
 });
  shortcut.add("Ctrl+E",function() { 
- window.location.href = "../../dashboard.php";
+ window.location.href = "view-fpvoucher-details.php";
 });
 
 function selVoucherDet(){
@@ -778,7 +778,7 @@ for($cc=1;$cc<14;$cc++){
 		
 			<button type="reset" id="rest" class="butExample" style="" onclick="cancel_ed()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
 			
-		<a href="<?php echo $home_path; ?>/dashboard.php"><button type="button" id="exit" name="exit" class="butExample" style="" ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
+		<a href="<?php echo $home_path; ?>/transaction/frontdesk/view-fpvoucher-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val="><button type="button" id="exit" name="exit" class="butExample" style="" ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
 	</div>
 	</td>
 	</tr>

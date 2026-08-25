@@ -62,10 +62,10 @@ for($cc=0;$cc<count($itemCd);$cc++){
 }
 
 if($UsQuery){
-		header('location:'.$home_path.'/masters/banquet/item_master_bqt.php?msg=Data saved Successfully!');
+		header('location:'.$home_path.'/masters/banquet/view_itemmaster_bqt.php?msg=Data saved Successfully!');
 	}
 	else{
-		header('location:'.$home_path.'/masters/banquet/item_master_bqt.php?msg=Error in insertion');
+		header('location:'.$home_path.'/masters/banquet/view_itemmaster_bqt.php?msg=Error in insertion');
 	}
 	
 

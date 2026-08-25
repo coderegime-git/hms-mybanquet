@@ -22,9 +22,9 @@ die(); */
 $UsQuery =mysql_query($sql);
 
 if($UsQuery){
-header('location:'.$home_path.'/masters/banquet/venue_master_bqt.php?msg=Data saved successfully!');
+header('location:'.$home_path.'/masters/banquet/view_venue_master.php?msg=Data saved successfully!');
 }else {
-header('location:'.$home_path.'/masters/banquet/venue_master_bqt.php?msg=Error in insertion');
+header('location:'.$home_path.'/masters/banquet/view_venue_master.php?msg=Error in insertion');
 }
 
 

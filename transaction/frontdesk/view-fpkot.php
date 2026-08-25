@@ -3,6 +3,10 @@ ob_start();
 error_reporting(0);
 include("../../config.php");
 include("../../header.php");
+
+$sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
+$rowAC=mysql_fetch_array($sqlAC);
+$adtCurDt=trim($rowAC['cur_date']);
 ?>
 <script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
 <link rel="stylesheet" href="<?php echo $home_path;?>/date-picker/jquery-ui.css">
@@ -25,9 +29,14 @@ include("../../header.php");
 		dateFormat:"dd/mm/yy"
 	});
 	
+	$("#msgFo").fadeOut(5000);
 	
 	jQuery("#roommaster").validationEngine();
 	});
+	
+shortcut.add("Ctrl+A",function() { 
+	window.location.href = "kot-bill.php";
+}); 
 	
 function clkSubmit() {
 fromdate=$('#from_date').val();
@@ -85,16 +94,16 @@ check.png
 
 <td><label style="width:80px;"><b>From :</b></label></td>
 <td>
-	<input name="from_date" style="width:100px;margin-bottom:0px;text-align:center;" type="text" class="textbox datepicker" id="from_date"   value="<?php if(isset($_GET['todate'])){ echo $_GET['fromdate'];}?>" onChange="showsales()" placeholder="From Date"/>
+	<input name="from_date" style="width:100px;margin-bottom:0px;text-align:center;" type="text" class="textbox datepicker" id="from_date" value="<?php if(isset($_GET['fromdate'])){ echo $_GET['fromdate'];}else{ echo $adtCurDt; }?>" onChange="showsales()" placeholder="From Date"/>
 </td>
 <td><label style="width:70px;"><b>To :</b></label></td>
 <td>
-	<input name="to_date" style="width:100px;margin:0px 10px 0 0;text-align:center;" type="text" class="textbox datepicker1" id="to_date"  value="<?php if(isset($_GET['todate'])){ echo $_GET['todate'];}?>" onChange="showsales()" placeholder="To Date"/>
+	<input name="to_date" style="width:100px;margin:0px 10px 0 0;text-align:center;" type="text" class="textbox datepicker1" id="to_date" value="<?php if(isset($_GET['todate'])){ echo $_GET['todate'];}else{ echo $adtCurDt; }?>" onChange="showsales()" placeholder="To Date"/>
 </td>
 <td style="width:534px;">
 	<input type="text" id="searchTxt" name="searchTxt" placeholder="Enter Item name / FP No / Booking No" style="margin-left: 30px;width:230px;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius:10px;border:1px solid #0B4F8C;height:32px;" value="<?php if(isset($_GET['val'])) {echo $_GET['val'];}else{echo '';}?>" onclick="srcSub();" />
 
-	<input name="submt" style="margin:0 0 0 10px;" type="button" id="submt"  class="btnH" value="Display" onClick="clkSubmit()" />
+	<input name="submt" style="margin:0 0 0 10px;" type="button" id="submt" class="btnH" value="Display" onClick="clkSubmit()" />
 </td>
 <td>
 <a href="kot-bill.php"><button type="button" id="add" class="button_example bnkSbt" onclick="return checkUnitMaster();" style="margin:4px 0 -8px 0px;"><img src="../../images/add-contact-iconn.png" class="sbtBtnImg"/>&nbsp;&nbsp;<span class="btnUndLine">A</span>dd KOT</button></a>
@@ -102,6 +111,12 @@ check.png
 </tr>
 </table>
 </div>
+
+<?php if(isset($_GET['msg'])){ ?>
+<p style="text-align:center;">
+	<label id="msgFo" class="msgNotify"><?php echo $_GET['msg']; ?></label>
+</p>
+<?php } ?>
  
  
  

@@ -54,26 +54,26 @@ $fromdate=$dte[0].'/'.$dte[1].'/'.$dte[2];
              <li><a href='#' style="cursor:pointer;" ><span>Property Definition</span></a></li>
 			<?php  }  ?>
 			<?php if(in_array('bq_ma',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/market-segment-master.php' ><span>Market Segment</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_market_segment.php' ><span>Market Segment</span></a></li>
 			   <?php } ?>
 			    <?php if(in_array('bq_bs',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/business-source-master.php' ><span>Bussines Source</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_business_source.php' ><span>Bussines Source</span></a></li>
 			   <?php } ?>
 			   <?php if(in_array('bq_dp',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/departments-bqt.php' ><span>Departments</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_department_bqt.php' ><span>Departments</span></a></li>
 			   <?php } ?>
 			   <?php /* if(in_array('comp_mast',$menuVals) || $_SESSION['user'] == 'admin') { */ ?>
           <!-- <li class='last'><a href='<?php /* echo $home_path; */ ?>/masters/banquet/company_master_bqt.php' ><span>Company Master</span></a></li>-->
 			   <?php /* } */ ?>
 			   <?php if(in_array('bq_pd',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/paymode_bqt.php' ><span>Paymode</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_paymode.php' ><span>Paymode</span></a></li>
 			   <?php } ?>
 			 
 			   <?php if(in_array('bq_bl',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/billing_instruction_bqt.php' ><span>Billing Instruction</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_bill_inst.php' ><span>Billing Instruction</span></a></li>
 			   <?php } ?>
 			   <?php if(in_array('bq_fn',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/function_master_bqt.php' ><span>Function Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_func_mast.php' ><span>Function Master</span></a></li>
 			   <?php } ?>
 			  
                             </ul>
@@ -84,25 +84,25 @@ $fromdate=$dte[0].'/'.$dte[1].'/'.$dte[2];
 			    
 			    			   
 			   <?php if(in_array('bq_ss',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/session_master_bqt.php' ><span>Session Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_session_master.php' ><span>Session Master</span></a></li>
 			   <?php } ?>
 			    <?php if(in_array('bq_lm',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/location_master_bqt.php' ><span>Location Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_location.php' ><span>Location Master</span></a></li>
 			   <?php } ?>
 			   <?php if(in_array('bq_sm',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/seating_master_bqt.php' ><span>Seating Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_seating.php' ><span>Seating Master</span></a></li>
 			   <?php } ?>
 			    <?php if(in_array('bq_vm',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/venue_master_bqt.php' ><span>Venue Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_venue_master.php' ><span>Venue Master</span></a></li>
 			   <?php } ?>
 			    <?php if(in_array('bq_bk',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/bank_namemaster.php' ><span>Bank Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_bank_name.php' ><span>Bank Master</span></a></li>
 			   <?php } ?>
 			    <?php if(in_array('bq_cp',$menuVals) || $_SESSION['user'] == 'admin') { ?>
               <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/common_parameters_bqt.php' ><span>Common Parameters</span></a></li>
 			   <?php } ?>
 			   <?php if(in_array('bq_pr',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/paymode_restriction.php' ><span>Paymode Restriction</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_paymode_restriction.php' ><span>Paymode Restriction</span></a></li>
 			   <?php } ?>
                             </ul>
                         </li>
@@ -112,24 +112,24 @@ $fromdate=$dte[0].'/'.$dte[1].'/'.$dte[2];
               <li class='last'><a href='#' ><span>Tax</span></a>
 			   <?php } ?>                 
 			   <?php if(in_array('bq_tm',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/tax_master_bqt.php' ><span>Tax Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_tax_mast.php' ><span>Tax Master</span></a></li>
 			   <?php } ?>
 			    <?php if(in_array('bq_td',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/tax_details_bqt.php' ><span>Tax Details</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_tax_det.php' ><span>Tax Details</span></a></li>
 			   <?php } ?>
 			     <?php if(in_array('bq_tt',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/tax_structure_bqt.php' ><span>Tax Structure</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view-fotax-structure.php' ><span>Tax Structure</span></a></li>
 			   <?php } ?>
 				   
 			     <?php if(in_array('bq_me',$menuVals) || $_SESSION['user'] == 'admin') { ?>
               <li class='last'><a href='#' ><span>Menu Creation</span></a>
 			   <?php } ?>
 			   <?php if(in_array('bq_ic',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/item_category_bqt.php' ><span>Item Category</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_categ_bqt.php' ><span>Item Category</span></a></li>
 			   <?php } ?>
 			                    
 			    <?php if(in_array('bq_is',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/item_subcategory_bqt.php' ><span>Item Sub Category</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_subcateg_bqt.php' ><span>Item Sub Category</span></a></li>
                             </ul>
                         </li>
                         <li><a href="#">Category</a>
@@ -137,21 +137,21 @@ $fromdate=$dte[0].'/'.$dte[1].'/'.$dte[2];
               
 			   <?php } ?>
 			 <?php if(in_array('bq_mg',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/menu_group_bqt.php' ><span>Menu Group</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_menugrp_bqt.php' ><span>Menu Group</span></a></li>
 			   <?php } ?>
  <?php if(in_array('bq_sm_g',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/submenu_group_bqt.php' ><span>Sub Menu Group</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_submenuBqt_bqt.php' ><span>Sub Menu Group</span></a></li>
 			   <?php } ?>
  <?php if(in_array('bq_mn',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/menu_master_bqt.php' ><span>Menu Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view-menu-master.php' ><span>Menu Master</span></a></li>
 			   <?php } ?>
  <?php if(in_array('bq_ims',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/item_master_bqt.php' ><span>Item Master</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_itemmaster_bqt.php' ><span>Item Master</span></a></li>
 			   <?php } ?>
 			   			   
 			  	
 <?php if(in_array('bq_vs_v',$menuVals) || $_SESSION['user'] == 'admin') { ?>
-              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/valid_settlement_bqt.php' ><span>Valid Settlement</span></a></li>
+              <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/view_valid_settlement_bqt.php' ><span>Valid Settlement</span></a></li>
 			   <?php } ?>
 <?php if(in_array('bq_abc',$menuVals) || $_SESSION['user'] == 'admin') { ?>
               <li class='last'><a href='<?php echo $home_path; ?>/masters/banquet/abcdates_bqt.php' ><span>ABC Dates</span></a></li>
@@ -172,7 +172,7 @@ $fromdate=$dte[0].'/'.$dte[1].'/'.$dte[2];
                         <?php
 	  if(in_array('bq_hb',$menuVals) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'mani')
 		{ ?>
-         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/hall-booking.php' >Hall Booking</a></li>
+         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/view-hall-booking.php?fromdate=<?php echo $adtCurDt; ?>&todate=<?php echo $adtCurDt; ?>&val=' >Hall Booking</a></li>
 	<?php } ?>
 	
 	<?php
@@ -205,22 +205,22 @@ $fromdate=$dte[0].'/'.$dte[1].'/'.$dte[2];
 	<?php
 	  if(in_array('bq_en',$menuVals) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'mani')
 		{ ?>
-         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/amendments.php' >Amendments</a></li>
+         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/view-amendments.php?fromdate=<?php echo $adtCurDt; ?>&todate=<?php echo $adtCurDt; ?>&val=' >Amendments</a></li>
 	<?php } ?>
 	<?php
 	  if(in_array('bq_kot',$menuVals) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'mani')
 		{ ?>
-         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/kot-bill.php' >KOT</a></li>
+         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/view-fpkot.php?fromdate=<?php echo $adtCurDt; ?>&todate=<?php echo $adtCurDt; ?>&val=' >KOT</a></li>
 	<?php } ?>
 	<?php
 	  if(in_array('bq_vr',$menuVals) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'mani')
 		{ ?>
-         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/view-fpvoucher.php' >Voucher</a></li>
+         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/view-fpvoucher-details.php?fromdate=<?php echo $adtCurDt; ?>&todate=<?php echo $adtCurDt; ?>&val=' >Voucher</a></li>
 	<?php } ?>
 	<?php
 	  if(in_array('bq_blg',$menuVals) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'mani')
 		{ ?>
-         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/bqt_billing.php?vucNo=' >Billings</a></li>
+         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/view-bqtbill-details.php?fromdate=<?php echo $adtCurDt; ?>&todate=<?php echo $adtCurDt; ?>&val=' >Billings</a></li>
 	<?php } ?>
 	<?php
 	  if(in_array('bq_stt',$menuVals) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'mani')
@@ -243,7 +243,7 @@ $fromdate=$dte[0].'/'.$dte[1].'/'.$dte[2];
 	<?php
 	  if(in_array('bq_hbl',$menuVals) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'mani')
 		{ ?>
-         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/block_halls.php' >Hall Block</a></li>
+         <li class='<?php echo $qt; ?>'><a href='<?php echo $home_path; ?>/transaction/frontdesk/view-block-hall.php' >Hall Block</a></li>
 	<?php } ?>
 	<?php
 	  /*if(in_array('bq_acr',$menuVals) || $_SESSION['user'] == 'admin' || $_SESSION['user'] == 'mani')

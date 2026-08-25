@@ -25,9 +25,9 @@ $UsQuery =mysql_query($sql);
 }
 
 if($UsQuery){
-header('location:'.$home_path.'/masters/banquet/tax_details_bqt.php?msg=Data saved successfully!');
+header('location:'.$home_path.'/masters/banquet/view_tax_det.php?msg=Data saved successfully!');
 }else {
-header('location:'.$home_path.'/masters/banquet/tax_details_bqt.php?msg=Error in insertion');
+header('location:'.$home_path.'/masters/banquet/view_tax_det.php?msg=Error in insertion');
 }
 
 

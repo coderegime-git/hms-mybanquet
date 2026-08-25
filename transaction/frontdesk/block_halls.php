@@ -59,17 +59,17 @@ $(document).ready(function(){
 });
 
  shortcut.add("Ctrl+S",function() { 
-	 $('#taxTypes').attr('action', '../../action/add_tax_type.php');  
+	 $('#taxTypes').attr('action', '<?php echo $home_path;?>/action/add_block_halls.php');  
 	 $('#taxTypes').submit(); 
 }); 
  shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view_define_tax.php";
+	window.location.href = "view-block-hall.php";
 });
  shortcut.add("Ctrl+C",function() { 
   $('#taxTypes').find("input[type=text], textarea").val("");
 });
  shortcut.add("Ctrl+E",function() { 
- window.location.href = "../../dashboard.php";
+ window.location.href = "view-block-hall.php";
 });
 
 function checkTaxCode(){
@@ -438,7 +438,7 @@ $curTime=date('H:i:s');
 			<button type="reset" id="rest" class="btn btn-primary btn-sm btn-responsive" style="" onClick="cancel_ed()"><img src="<?php echo $home_path; ?>/images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
 			
 			<!--<a href="<?php echo $home_path; ?>/dashboard.php"><button type="button" id="exit" name="exit" class="butExample" style="" ><img src="<?php echo $home_path; ?>/images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>-->
-			<a href="<?php echo $home_path; ?>/dashboard.php"><button type="button" id="exit" name="exit" class="btn btn-primary btn-sm btn-responsive" onClick="self.close();"><img src="<?php echo $home_path; ?>/images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
+			<a href="view-block-hall.php"><button type="button" id="exit" name="exit" class="btn btn-primary btn-sm btn-responsive"><img src="<?php echo $home_path; ?>/images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
 	</div>
 	<!--</td>
 	</tr>
