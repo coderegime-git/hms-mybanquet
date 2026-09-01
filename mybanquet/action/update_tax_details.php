@@ -1,34 +1,30 @@
 <?php  
+ob_start();
 
 include("../config.php");
-$added_on=date('Y-m-d H:i:s');
-$added_by=$_SESSION['user'];
+$added_on = date('Y-m-d H:i:s');
+$added_by = $_SESSION['user'];
 
-$sqll="UPDATE ar_receipts SET ";
-$sqll=$sqll."rcpt_date='".$_POST['rcpt_date']."',";
-$sqll=$sqll."rcpt_no='".$_POST['rcpt_no']."',";
-$sqll=$sqll."vendor_code='".$_POST['vendor_code']."',";
-$sqll=$sqll."amount='".$_POST['amount']."',";
-$sqll=$sqll."pay_mode='".$_POST['pay_mode']."',";
-$sqll=$sqll."cheque_num='".$_POST['cheque_num']."',";
-$sqll=$sqll."cheque_date='".$_POST['cheque_date']."',";
-$sqll=$sqll."remarks='".$_POST['remarks']."',";
-$sqll=$sqll."status='".$_POST['status']."',";
-$sqll=$sqll."added_by='".$added_by."',";
-$sqll=$sqll."added_on='".$added_on."'";
-$sqll=$sqll." where arreceipt_id='".$_POST['arreceipt_id']."'";
+$taxdet_id = isset($_POST['taxdet_id']) ? mysql_real_escape_string($_POST['taxdet_id']) : '1';
+$hall_tax = isset($_POST['hall_tax']) ? mysql_real_escape_string($_POST['hall_tax']) : '';
+$food_tax = isset($_POST['food_tax']) ? mysql_real_escape_string($_POST['food_tax']) : '';
+$adv_tax = isset($_POST['adv_tax']) ? mysql_real_escape_string($_POST['adv_tax']) : '';
 
-/*  echo $sqll;
-die();  */ 
+$sqll = "UPDATE bq_taxdetail SET ";
+$sqll .= "hall_tax='" . $hall_tax . "',";
+$sqll .= "food_tax='" . $food_tax . "',";
+$sqll .= "adv_tax='" . $adv_tax . "',";
+$sqll .= "added_by='" . $added_by . "',";
+$sqll .= "added_on='" . $added_on . "'";
+$sqll .= " where taxdet_id='" . $taxdet_id . "'";
 
-$resultt=mysql_query($sqll);
+$resultt = mysql_query($sqll);
 
-if($resultt){
-$msg='Data modified successfully!';
-header('location:'.$home_path.'/transaction/frontdesk/view_payment_rcvbl.php?msg='.$msg);
-}else{
-$msg='Error in updation';
-header('location:'.$home_path.'/transaction/frontdesk/view_payment_rcvbl.php?msg='.$msg);	
+if ($resultt) {
+    $msg = 'Data modified successfully!';
+    header('location:' . $home_path . '/masters/banquet/view_tax_det.php?msg=' . $msg);
+} else {
+    $msg = 'Error in updation';
+    header('location:' . $home_path . '/masters/banquet/view_tax_det.php?msg=' . $msg);    
 }
-
 ?>

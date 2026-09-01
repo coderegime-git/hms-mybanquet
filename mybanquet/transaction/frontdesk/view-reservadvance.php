@@ -1,260 +1,244 @@
 <?php
 ob_start();
+error_reporting(0);
 include("../../config.php");
 include("../../header.php");
-
-if(isset($_POST['act'])){
-	
- foreach($_POST['chk'] as $chk){ 
-	$sql="update room_advance set bill_status='2' where roomadv_id=".$chk;
-	mysql_query($sql);
-	$message="Room Advance Cancelled";
-	
-	
-	$sqlE="update guest_trans set";
-	$sqlE=$sqlE."bill_status='3',";
-	$sqlE=$sqlE." where reg_num='".$_GET['reg']."' AND receipt_no='".$_GET['rcpt']."'";
-
-	$resultt=mysql_query($sqlE);
-}  
-			
-
-
-}
 ?>
-<link rel="stylesheet" href="<?php echo $home_path; ?>/css/dataTables.bootstrap.min.css">
-<script type="text/javascript" src="<?php echo $home_path; ?>/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-	
-	$("[rel=tooltip]").tooltip();
-	$("[rel=popover]").popover({trigger:'hover',html:true});
-				  
-$(':checkbox').click(function(e){
-	if($("input:checked").length>0){
-	   $('#print').show();
-	   $('#email').show();
-	   $('#approve').show();
-	}else{
-	   $('#print').hide();
-	   $('#email').hide();
-	   $('#approve').hide();
-	   $('#cancelApprove').hide();
-	 }
-   
-});			  
 
-	$('.btnn').click(function (e) {
-		if($(this).attr('id')=="approve"){
-			if($("input:checked").length>1){ alert("Please select only one row"); return }
-			r=confirm("Do you want to cancel Reserv Advance");
-			if(r==true){
-				rg=$('#regN').val();
-				rmId=$('#chAdId').val();
-				rt=$('#vucher').val();
-			
-				$('#act').val("approve");
-				
-		document.location.href="../../action/update-reSerVadv-refund.php?reg="+rg+'&rcpt='+rt+'&rmId='+rmId;
-			
-			}
-			
-		}
-	
-		return;
-	});
-	
-	
+<style type="text/css">
+body, body.bgBODY {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mypay-container {
+    width: 98% !important;
+    max-width: 100% !important;
+    margin: 15px auto 40px auto !important;
+    padding: 0 !important;
+}
+
+/* Action Buttons Bar on Top */
+.mypay-actions-bar {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+    flex-wrap: wrap !important;
+}
+
+.btn-mypay-exit {
+    background-color: #005580 !important;
+    color: #ffffff !important;
+    border: 1px solid #004466 !important;
+    border-radius: 3px !important;
+    padding: 4px 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.btn-mypay-exit:hover {
+    background-color: #004466 !important;
+    color: #ffffff !important;
+}
+
+.mypay-icon-exit {
+    color: #f39c12 !important;
+    font-size: 13px !important;
+}
+
+/* Table Wrapper for Horizontal Scroll */
+.mypay-table-wrapper {
+    width: 100% !important;
+    max-height: 560px !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    border: 1px solid #0073B5 !important;
+    background: #ffffff !important;
+}
+
+/* View Data Table */
+.mypay-table {
+    width: 100% !important;
+    min-width: 1200px !important;
+    border-collapse: collapse !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+}
+
+.mypay-table thead tr.banner-row th {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    height: 34px !important;
+    padding: 8px 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: 1px solid #0073B5 !important;
+    vertical-align: middle !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+}
+
+.mypay-table thead tr.header-row th {
+    background-color: #f5f5f5 !important;
+    color: #222222 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 11px !important;
+    text-align: center !important;
+    height: 32px !important;
+    padding: 6px 6px !important;
+    border: 1px solid #e0e0e0 !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    position: sticky !important;
+    top: 34px !important;
+    z-index: 9 !important;
+}
+
+.mypay-table tbody td {
+    padding: 6px 6px !important;
+    border: 1px solid #e0e0e0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    color: #333333 !important;
+    text-align: center !important;
+    background-color: #ffffff !important;
+    height: 30px !important;
+    vertical-align: middle !important;
+}
+
+.mypay-table tbody tr:hover td {
+    background-color: #f8fbfe !important;
+}
+
+.btn-mypay-refund {
+    background-color: #d9534f !important;
+    color: #ffffff !important;
+    border: 1px solid #d43f3a !important;
+    border-radius: 3px !important;
+    padding: 3px 10px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1.3 !important;
+}
+
+.btn-mypay-refund:hover {
+    background-color: #c9302c !important;
+}
+</style>
+
+<script>
+jQuery(document).ready(function(){
+    if(typeof shortcut !== 'undefined') {
+        shortcut.add("Ctrl+E", function() { 
+            window.location.href = "<?php echo $home_path; ?>/dashboard.php";
+        }); 
+    }
 });
-					function setPrint(id,val,c,d)
-						{	
-						$('#chAdId').val(val);
-						$('#regN').val(c);
-						$('#vucher').val(d);
-							if($("#"+id).is(":checked"))
-							{  
-								$('.ckPrint').each(function(){
-									a_id=this.id.split('_');
-									if($(this).attr('id') != id)
-									{
-										$(this).attr("disabled",true);
-										$("#ed"+a_id[1]).attr("style","display:none");
-									}
-								});
-							}
-							else
-							{
-								$('.ckPrint').each(function(){
-									a_id=this.id.split('_');
-									$(this).removeAttr("disabled");
-									$("#ed"+a_id[1]).attr("style","display:inline");
-								});
-							}
-							
-							if($('#st_'+val).val() == 1)
-								{
-									$("#approve").attr('style','display:none');
-									$(".appV").hide();
-								}else{
-									$("#approve").attr('style','display:block;margin-left:70px;margin-top:-26px;'); 
-									$(".appV").show();
-									
-								}
-								
-						}
-						
-						function popup()
-						{
-							id=$('.ckPrint:checkbox:checked').val();
-							newwindow=window.open('<?php echo $home_path;?>/operations/vendorAllocationEmail.php?uid='+id,'mywin','left=220,width=500,height=500,');
-							newwindow.focus();
-						}
-						function popupDC()
-						{
-							id=$('.ckPrint:checkbox:checked').val();
-							newwindow=window.open('<?php echo $home_path;?>/operations/sendToVendorAPProve.php?uid='+id,'_blank');
-							newwindow.focus(); 
-						}
-	
 </script>
-<style>
-   label {width: 205px; padding:0 20px 0 20px; display: inline-block;font-weight: bold;color: #000;font-size:12px; } 
-   
-input[type=text], textarea{
- height:26px;
-}
-.table td {text-align:center;} 
-check.png
 
-.butExample {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    color: #000;
-    font-family: arial,helvetica,sans-serif;
-    font-size: 12px;
-    margin-left: -3px;
-    padding: 4px 66px;
-}
-.fa_pos{
-	position:absolute;
-	bottom:3px;
-	right:8px;
-	opacity:2.0;
-    
-}
-.col-sm-6 {
-    width: 48%;
-}
-.table-striped > tbody > tr:nth-child(even) >td 
-		{
-			background-color:#F9FAFA;
-		}
-		.table-striped > tbody > tr:nth-child(2n+1) >td
-		{
-			background-color:#e6e6ff;
-		}
-		.btns {
-  background-color:#0073b5;
-  border: none;
-  color: white;
-  padding: 4px 10px;
-  font-size: 14px;
-  cursor: pointer;
-  
-}
-
-/* Darker background on mouse-over */
-.btns:hover {
-  background-color: RoyalBlue;
-}
-.well{
-background-color:#FFFFFF;
-}
-</style>	
-<script src="../../js/jquery.js"></script> 
-<script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="../../js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		//alert ("test");
-    $('#adave').DataTable();
-} );
-</script>
-<link rel="stylesheet" href="<?php echo $home_path;?>/tinybox2/style.css" />
-<script type="text/javascript" src="<?php echo $home_path;?>/tinybox2/tinybox.js"></script>
-
-<form action="<?php echo $home_path;?>/action/update-roomadv-approve.php" method="post" id="thisform">
-
-<input type="hidden" id="act" name="act" value="" />
 <body class="bgBODY">
-<div class="container-fluid">
-<div class="well">
-<div class="table-responsive help-block">
-<table class="table table-striped table-success" id="adave" border="1px" style="text-align:center;font-size:12px;border-color:#ddd;">
-<thead style="background-color:#FFFFFF;">
-<tr class="info">
-	
-		<td colspan="13" style="text-align:center;"><h3 id="Userhd"><b>View Reservation Advance</b></h3><b></b></td>
-	</tr>
-		<tr>
-		<th width="80" style="text-align:center;">Sl.no</th>
-		<th width="80" style="text-align:center;">Receipt Date</th>
-		<th width="80" style="text-align:center;">Receipt no</th>
-		<th width="80" style="text-align:center;">Function Date</th>
-		<th width="80" style="text-align:center;">Guest name</th>
-		<th width="80" style="text-align:center;">Amount</th>
-		<th width="80" style="text-align:center;">Pay mode</th>
-		<th width="80" style="text-align:center;">Status</th>
-		<th width="80" style="text-align:center;">Refund</th>
-	</tr>
-	</thead>
-	<tbody>
-<?php
-$sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
-$rowAC=mysql_fetch_array($sqlAC);
-$adtCurDt=$rowAC['cur_date'];
-$ad=explode('/',$adtCurDt);
-$adD=$ad[2].'-'.$ad[1].'-'.$ad[0];
-	$date=Date('d/m/Y');
-	$sql=mysql_query("select * from bq_hallresvadv where str_to_date(cur_date,'%d/%m/%Y') <= '$adD' AND status='1'");
-	$x=0;
-	if(mysql_num_rows($sql)>0) {
-	while($row=mysql_fetch_array($sql)) {
-		$x++;
-		 if($row['status']==1){
-			$status="Advance";
-		}else{
-			$status="Refund";
-		} 
-		//$sqb=mysql_fetch_array(mysql_query("select * from room_booking where resv_no='".$row['reserv_no']."'"));
-		
-?>
-		
-		
-		<input type="hidden" name="regN" id="regN" class="ckPrint regN group1 check_" value=""  />
-			<input type="hidden" name="chAdId" id="chAdId" class="ckPrint chAdId group1 check_" value=""  />
-			<input name="vucher" type="hidden" id="vucher" class="ckPrint group1 vucher check_" value="" />
-			
-		<tr>
-			<td width="80" style="text-align:center;"><?php echo $x; ?></td>
-			
-		<td width="80" style="text-align:center;"><?php echo $row['cur_date']; ?></td>
-		<td width="80" class="codesUPPERCase" style="text-align:center;" ><?php echo $row['receipt_no']; ?></td>
-		<td width="80" class="codesUPPERCase" style="text-align:center;" ><?php echo $row['function_date']; ?></td>
-		<td width="80" class="fstChUPPRCase" style="text-align:center;"><?php echo $row['guest_name']; ?></td>
-		<td width="80" class="fstChUPPRCase" style="text-align:center;"><?php echo $row['amount']; ?></td>
-		<td width="80" class="fstChUPPRCase" style="text-align:center;"><?php echo $row['pay_mode']; ?></td>
-		<td width="80" class="fstChUPPRCase" style="text-align:center;"><?php echo $status; ?></td>
-		
-		<td width="80"class="" style="text-align:center;"><a href="<?php echo $home_path ?>/transaction/frontdesk/reserv-refund-advance.php?roomBk=<?php echo $row['receipt_no']?>&rmBkID=<?php echo $row['booking_no']?>&rmAmt=<?php echo $row['amount'];?>" style="color:#000;font-size:13px;font-weight:bold;"><button type="button" id="pdf" style="margin:0 0 0 10px;" class="myButeXL btnn">Refund</button></a></td>
-	
-	<?php
-		?>
-		</tbody>
-		 <?php   }   ?>
-	</table>
-<?php  }  ?>
-	</form>
-		</div>
-		</div>
-		</div>
+
+<div class="mypay-container">
+
+    <!-- Top Action Bar -->
+    <div class="mypay-actions-bar">
+        <a href="<?php echo $home_path; ?>/dashboard.php" class="btn-mypay-exit" id="exit" title="Exit (Ctrl+E)">
+            <span class="mypay-icon-exit"><i class="fa fa-sign-out"></i></span>
+            <span>Exit</span>
+        </a>
+    </div>
+
+    <!-- Data Table Container -->
+    <div class="mypay-table-wrapper" id="dvContainer">
+        <table class="mypay-table" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr class="banner-row">
+                    <th colspan="9">VIEW RESERVATION ADVANCE</th>
+                </tr>
+                <tr class="header-row">
+                    <th style="width: 5%;">Sl.No</th>
+                    <th style="width: 10%;">Receipt Date</th>
+                    <th style="width: 12%;">Receipt No</th>
+                    <th style="width: 12%;">Function Date</th>
+                    <th style="width: 20%;">Guest Name</th>
+                    <th style="width: 12%;">Amount</th>
+                    <th style="width: 10%;">Pay Mode</th>
+                    <th style="width: 10%;">Status</th>
+                    <th style="width: 9%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php 
+            $sqlAC = mysql_query("select * from audt_control where audtcontrol_id='1'");
+            $rowAC = mysql_fetch_array($sqlAC);
+            $adtCurDt = $rowAC['cur_date'];
+            $ad = array_map('trim', explode('/', $adtCurDt));
+            $adD = $ad[2] . '-' . $ad[1] . '-' . $ad[0];
+
+            $sql = mysql_query("select * from bq_hallresvadv where str_to_date(cur_date,'%d/%m/%Y') <= '$adD' AND status='1' order by str_to_date(cur_date,'%d/%m/%Y') DESC");
+            $x = 0;
+            if($sql && is_resource($sql) && mysql_num_rows($sql) > 0) {
+                while($row = mysql_fetch_array($sql)) {
+                    $x++;
+                    $status = ($row['status'] == 1) ? "Advance" : "Refund";
+            ?>
+                <tr>
+                    <td><?php echo $x; ?></td>
+                    <td><?php echo htmlspecialchars($row['cur_date']); ?></td>
+                    <td><b><?php echo htmlspecialchars(strtoupper($row['receipt_no'])); ?></b></td>
+                    <td><?php echo htmlspecialchars($row['function_date']); ?></td>
+                    <td style="text-align:left;"><?php echo htmlspecialchars(strtoupper($row['guest_name'])); ?></td>
+                    <td><?php echo sprintf("%01.2f", $row['amount']); ?></td>
+                    <td><?php echo htmlspecialchars(ucfirst($row['pay_mode'])); ?></td>
+                    <td><?php echo $status; ?></td>
+                    <td>
+                        <a href="<?php echo $home_path ?>/transaction/frontdesk/reserv-refund-advance.php?roomBk=<?php echo urlencode($row['receipt_no']); ?>&rmBkID=<?php echo urlencode($row['booking_no']); ?>&rmAmt=<?php echo urlencode($row['amount']); ?>" class="btn-mypay-refund">
+                            Refund
+                        </a>
+                    </td>
+                </tr>
+            <?php 
+                } 
+            } else { 
+            ?>
+                <tr>
+                    <td colspan="9" style="padding: 20px; color: #777; text-align: center; font-size: 13px;">
+                        No Reservation Advance records found
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<?php include("../../footer.php"); ?>
+</body>
+</html>

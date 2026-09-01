@@ -782,594 +782,754 @@ function selTOtme(a){
 }
 
 </script> 
-<style>
-.spanClr{
-	color: #5b503b;
-    display: block;
-    float: left;
-    font-size: 12px;
-    font-weight: normal;
-    padding: 0px 9px 0 5px;
-		
-}
-hr.style-one {
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
-	margin:-3px 0 0 0;
-}
-hr.style-one1 {
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
-	margin:-7px 0 0 0;
+<style type="text/css">
+/* Payroll (MyPay) Standardized Transaction View/Edit Styling */
+body, body.bgBODY {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-
-/* thead, tbody { display: block; }
-
-tbody {
-    height: 300px;      
-    overflow-y: auto;    
-    overflow-x: hidden;  
-} */
-
-.tathead{ display: block;border:none; }
-
-.tatbody {
-   /*  height: 350px; */       /* Just for the demo          */
-    overflow-y: auto;    /* Trigger vertical scroll    */
-    overflow-x: hidden;  /* Hide the horizontal scroll */
-	border:none;
-}
-.tbHd{
-	color: #5b503b;
-    display: block;
-    float: right;
-    font-size: 12px;
-    font-weight: normal;
-    padding: 3px 9px 0 0;
-	font-weight:normal;
+.mypay-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 15px auto 40px auto !important;
+    padding: 0 10px !important;
+    box-sizing: border-box !important;
 }
 
-
-.tableS > thead > tr > th, .tableS > tbody > tr > th, .table > tfoot > tr > th, .tableS > thead > tr > td, .tableS > tbody > tr > td, .tableS > tfoot > tr > td {
-  color: #333333;
-  border:1px solid #CCCCCC;
+.mypay-card {
+    width: 1180px !important;
+    max-width: 98% !important;
+    margin: 0 auto !important;
+    background: #ffffff !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 
+.mypay-card-header {
+    background: #0073B5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    height: 38px !important;
+    line-height: 38px !important;
+    padding: 0 15px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 5px 5px 0 0 !important;
+}
 
+form#hotelDefi {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.mypay-card-body {
+    padding: 15px 20px !important;
+    background: #ffffff !important;
+    margin: 0 !important;
+}
+
+.mypay-sub-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1px solid #0073B5 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    margin-bottom: 10px !important;
+}
+
+.mypay-sub-table thead th {
+    background-color: #f5f5f5 !important;
+    color: #222222 !important;
+    font-weight: bold !important;
+    font-size: 11px !important;
+    text-align: center !important;
+    height: 28px !important;
+    padding: 4px 4px !important;
+    border: 1px solid #e0e0e0 !important;
+    white-space: nowrap !important;
+}
+
+.mypay-sub-table tbody td {
+    padding: 4px 3px !important;
+    border: 1px solid #e0e0e0 !important;
+    background-color: #ffffff !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.mypay-input-sm {
+    width: 100% !important;
+    height: 26px !important;
+    line-height: 26px !important;
+    padding: 0 5px !important;
+    border: 1px solid #d0d7de !important;
+    border-radius: 3px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+}
+
+.mypay-input-sm:focus {
+    border-color: #0084b4 !important;
+}
+
+/* Modern Status Legend Bar */
+.mypay-legend-strip {
+    display: flex !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin: 8px 0 14px 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.mypay-legend-item {
+    flex: 1 !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    text-align: center !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+    letter-spacing: 0.3px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+    user-select: none !important;
+}
+
+.mypay-legend-item:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.18) !important;
+}
+
+.legend-available {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.legend-reserved {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.legend-waitlisted {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+}
+
+.legend-enquiry {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+}
+
+.legend-tentative {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+}
+
+.legend-blocked {
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%) !important;
+}
+
+/* 3 Column Layout */
+.mypay-three-col-layout {
+    display: flex !important;
+    gap: 15px !important;
+    margin-top: 10px !important;
+}
+
+.mypay-form-col {
+    flex: 1 !important;
+    background: #fafbfc !important;
+    border: 1px solid #e1e4e8 !important;
+    border-radius: 4px !important;
+    padding: 12px 14px !important;
+}
+
+.mypay-col-title {
+    font-weight: bold !important;
+    font-size: 12px !important;
+    color: #0073B5 !important;
+    margin-bottom: 10px !important;
+    padding-bottom: 5px !important;
+    border-bottom: 1px solid #e1e4e8 !important;
+    text-transform: uppercase !important;
+}
+
+.mypay-form-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 8px !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mypay-form-table tr,
+.mypay-form-table td {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    vertical-align: middle !important;
+}
+
+.mypay-label-cell {
+    width: 36% !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    color: #222222 !important;
+    font-weight: normal !important;
+    padding-right: 6px !important;
+    text-align: left !important;
+    line-height: 1.2 !important;
+}
+
+.mypay-label-cell label {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    color: #222222 !important;
+    font-weight: normal !important;
+    display: inline-block !important;
+}
+
+.mypay-label-cell label em, .mypay-label-cell label .req-star {
+    color: #d9534f !important;
+    font-style: normal !important;
+    margin-left: 1px !important;
+    font-weight: bold !important;
+}
+
+.mypay-input-cell {
+    width: 64% !important;
+}
+
+.mypay-input, select.mypay-input, textarea.mypay-input {
+    width: 100% !important;
+    height: 28px !important;
+    line-height: 28px !important;
+    padding: 0 8px !important;
+    border: 1px solid #d0d7de !important;
+    border-radius: 3px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+}
+
+textarea.mypay-input {
+    height: 48px !important;
+    line-height: 1.4 !important;
+    padding: 4px 8px !important;
+}
+
+.mypay-input:focus, select.mypay-input:focus, textarea.mypay-input:focus {
+    border-color: #0084b4 !important;
+}
+
+/* Card Bottom Action Bar */
+.mypay-card-footer {
+    background: #0073B5 !important;
+    height: 44px !important;
+    padding: 0 15px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 0 5px 5px !important;
+}
+
+.btn-mypay-action {
+    background: #005b8a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border-radius: 3px !important;
+    padding: 0 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    line-height: 26px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+}
+
+.btn-mypay-action:hover {
+    background: #00496e !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
 </style>
+
 <body class="bgBODY">
-<div class="about">
-<?php 	
-/* echo $_GET['msg']; */ 
-if(isset($_GET['msg'])){
-?>
-	<p style="text-align:center;margin:-16px 0 0 0;">
-		<label id="msgFo" class="" style="color:#7B0E0E;"><?php echo $_GET['msg']; ?></label>
-	</p>
+
+<div class="mypay-container">
+
+<?php if(isset($_GET['msg'])){ ?>
+<p style="text-align:center;margin:10px 0;">
+    <label id="msgFo" style="color:#7B0E0E;font-weight:bold;font-size:13px;"><?php echo htmlspecialchars($_GET['msg']); ?></label>
+</p>
 <?php } ?>
-<div id="invoice" style="">
-	<!--<div class="container" >-->
-		<div class="" >
-
 
 <?php
-$sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
-$rowAC=mysql_fetch_array($sqlAC);
-$curDate=$rowAC['cur_date'];
-
-?>
-<link rel="stylesheet" type="text/css" href="<?php echo $home_path;?>/tcal-picker/tcal.css" />
-<script type="text/javascript" src="<?php echo $home_path;?>/tcal-picker/tcal.js"></script> 
-<div id="addcustomer" class="frmCentr divBrd frmBgClr" style="width:1125;">
-	<h3 id="Userhd"><b>UPDATE HALL BOOKING</b></h3>
-<form id="hotelDefi" name="hotelDefi" enctype="multipart/form-data" action="<?php echo $home_path;?>/action/update_hall_booking.php" method="post" class="" style="">
-	<input name="incLc" id="incLc" type="hidden" style="" value=""/>
-	<input type="hidden" name="rowVl" id="rowVl"/>
-	<input type="hidden" name="rmomType" id="rmomType"/>
-	<input type="hidden" name="adtDate" id="adtDate" value="<?php echo $curDate?>"/>
-	<input type="hidden" name="bookNum" id="bookNum" value="<?php echo $_GET['roomBk'];?>"/>
-	<div>
-	
-<table class="table" cellpadding="0" cellspacing="0" border="0" class="table" style="text-align:center;font-size:12px;margin:0px 0 10px 0px;">
-<thead class="tathead">
-	<tr>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:88px;">Date</th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:100px;">Venue</th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:100px;">Session</th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:75px;">From</th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:75px;">To</th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:88px;">Seating</th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:120px;">Function</th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:50px;">Exp </th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:50px;">Guarant</th>
-		<th style="text-align:center;background-color:#F5F5F5;color:#000;width:75px;">Plan</th>
-		<th style="text-align:center;background-color:#F5F5F5;color:#000;width:75px;">Rate</th>
-		<th width="" style="text-align:center;background-color:#F5F5F5;color:#000;width:87px;">Status</th>
-		<th style="text-align:center;background-color:#F5F5F5;color:#000;width:139px;">Veg/Non-veg</th>
-		<!--<th style="text-align:center;"><img src="../../images/plus.png" id="add-item" onclick="addMoreRowsROOM(this.form);" style="width:15px;height:15px;cursor:pointer;"/></th>-->
-	</tr>
-	</thead>
-	<tbody class="tathead tatbody tableS" id="displyRoomDET" style="height:100px;">
-<?php 
-$sqlb=mysql_query("select * from bq_hallbooking where booking_no='".$_GET['roomBk']."' AND confirm_status!='7' and log_status='1'");
-$nrws=mysql_num_rows($sqlb);
-$cc=0;
-$nmRs=mysql_num_rows($sqlb);
-while($rowb=mysql_fetch_array($sqlb)){
-	$cc++;
+$sqlAC = mysql_query("select * from audt_control where audtcontrol_id='1'");
+$rowAC = mysql_fetch_array($sqlAC);
+$curDate = $rowAC['cur_date'];
 ?>
 
-<input type="hidden" name="hallbook_id[]" id="hallbook_id" value="<?php echo $rowb['hallbook_id'];?>"/>
+    <div class="mypay-card">
+        <div class="mypay-card-header">
+            UPDATE HALL BOOKING (NO: <?php echo htmlspecialchars($_GET['roomBk']); ?>)
+        </div>
 
-<tr id=""><td style="text-align:center;" id="room"><input  name="book_date[]" id="book_date<?php echo $cc;?>" type="text" class="textbox codesUPPERCase datepicker" value="<?php if(isset($rowb['book_date'])) {echo $rowb['book_date'];}?>" style="width:88px;margin:0px 0 0 0px" onblur="arrDateSel('<?php echo $cc;?>');" placeholder="dd/mm/yyyy"/></td><td style="text-align:center;" >
-	<?php $sqlBS=mysql_query("select distinct venue_code,venue_desc from bq_venue where status='1'"); ?>
-	<select name="venue[]" id="venue<?php echo $cc;?>" class="fstChUPPRCase" style="width:100px;float:left;font-size:12px;" onChange="selVenueName('<?php echo $cc;?>');">
-	<option value="">--Select--</option>
-	<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  
-	if($rowBS['venue_code']==$rowb['venue']){
-	?>
-	<option value="<?php  echo $rowBS['venue_code']; ?>" selected ><?php  echo $rowBS['venue_desc'];?></option>
-	<?php }else{ ?>
-	<option value="<?php  echo $rowBS['venue_code']; ?>"><?php  echo $rowBS['venue_desc'];?></option>
-	<?php  } } ?>
-	</select>
-	</td>
-	<td style="width:100px;text-align:center;" id="room">
-	
-	<?php $sqlBS=mysql_query("select distinct sess_code,sess_name from bqt_session where status='1'"); ?>
-		<select name="session[]" id="session<?php echo $cc;?>" class="fstChUPPRCase" style="width:100px;float:left;font-size:12px;" onChange="selSessionName('<?php echo $cc;?>');">
-		<option value="">--Select--</option>
-		<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  ?>
-		<?php if($rowBS['sess_code']==$rowb['session']){ ?>
-		<option value="<?php  echo $rowBS['sess_code']; ?>" selected ><?php  echo $rowBS['sess_name'];?></option>
-		<?php }else{ ?>
-		<option value="<?php  echo $rowBS['sess_code']; ?>"><?php  echo $rowBS['sess_name'];?></option>	
-		<?php  }  } ?>
-		</select>
-	</td>
-	
-	<td style="text-align:center;"><input name="from_time[]" id="from_time<?php echo $cc;?>" type="text" class="textbox fstChUPPRCase" style="width:75px;margin:0px 0 0 0px" value="<?php if(isset($rowb['from_time'])) {echo $rowb['from_time'];}?>" /></td><td style="text-align:center;"><input name="to_time[]" id="to_time<?php echo $cc;?>" type="text" data-validation="required" class="textbox fstChUPPRCase" style="width:75px;margin:0px 0 0 0px" value="<?php if(isset($rowb['to_time'])) {echo $rowb['to_time'];}?>" onblur="selTOtme('<?php echo $cc;?>');" /></td><td style="text-align:center;">
-	
-	<?php $sqlBS=mysql_query("select distinct seat_code,seat_desc from bq_seating where status='1'"); ?>
-	<select name="seating[]" id="seating<?php echo $cc;?>" class="fstChUPPRCase" style="width:88px;float:left;font-size:12px;" onChange="selSeatingName('<?php echo $cc;?>');">
-	<option value="" >--select--</option>
-	<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  ?>
-	<?php if($rowBS['seat_code']==$rowb['seating']){ ?>
-	<option value="<?php  echo $rowBS['seat_code']; ?>" selected ><?php  echo $rowBS['seat_desc'];?></option>
-	<?php }else{ ?>
-	<option value="<?php  echo $rowBS['seat_code']; ?>"><?php  echo $rowBS['seat_desc'];?></option>
-	<?php  } } ?>
-	</select>
-	</td>
-	<td style="text-align:center;" class="sourceonVAL">
-	<?php $sqlBS=mysql_query("select distinct func_code,func_desc from bq_function where status='1'"); ?>
-		<select name="funct[]" id="funct<?php echo $cc;?>" class="fstChUPPRCase" style="width:120px;float:left;font-size:12px;" onChange="selFunctionName('<?php echo $cc;?>');">
-		<option value="">--Select--</option>
-		<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  ?>
-		<?php if($rowBS['func_code']==$rowb['funct']){ ?>
-		<option value="<?php  echo $rowBS['func_code']; ?>" selected ><?php  echo $rowBS['func_desc'];?></option>
-		<?php }else{ ?>
-		<option value="<?php  echo $rowBS['func_code']; ?>"><?php  echo $rowBS['func_desc'];?></option>
-		<?php  } } ?>
-		</select>
-	</td>
-	
-	<td style="text-align:center;" class="sourceonVAL"><input name="expected[]" id="expected<?php echo $cc;?>" type="text" class="textbox fstChUPPRCase sng nmRm" style="width:50px;margin:0px 0 0 0px" value="<?php if(isset($rowb['expected'])) {echo $rowb['expected'];}?>"/></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="guaranted[]" id="guaranted<?php echo $cc;?>" type="text" class="textbox fstChUPPRCase dbl nmRm" style="width:50px;margin:0px 0 0 0px" value="<?php if(isset($rowb['guaranted'])) {echo $rowb['guaranted'];}?>"/></td>
-	<td style="text-align:center;" class="sourceonVAL" value="0"><input name="plan_rate[]" id="plan_rate<?php echo $cc;?>" type="text" class="textbox fstChUPPRCase trpl nmRm" style="width:85px;margin:0px 0 0 0px" value="<?php if(isset($rowb['plan_rate'])) {echo $rowb['plan_rate'];}?>" /></td>
-	<td style="text-align:center;" class="sourceonVAL" value="0"><input name="hall_rate[]" id="hall_rate<?php echo $cc;?>" type="text" class="textbox fstChUPPRCase trpl nmRm" style="width:85px;margin:0px 0 0 0px" value="<?php if(isset($rowb['hall_rate'])) {echo $rowb['hall_rate'];}?>" /></td>
-	<td style="text-align:center;" class="sourceonVAL">
-			
-		<?php $sqlBS=mysql_query("select distinct room_availability,roomavail_define from bq_stscolor where roomavail_define!='1'"); ?>
-		<select name="confirm_status[]" id="confirm_status<?php echo $cc;?>" class="fstChUPPRCase" style="width:87px;float:left;font-size:12px;" onChange="selConfirmStsName('<?php echo $cc;?>');">
-		<option value="">--Select--</option>
-		<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  ?>
-		<?php if($rowBS['roomavail_define']==$rowb['confirm_status']){ ?>
-		<option value="<?php  echo $rowBS['roomavail_define']; ?>" selected ><?php  echo $rowBS['room_availability'];?></option>
-		<?php }else{ ?>
-		<option value="<?php  echo $rowBS['roomavail_define']; ?>"><?php  echo $rowBS['room_availability'];?></option>
-		<?php  } } ?>
-		</select>
-		
-		
-	</td>
-	<!--<td style="text-align:center;" class="sourceonVAL"><input name="chief_guest[]" id="chief_guest<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:0px 0 0 0px" value="<?php if(isset($rowb['chief_guest'])) {echo $rowb['chief_guest'];}?>" /></td>-->
-	<td style="text-align:center;" class="sourceonVAL">
-		<select name="veg[]" id="veg<?php echo $cc;?>" class="fstChUPPRCase" style="width:100px;float:left;font-size:12px;" >
-		<option value="">--Select--</option>
-		<option value="veg">Veg</option>
-		<option value="nonveg">Non-veg</option>
-		</select>
-	</td>
-	</tr>	
-<?php 
- } 
-?>	
+        <form id="hotelDefi" name="hotelDefi" enctype="multipart/form-data" action="<?php echo $home_path;?>/action/update_hall_booking.php" method="post">
+            <input name="incLc" id="incLc" type="hidden" value=""/>
+            <input type="hidden" name="rowVl" id="rowVl"/>
+            <input type="hidden" name="rmomType" id="rmomType"/>
+            <input type="hidden" name="adtDate" id="adtDate" value="<?php echo $curDate;?>"/>
+            <input type="hidden" name="bookNum" id="bookNum" value="<?php echo htmlspecialchars($_GET['roomBk']);?>"/>
 
+            <div class="mypay-card-body">
+                
+                <!-- 1. Top Hall Details Table -->
+                <div style="overflow-x:auto;">
+                    <table class="mypay-sub-table" cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width:90px;">Date</th>
+                                <th style="width:110px;">Venue</th>
+                                <th style="width:110px;">Session</th>
+                                <th style="width:75px;">From</th>
+                                <th style="width:75px;">To</th>
+                                <th style="width:95px;">Seating</th>
+                                <th style="width:120px;">Function</th>
+                                <th style="width:60px;">Exp Pax</th>
+                                <th style="width:60px;">Guar Pax</th>
+                                <th style="width:75px;">Plan Rate</th>
+                                <th style="width:75px;">Hall Rate</th>
+                                <th style="width:100px;">Status</th>
+                                <th style="width:100px;">Food Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="displyRoomDET">
+                        <?php 
+                        $sqlb = mysql_query("select * from bq_hallbooking where booking_no='".$_GET['roomBk']."' AND confirm_status!='7' and log_status='1'");
+                        $nrws = mysql_num_rows($sqlb);
+                        $cc = 0;
+                        $nmRs = mysql_num_rows($sqlb);
+                        while($rowb = mysql_fetch_array($sqlb)){
+                            $cc++;
+                        ?>
+                            <input type="hidden" name="hallbook_id[]" id="hallbook_id" value="<?php echo $rowb['hallbook_id'];?>"/>
+                            <tr>
+                                <td><input name="book_date[]" id="book_date<?php echo $cc;?>" type="text" class="mypay-input-sm datepicker" value="<?php if(isset($rowb['book_date'])) {echo htmlspecialchars($rowb['book_date']);}?>" onblur="arrDateSel('<?php echo $cc;?>');" placeholder="dd/mm/yyyy"/></td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct venue_code, venue_desc from bq_venue where status='1'"); ?>
+                                    <select name="venue[]" id="venue<?php echo $cc;?>" class="mypay-input-sm" onChange="selVenueName('<?php echo $cc;?>');">
+                                        <option value="">--Select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { 
+                                            $sel = ($rowBS['venue_code'] == $rowb['venue']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['venue_code']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowBS['venue_desc']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct sess_code, sess_name from bqt_session where status='1'"); ?>
+                                    <select name="session[]" id="session<?php echo $cc;?>" class="mypay-input-sm" onChange="selSessionName('<?php echo $cc;?>');">
+                                        <option value="">--Select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { 
+                                            $sel = ($rowBS['sess_code'] == $rowb['session']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['sess_code']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowBS['sess_name']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td><input name="from_time[]" id="from_time<?php echo $cc;?>" type="text" class="mypay-input-sm" value="<?php if(isset($rowb['from_time'])) {echo htmlspecialchars($rowb['from_time']);}?>" /></td>
+                                <td><input name="to_time[]" id="to_time<?php echo $cc;?>" type="text" class="mypay-input-sm" value="<?php if(isset($rowb['to_time'])) {echo htmlspecialchars($rowb['to_time']);}?>" onblur="selTOtme('<?php echo $cc;?>');" /></td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct seat_code, seat_desc from bq_seating where status='1'"); ?>
+                                    <select name="seating[]" id="seating<?php echo $cc;?>" class="mypay-input-sm" onChange="selSeatingName('<?php echo $cc;?>');">
+                                        <option value="">--select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { 
+                                            $sel = ($rowBS['seat_code'] == $rowb['seating']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['seat_code']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowBS['seat_desc']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct func_code, func_desc from bq_function where status='1'"); ?>
+                                    <select name="funct[]" id="funct<?php echo $cc;?>" class="mypay-input-sm" onChange="selFunctionName('<?php echo $cc;?>');">
+                                        <option value="">--Select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { 
+                                            $sel = ($rowBS['func_code'] == $rowb['funct']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['func_code']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowBS['func_desc']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td><input name="expected[]" id="expected<?php echo $cc;?>" type="text" class="mypay-input-sm" value="<?php if(isset($rowb['expected'])) {echo htmlspecialchars($rowb['expected']);}?>"/></td>
+                                <td><input name="guaranted[]" id="guaranted<?php echo $cc;?>" type="text" class="mypay-input-sm" value="<?php if(isset($rowb['guaranted'])) {echo htmlspecialchars($rowb['guaranted']);}?>"/></td>
+                                <td><input name="plan_rate[]" id="plan_rate<?php echo $cc;?>" type="text" class="mypay-input-sm" value="<?php if(isset($rowb['plan_rate'])) {echo htmlspecialchars($rowb['plan_rate']);}?>" /></td>
+                                <td><input name="hall_rate[]" id="hall_rate<?php echo $cc;?>" type="text" class="mypay-input-sm" value="<?php if(isset($rowb['hall_rate'])) {echo htmlspecialchars($rowb['hall_rate']);}?>" /></td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct room_availability, roomavail_define from bq_stscolor where roomavail_define!='1'"); ?>
+                                    <select name="confirm_status[]" id="confirm_status<?php echo $cc;?>" class="mypay-input-sm" onChange="selConfirmStsName('<?php echo $cc;?>');">
+                                        <option value="">--Select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { 
+                                            $sel = ($rowBS['roomavail_define'] == $rowb['confirm_status']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['roomavail_define']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowBS['room_availability']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="veg[]" id="veg<?php echo $cc;?>" class="mypay-input-sm">
+                                        <option value="">--Select--</option>
+                                        <option value="veg" <?php echo (isset($rowb['veg']) && $rowb['veg']=='veg')?'selected':'';?>>Veg</option>
+                                        <option value="nonveg" <?php echo (isset($rowb['veg']) && $rowb['veg']=='nonveg')?'selected':'';?>>Non-veg</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        <?php } ?>
 
+                        <?php for($cf=$nmRs+1; $cf<11; $cf++){ ?>
+                            <tr>
+                                <td><input name="book_date[]" id="book_date<?php echo $cf;?>" type="text" class="mypay-input-sm datepicker1" value="<?php if(isset($_GET['dte']) && $cf==1) {echo htmlspecialchars($_GET['dte']);}?>" onblur="arrDateSel('<?php echo $cf;?>');" placeholder="dd/mm/yyyy"/></td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct venue_code, venue_desc from bq_venue where status='1'"); ?>
+                                    <select name="venue[]" id="venue<?php echo $cf;?>" class="mypay-input-sm" onChange="selVenueName('<?php echo $cf;?>');">
+                                        <option value="">--Select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { 
+                                            $sel = (isset($_GET['ven']) && $cf==1 && $_GET['ven']==$rowBS['venue_desc']) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['venue_code']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowBS['venue_desc']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct sess_code, sess_name from bqt_session where status='1'"); ?>
+                                    <select name="session[]" id="session<?php echo $cf;?>" class="mypay-input-sm" onChange="selSessionName('<?php echo $cf;?>');">
+                                        <option value="">--Select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['sess_code']); ?>"><?php echo htmlspecialchars($rowBS['sess_name']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td><input name="from_time[]" id="from_time<?php echo $cf;?>" type="text" class="mypay-input-sm" /></td>
+                                <td><input name="to_time[]" id="to_time<?php echo $cf;?>" type="text" class="mypay-input-sm" onblur="selTOtme('<?php echo $cf;?>');" /></td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct seat_code, seat_desc from bq_seating where status='1'"); ?>
+                                    <select name="seating[]" id="seating<?php echo $cf;?>" class="mypay-input-sm" onChange="selSeatingName('<?php echo $cf;?>');">
+                                        <option value="">--select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['seat_code']); ?>"><?php echo htmlspecialchars($rowBS['seat_desc']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct func_code, func_desc from bq_function where status='1'"); ?>
+                                    <select name="funct[]" id="funct<?php echo $cf;?>" class="mypay-input-sm" onChange="selFunctionName('<?php echo $cf;?>');">
+                                        <option value="">--Select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['func_code']); ?>"><?php echo htmlspecialchars($rowBS['func_desc']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td><input name="expected[]" id="expected<?php echo $cf;?>" type="text" class="mypay-input-sm" value="0" onblur="expeExcQty(<?php echo $cf;?>);"/></td>
+                                <td><input name="guaranted[]" id="guaranted<?php echo $cf;?>" type="text" class="mypay-input-sm" value="0" onblur="guarExcQty(<?php echo $cf;?>);"/></td>
+                                <td><input name="plan_rate[]" id="plan_rate<?php echo $cf;?>" type="text" class="mypay-input-sm" value="0" /></td>
+                                <td><input name="hall_rate[]" id="hall_rate<?php echo $cf;?>" type="text" class="mypay-input-sm" value="0" /></td>
+                                <td>
+                                    <?php $sqlBS = mysql_query("select distinct room_availability, roomavail_define from bq_stscolor where roomavail_define!='1' AND roomavail_define!='7'"); ?>
+                                    <select name="confirm_status[]" id="confirm_status<?php echo $cf;?>" class="mypay-input-sm" onChange="selConfirmStsName('<?php echo $cf;?>');">
+                                        <option value="">--Select--</option>
+                                        <?php while($rowBS = mysql_fetch_array($sqlBS)) { ?>
+                                            <option value="<?php echo htmlspecialchars($rowBS['roomavail_define']); ?>"><?php echo htmlspecialchars($rowBS['room_availability']); ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="veg[]" id="veg<?php echo $cf;?>" class="mypay-input-sm">
+                                        <option value="">--Select--</option>
+                                        <option value="veg">Veg</option>
+                                        <option value="nonveg">Non-veg</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
 
-<?php 
-for($cf=$nmRs+1;$cf<11;$cf++){
-?>
-<tr id=""><td style="text-align:center;" id="room"><input  name="book_date[]" id="book_date<?php echo $cf;?>" type="text" class="textbox codesUPPERCase datepicker1" value="<?php if(isset($_GET['dte']) && $cf==1) {echo $_GET['dte'];}?>" style="width:88px;margin:0px 0 0 0px" onblur="arrDateSel('<?php echo $cf;?>');" placeholder="dd/mm/yyyy"/></td><td style="text-align:center;" >
-	<?php $sqlBS=mysql_query("select distinct venue_code,venue_desc from bq_venue where status='1'"); ?>
-	<select name="venue[]" id="venue<?php echo $cf;?>" class="fstChUPPRCase" style="width:100px;float:left;font-size:12px;" onChange="selVenueName('<?php echo $cf;?>');">
-	<option value="">--Select--</option>
-	<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  
-	if(isset($_GET['ven']) && $cf==1 && $_GET['ven']==$rowBS['venue_desc']){
-	?>
-	<option value="<?php  echo $rowBS['venue_code']; ?>" selected ><?php  echo $rowBS['venue_desc'];?></option>
-	<?php }else{ ?>
-	<option value="<?php  echo $rowBS['venue_code']; ?>"><?php  echo $rowBS['venue_desc'];?></option>
-	<?php  } } ?>
-	</select>
-	</td>
-	<td style="width:100px;text-align:center;" id="room">
-	
-	<?php $sqlBS=mysql_query("select distinct sess_code,sess_name from bqt_session where status='1'"); ?>
-		<select name="session[]" id="session<?php echo $cf;?>" class="fstChUPPRCase" style="width:100px;float:left;font-size:12px;" onChange="selSessionName('<?php echo $cf;?>');">
-		<option value="">--Select--</option>
-		<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  ?>
-		<option value="<?php  echo $rowBS['sess_code']; ?>"><?php  echo $rowBS['sess_name'];?></option>
-		<?php  }  ?>
-		</select>
-	</td>
-	
-	<td style="text-align:center;"><input name="from_time[]" id="from_time<?php echo $cf;?>" type="text" class="textbox fstChUPPRCase" style="width:75px;margin:0px 0 0 0px" /></td><td style="text-align:center;"><input name="to_time[]" id="to_time<?php echo $cf;?>" type="text" data-validation="required" class="textbox fstChUPPRCase" style="width:75px;margin:0px 0 0 0px" value="" onblur="selTOtme('<?php echo $cf;?>');" /></td><td style="text-align:center;">
-	
-	<?php $sqlBS=mysql_query("select distinct seat_code,seat_desc from bq_seating where status='1'"); ?>
-		<select name="seating[]" id="seating<?php echo $cf;?>" class="fstChUPPRCase" style="width:88px;float:left;font-size:12px;" onChange="selSeatingName('<?php echo $cf;?>');">
-		<option value="" >--select--</option>
-		<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  ?>
-		<option value="<?php  echo $rowBS['seat_code']; ?>"><?php  echo $rowBS['seat_desc'];?></option>
-		<?php  }  ?>
-		</select>
-	</td>
-	<td style="text-align:center;" class="sourceonVAL">
-	<?php $sqlBS=mysql_query("select distinct func_code,func_desc from bq_function where status='1'"); ?>
-		<select name="funct[]" id="funct<?php echo $cf;?>" class="fstChUPPRCase" style="width:120px;float:left;font-size:12px;" onChange="selFunctionName('<?php echo $cf;?>');">
-		<option value="">--Select--</option>
-		<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  ?>
-		<option value="<?php  echo $rowBS['func_code']; ?>"><?php  echo $rowBS['func_desc'];?></option>
-		<?php  }  ?>
-		</select>
-	</td>
-	
-	<td style="text-align:center;" class="sourceonVAL"><input name="expected[]" id="expected<?php echo $cf;?>" type="text" class="textbox fstChUPPRCase sng nmRm" style="width:50px;margin:0px 0 0 0px" value="0" onblur="expeExcQty(<?php echo $cf;?>);"/></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="guaranted[]" id="guaranted<?php echo $cf;?>" type="text" class="textbox fstChUPPRCase dbl nmRm" style="width:50px;margin:0px 0 0 0px" value="0" onblur="guarExcQty(<?php echo $cf;?>);"/></td>
-	<td style="text-align:center;" class="sourceonVAL" value="0"><input name="plan_rate[]" id="plan_rate<?php echo $cf;?>" type="text" class="textbox fstChUPPRCase trpl nmRm" style="width:85px;margin:0px 0 0 0px" value="0" /></td>
-	<td style="text-align:center;" class="sourceonVAL" value="0"><input name="hall_rate[]" id="hall_rate<?php echo $cf;?>" type="text" class="textbox fstChUPPRCase trpl nmRm" style="width:85px;margin:0px 0 0 0px" value="0" /></td>
-	<td style="text-align:center;" class="sourceonVAL">
-			
-		<?php $sqlBS=mysql_query("select distinct room_availability,roomavail_define from bq_stscolor where roomavail_define!='1' AND roomavail_define!='7'"); ?>
-		<select name="confirm_status[]" id="confirm_status<?php echo $cf;?>" class="fstChUPPRCase" style="width:87px;float:left;font-size:12px;" onChange="selConfirmStsName('<?php echo $cf;?>');">
-		<option value="">--Select--</option>
-		<?php  while($rowBS=mysql_fetch_array($sqlBS)) {  ?>
-		<option value="<?php  echo $rowBS['roomavail_define']; ?>"><?php  echo $rowBS['room_availability'];?></option>
-		<?php  }  ?>
-		</select>
-		
-		
-	</td>
-	<!--<td style="text-align:center;" class="sourceonVAL"><input name="chief_guest[]" id="chief_guest<?php echo $cf;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:0px 0 0 0px" value="" /></td>-->
-	
-	<td style="text-align:center;" class="sourceonVAL">
-		<select name="veg[]" id="veg<?php echo $cc;?>" class="fstChUPPRCase" style="width:100px;float:left;font-size:12px;" >
-		<option value="">--Select--</option>
-		<option value="veg">Veg</option>
-		<option value="nonveg">Non-veg</option>
-		</select>
-	</td>
-	</tr>	
-<?php 
-}
-?>	
+                <!-- 2. Status Color Legend Bar -->
+                <div class="mypay-legend-strip">
+                    <div class="mypay-legend-item legend-available">Available</div>
+                    <div class="mypay-legend-item legend-reserved">Reserved</div>
+                    <div class="mypay-legend-item legend-waitlisted">Wait Listed</div>
+                    <div class="mypay-legend-item legend-enquiry">Enquiry</div>
+                    <div class="mypay-legend-item legend-tentative">Tentative</div>
+                    <div class="mypay-legend-item legend-blocked">Blocked</div>
+                </div>
 
-</tbody>
+                <?php
+                $amount = 0;
+                $sqb = mysql_query("select * from bq_hallbooking where booking_no='".$_GET['roomBk']."' AND confirm_status!='7' and log_status='1'");
+                $rob = ($sqb && mysql_num_rows($sqb)>0) ? mysql_fetch_array($sqb) : array();
 
+                $sqlhrs = mysql_query("select netamt from bq_hallresvadv where booking_no = '".$_GET['roomBk']."' and status = '1'");
+                if($sqlhrs && is_resource($sqlhrs)){
+                    while($rowhrs = mysql_fetch_array($sqlhrs)){
+                        $amount += $rowhrs['netamt'];
+                    }
+                }
+                ?>
 
-	
-<tbody id="addedRowsEDRoom">
+                <!-- 3. Three Column Parameter Details -->
+                <div class="mypay-three-col-layout">
+                    
+                    <!-- Col 1: Guest Information -->
+                    <div class="mypay-form-col">
+                        <div class="mypay-col-title"><i class="fa fa-user"></i> Guest Information</div>
+                        <table class="mypay-form-table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Type <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <select name="corporate" id="corporate" class="mypay-input" onChange="corPind();" required>
+                                            <option value="">--Select--</option>
+                                            <option value="corporate" <?php echo ($rob['corporate']=='corporate')?'selected':''; ?> >Corporate</option>
+                                            <option value="individual" <?php echo ($rob['corporate']=='individual')?'selected':''; ?> >Individual</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Title & Name <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <div style="display:flex;gap:4px;">
+                                            <select name="title" id="title" class="mypay-input" style="width:65px !important;" onChange="corPind();">
+                                                <option value="mr" <?php echo ($rob['title']=='mr')?'selected':''; ?> >Mr</option>
+                                                <option value="mrs" <?php echo ($rob['title']=='mrs')?'selected':''; ?> >Mrs</option>
+                                                <option value="ms" <?php echo ($rob['title']=='ms')?'selected':''; ?> >Ms</option>
+                                                <option value="m/s" <?php echo ($rob['title']=='m/s')?'selected':''; ?> >M/s</option>
+                                                <option value="dr" <?php echo ($rob['title']=='dr')?'selected':''; ?> >Dr</option>
+                                            </select>
+                                            <input name="guest_name" id="guest_name" type="text" class="mypay-input" placeholder="Guest Name" value="<?php echo htmlspecialchars($rob['guest_name']); ?>" style="flex:1;" required />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Address 1 :</label></td>
+                                    <td class="mypay-input-cell"><input name="address1" id="address1" type="text" class="mypay-input" value="<?php echo htmlspecialchars($rob['address1']); ?>" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Address 2 :</label></td>
+                                    <td class="mypay-input-cell"><input name="address2" id="address2" type="text" class="mypay-input" value="<?php echo htmlspecialchars($rob['address2']); ?>" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>City & Zip <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <div style="display:flex;gap:4px;">
+                                            <input name="city" id="city" type="text" class="mypay-input" style="flex:1;" value="<?php echo htmlspecialchars($rob['city']); ?>" placeholder="City" required />
+                                            <input name="pin_code" id="pin_code" type="text" class="mypay-input" placeholder="Zip" maxlength="6" style="width:75px !important;" value="<?php echo htmlspecialchars($rob['pin']); ?>" onkeypress="return pointNum(event);" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>State & Country <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <div style="display:flex;gap:4px;">
+                                            <input name="state" id="state" type="text" class="mypay-input" style="flex:1;" value="<?php echo htmlspecialchars($rob['state']); ?>" />
+                                            <input name="country" id="country" type="text" class="mypay-input" style="width:75px !important;" value="<?php echo htmlspecialchars($rob['country']); ?>" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Phone <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <input name="phone" type="text" id="phone" class="mypay-input" value="<?php echo htmlspecialchars($rob['phone']); ?>" maxlength="10" onkeypress="return pointNum(event);" required />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-</tbody>
+                    <!-- Col 2: Company & Contact Person -->
+                    <div class="mypay-form-col">
+                        <div class="mypay-col-title"><i class="fa fa-building"></i> Company & Contact</div>
+                        <table class="mypay-form-table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>GSTIN :</label></td>
+                                    <td class="mypay-input-cell"><input name="gst_no" id="gst_no" type="text" class="mypay-input" style="text-transform:uppercase;" value="<?php echo htmlspecialchars($rob['gstin']); ?>" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Email :</label></td>
+                                    <td class="mypay-input-cell"><input name="email" id="email" type="email" class="mypay-input" value="<?php echo htmlspecialchars($rob['email']); ?>" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Contact Person :</label></td>
+                                    <td class="mypay-input-cell"><input name="contact_person" id="contact_person" type="text" class="mypay-input" style="text-transform:uppercase;" value="<?php echo htmlspecialchars($rob['contact_person']); ?>" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Mobile No :</label></td>
+                                    <td class="mypay-input-cell"><input name="contact_mobile" type="text" id="contact_mobile" class="mypay-input" value="<?php echo htmlspecialchars($rob['contact_mobile']); ?>" maxlength="10" onkeypress="return pointNum(event);" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Booked By :</label></td>
+                                    <td class="mypay-input-cell"><input name="booked_by" id="booked_by" type="text" class="mypay-input" value="<?php echo htmlspecialchars($rob['booked_by']); ?>" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Booker ID :</label></td>
+                                    <td class="mypay-input-cell"><input name="booker_id" id="booker_id" type="text" class="mypay-input" value="<?php echo htmlspecialchars($rob['booker_id']); ?>" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>User ID / Advance :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <div style="display:flex;gap:4px;">
+                                            <input name="users_id" id="users_id" type="text" class="mypay-input" style="flex:1;" value="<?php echo htmlspecialchars($rob['added_by']); ?>" readonly />
+                                            <input name="advanc" id="advanc" type="text" class="mypay-input" style="width:80px !important;" value="<?php echo $amount; ?>" readonly />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-</table>
-<!-- Start Room Status -->
-<table class="table table-condensed table-hover table-striped table-bordered" style="float:left;width:100%;border:1px solid #ddd;margin:4px 0 0 0;font-size:12px;" cellpadding="0" cellspacing="0" class="table" border="0" >
-<tbody id="venPRODef">
-<tr>
-	<th width="" style="text-align:center;background-color:#F5F5F5;height:15px;">Venue</th>
-	<?php 
-	for($cc=6;$cc<=23;$cc++){
-	?>
-	<th style="text-align:center;background-color:#F5F5F5;height:15px;"><?php echo $cc; ?></th>
-	<?php } ?>
-</tr>
-<tr id="">
-<td style="text-align:center;" id="room"><input type="text" style="width:52px;height:15px;" readonly /></td>
-<?php 
-	for($cc=6;$cc<=23;$cc++){
-	?>
-<td style="text-align:center;" id="room"><input type="text" style="width:52px;height:15px;" readonly /></td>
-<?php } ?>
-</tr>
-</tbody>
+                    <!-- Col 3: Billing & Instructions -->
+                    <div class="mypay-form-col">
+                        <div class="mypay-col-title"><i class="fa fa-file-text"></i> Billing & Instructions</div>
+                        <table class="mypay-form-table" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Type of Billing <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <?php $sqlTB = mysql_query("select distinct bill_code, bill_desc from bq_billinstruc"); ?>
+                                        <select name="top_code" id="top_code" class="mypay-input" required>
+                                            <option value="">--Select--</option>
+                                            <?php 
+                                            while($rowTB = mysql_fetch_array($sqlTB)) { 
+                                                $sel = ($rowTB['bill_code'] == $rob['top_code']) ? 'selected' : '';
+                                            ?>
+                                                <option value="<?php echo htmlspecialchars($rowTB['bill_code']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowTB['bill_desc']); ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Business Source <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <?php $sqlBS = mysql_query("select distinct bs_code, bs_name from bq_bssource where bs_code!=''"); ?>
+                                        <select name="business_src" id="business_src" class="mypay-input" required>
+                                            <option value="">--Select--</option>
+                                            <?php 
+                                            while($rowTB = mysql_fetch_array($sqlBS)) { 
+                                                $sel = ($rowTB['bs_code'] == $rob['business_src']) ? 'selected' : '';
+                                            ?>
+                                                <option value="<?php echo htmlspecialchars($rowTB['bs_code']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowTB['bs_name']); ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Company Name :</label></td>
+                                    <td class="mypay-input-cell"><input name="comp_name" id="comp_name" type="text" class="mypay-input" value="<?php echo htmlspecialchars($rob['company_name']); ?>" readonly /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Market Segment <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <?php $sqlBS = mysql_query("select distinct mscode, msname from bq_marketseg"); ?>
+                                        <select name="segment_code" id="segment_code" class="mypay-input" required>
+                                            <option value="">--Select--</option>
+                                            <?php 
+                                            while($rowBS = mysql_fetch_array($sqlBS)) { 
+                                                $sel = ($rowBS['mscode'] == $rob['segment_code']) ? 'selected' : '';
+                                            ?>
+                                                <option value="<?php echo htmlspecialchars($rowBS['mscode']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowBS['msname']); ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Pay Mode <em>*</em> :</label></td>
+                                    <td class="mypay-input-cell">
+                                        <?php $sqlPm = mysql_query("select distinct pay_code, pay_desc from bq_paymode"); ?>
+                                        <select name="pay_mode" id="pay_mode" class="mypay-input" required>
+                                            <option value="">--Select--</option>
+                                            <?php 
+                                            while($rowPm = mysql_fetch_array($sqlPm)) { 
+                                                $sel = ($rowPm['pay_code'] == $rob['pay_mode']) ? 'selected' : '';
+                                            ?>
+                                                <option value="<?php echo htmlspecialchars($rowPm['pay_code']); ?>" <?php echo $sel; ?>><?php echo htmlspecialchars($rowPm['pay_desc']); ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Remind Date :</label></td>
+                                    <td class="mypay-input-cell"><input name="remind_date" id="remind_date" type="text" class="mypay-input datepicker1" value="<?php echo htmlspecialchars($rob['remind_date']); ?>" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="mypay-label-cell"><label>Remarks :</label></td>
+                                    <td class="mypay-input-cell"><textarea name="remarks" id="remarks" class="mypay-input" style="text-transform:uppercase;"><?php echo htmlspecialchars($rob['remarks']); ?></textarea></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-<tbody class="venPROShw" style="display:none;border:1px solid #cccccc;">
-<tr>
-	<th width="" style="text-align:center;background-color:#F5F5F5;height:15px;border:1px solid #cccccc;">Venue</th>
-	<?php 
-	for($cc=6;$cc<=24;$cc++){
-	?>
-	<th style="text-align:center;background-color:#F5F5F5;width:5px;height:15px;border:1px solid #cccccc;"><?php echo $cc; ?></th>
-	<?php } ?>
-</tr>
-</tbody>
-	
-<tbody class="venPROShw1" style="display:none;border:1px solid #cccccc;">
+                </div>
 
-</tbody>
+            </div>
 
-</table>
+            <!-- Card Bottom Action Bar -->
+            <div class="mypay-card-footer">
+                <button type="submit" id="send" name="send" class="btn-mypay-action" onclick="return checkformSubmit();" title="Update (Ctrl+S)">
+                    <i class="fa fa-floppy-o"></i> Update
+                </button>
+                <a href="view-hall-booking.php" class="btn-mypay-action" title="View (Ctrl+V)">
+                    <i class="fa fa-eye"></i> View
+                </a>
+                <a href="<?php echo $home_path; ?>/dashboard.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>" target="_blank" class="btn-mypay-action" title="Hall Status">
+                    <i class="fa fa-th"></i> Hall Status
+                </a>
+                <button type="reset" id="rest" class="btn-mypay-action" onclick="cancel_ed();" title="Clear (Ctrl+C)">
+                    <i class="fa fa-paint-brush" style="color:#f39c12;"></i> Clear
+                </button>
+                <a href="<?php echo $home_path; ?>/dashboard.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>" class="btn-mypay-action" title="Exit (Ctrl+E)">
+                    <i class="fa fa-times" style="color:#e74c3c;"></i> Exit
+                </a>
+            </div>
+        </form>
+    </div>
 
-
-
-<?php
-$sqlRv=mysql_query("select * from bq_stscolor where roomoccupy_id='1'");
-$rowRv=mysql_fetch_array($sqlRv); 
-$sqlRd=mysql_query("select * from bq_stscolor where roomoccupy_id='2'");
-$rowRd=mysql_fetch_array($sqlRd);
-$sqlRo=mysql_query("select * from bq_stscolor where roomoccupy_id='3'");
-$rowRo=mysql_fetch_array($sqlRo); 
-$sqlRg=mysql_query("select * from bq_stscolor where roomoccupy_id='4'");
-$rowRg=mysql_fetch_array($sqlRg);
-$sqlRm=mysql_query("select * from bq_stscolor where roomoccupy_id='5'");
-$rowRm=mysql_fetch_array($sqlRm);
-$sqlRe=mysql_query("select * from bq_stscolor where roomoccupy_id='6'");
-$rowRe=mysql_fetch_array($sqlRe);
-?>
-<table class="table table-condensed table-hover table-striped table-bordered dsTTrm" cellspacing="0" cellpadding="6" border="3">
-	<tr>
-		<td style="background-color:#<?php echo $rowRv['room_color']; ?>;color:#fff;width:100px;font-size:12px;text-align:center;">Available</td>
-		<td style="background-color:#<?php echo $rowRd['room_color']; ?>;color:#fff;width:100px;font-size:12px;text-align:center;">Reserved</td>
-		<td style="background-color:#<?php echo $rowRo['room_color']; ?>;color:#fff;width:100px;font-size:12px;text-align:center;">Wait Listed </td>
-		<td style="background-color:#<?php echo $rowRg['room_color']; ?>;color:#fff;width:100px;font-size:12px;text-align:center;">Enquiry </td>
-		<td style="background-color:#<?php echo $rowRm['room_color']; ?>;color:#fff;width:100px;font-size:12px;text-align:center;">Tentative</td>
-		<td style="background-color:#<?php echo $rowRe['room_color']; ?>;color:#fff;width:100px;font-size:12px;text-align:center;">Blocked</td>
-	</tr>
-</table>
-<!-- End Room Status -->
-<?php
-$amount=0;
-$sqb=mysql_query("select * from bq_hallbooking where booking_no='".$_GET['roomBk']."' AND confirm_status!='7' and log_status='1'");
-$rob=mysql_fetch_array($sqb);
-?>
-<table style="float:left;width:32%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table" border="0" >
-<tbody id="addedRowsED1">
-
-</tbody>
-<tr>
-<td width="" valign="top"><label>Type <em>*</em></label></td>
-<td valign="top"><select name="corporate" id="corporate" data-validation="required" class="input validate[required] fstChUPPRCase textbox" style="width:210px;float:left;" onChange="corPind();">
-<option value="">--Select--</option>
-<option value="corporate"<?php echo ($rob['corporate']=='corporate')?'selected':''; ?> >Corporate</option>
-<option value="individual"<?php echo ($rob['corporate']=='individual')?'selected':''; ?> >Individual</option>
-</select></td>
-</tr>
-<tr>
-<td width="" valign="top"><label>Title <em>*</em></label></td>
-<td valign="top"><select name="title" id="title" data-validation="required" class="input validate[required] fstChUPPRCase textbox" style="width:50px;float:left;" onChange="corPind();">
-<option value="mr"<?php echo ($rob['title']=='mr')?'selected':''; ?> >Mr</option>
-<option value="mrs"<?php echo ($rob['title']=='mrs')?'selected':''; ?> >Mrs</option>
-<option value="ms"<?php echo ($rob['title']=='ms')?'selected':''; ?> >Ms</option>
-<option value="ms"<?php echo ($rob['title']=='m/s')?'selected':''; ?> >M/s</option>
-<option value="dr"<?php echo ($rob['title']=='dr')?'selected':''; ?> >Dr</option>
-</select>
-<input name="guest_name" id="guest_name" type="text" data-validation="required" class="input validate[required] textbox fstChUPPRCase" style="width:160px" value="<?php echo $rob['guest_name'];?>" placeholder="Name"/>
-</td>
-</tr>
-			<tr>
-					<td width="" valign="top"><label>Address 1 </label></td>
-					<td valign="top"><input name="address1" id="address1" type="text" data-validation="required" class="input validate[required] textbox fstChUPPRCase" style="width:210px" value="<?php echo $rob['address1']; ?>"/></td>
-					</tr>
-					<tr>
-					<td width="" valign="top"><label>Address 2 </label></td>
-					<td valign="top"><input name="address2" id="address2" type="text" class="textbox fstChUPPRCase" value="<?php echo $rob['address2']; ?>" style="width:210px"/></td>
-					</tr>
-			<tr>
-				<td width="" valign="top"><label>City <em>*</em></label></td>
-				<td width="" valign="top"><input name="city" id="city" type="text" data-validation="required" class="input validate[required] textbox fstChUPPRCase" value="<?php echo $rob['city']; ?>" style="width:80px"/><span class="spanClr">Zip</span>
-				<input name="pin_code" id="pin_code" type="text" class="textbox fstChUPPRCase" style="width:82px;margin:0 0 0 17px;" value="<?php echo $rob['pin']; ?>" /></td>
-				
-			</tr>
-			<tr>
-				<td width="" valign="top"><label>State <em>*</em></label></td>
-				<td width="" valign="top"><input name="state" id="state" type="text" class="textbox fstChUPPRCase" style="width:80px;" value="<?php echo $rob['state']; ?>" /><span class="spanClr">Country</span><input name="country" id="country" type="text" class="textbox fstChUPPRCase" style="width:82px;margin:0 0 0 -8px;" value="<?php echo $rob['country']; ?>"/>
-				</td>
-				
-			</tr>
-			<tr>
-	<td width="" valign="top"><label>Phone <em>*</em></label></td>
-	<td valign="top"><input name="phone" id="phone" type="text" data-validation="required" class="input validate[required] textbox fstChUPPRCase" style="width:210px" value="<?php echo $rob['phone']; ?>"/></td>
-	</tr>
-			
-				
-	</tbody>
-	</table>
-<table style="float:left;width:30%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table" border="0" >
-	<tr>
-		<td width="" valign="top"><label>GSTIN <em></em></label></td>
-		<td valign="top"><input name="gst_no" id="gst_no" type="text" class="textbox fstChUPPRCase" style="width:210px" value="<?php echo $rob['gstin']; ?>" /></td>
-	</tr>
-	
-	<tr>
-	<td width="" valign="top"><label>E-mail <em>*</em></label></td>
-	<td valign="top"><input name="email" id="email" type="text" class="textbox" style="width:210px" value="<?php echo $rob['email']; ?>"/></td>
-	</tr>
-	<tr>
-		<td width="" valign="top"><label>Contact Person</label></td>
-		<td valign="top"><input name="contact_person" id="contact_person" type="text" class="textbox codesUPPERCase" style="width:210px" value="<?php echo $rob['contact_person']; ?>" /></td>
-	</tr>
-	<tr>
-		<td width="" valign="top"><label>Mobile no</label></td>
-		<td valign="top"><input name="contact_mobile" id="contact_mobile" type="text" class="textbox" style="width:210px" value="<?php echo $rob['contact_mobile']; ?>" /></td>
-	</tr>
-	<tr>
-		<td width="" valign="top"><label>Booked By</label></td>
-		<td valign="top">
-		<!--<input name="booker_no" id="booker_no" type="text" class="textbox" style="width:210px" onkeypress="return pointNum(event)" />-->
-		<input name="booked_by" id="booked_by" type="text" class="textbox" style="width:210px" value="<?php echo $rob['booked_by']; ?>" />
-		</td>
-	</tr>
-	<tr>
-		<td width="" valign="top"><label>Booker Id</label></td>
-		<td valign="top"><input name="booker_id" id="booker_id" type="text" class="textbox" style="width:210px" value="<?php echo $rob['booker_id']; ?>" /></td>
-	</tr>
-	<tr>
-	<td width="" valign="top"><label>User Id</label></td>
-		<td valign="top"><input name="users_id" id="users_id" type="text" class="textbox" style="width:210px" value="<?php echo $rob['added_by']; ?>" readonly/></td>
-	</tr>
-	<?php
-	$sqlhrs = mysql_query("select netamt from bq_hallresvadv where booking_no = '".$_GET['roomBk']."' and status = '1'");
-	
-while($rowhrs = mysql_fetch_array($sqlhrs)){
-	$amount += $rowhrs['netamt'];
-	
-}
-?>
-	<tr>
-		<td width="" valign="top"><label>Advance</label></td>
-		<td valign="top"><input name="advanc" id="advanc" type="text" class="textbox" style="width:210px" value="<?php echo $amount; ?>" readonly /></td>
-	</tr>
-	</tbody>
-</table>
-			
-	<table style="width:33%;float:left;margin:8px 0 0 31px;" class="table">
-		<tbody>
-			<tr>
-				<td width="" valign="top"><label>Type of billing <em>*</em></label></td>
-				<td valign="top">
-				<?php $sqlTB=mysql_query("select distinct bill_code,bill_desc from bq_billinstruc");?>
-				<select name="top_code" id="top_code" class=" fstChUPPRCase textbox" style="width:210px">
-				<option value="">--Select--</option>
-				<?php 
-				while($rowTB=mysql_fetch_array($sqlTB)) {
-					if($rowTB['bill_code']==$rob['top_code']){
-				?>
-					<option value="<?php echo $rowTB['bill_code'];?>" selected ><?php echo $rowTB['bill_desc'];?></option>
-					<?php }else{?>
-					<option value="<?php echo $rowTB['bill_code'];?>"><?php echo $rowTB['bill_desc'];?></option>
-				<?php  } } ?>
-				</select>
-				</td>
-			</tr>
-			<tr>
-				<td width="" valign="top"><label>Business Source <em>*</em></label></td>
-				<td valign="top">
-				<?php $sqlBS=mysql_query("select distinct bs_code,bs_name from bq_bssource where bs_code!=''");?>
-				<select name="business_src" id="business_src" class=" fstChUPPRCase textbox" style="width:210px">
-				<option value="">--Select--</option>
-				<?php 
-				while($rowTB=mysql_fetch_array($sqlBS)) { 
-				if($rowTB['bs_code']==$rob['business_src']){
-				?>
-				<option value="<?php echo $rowTB['bs_code'];?>" selected ><?php echo $rowTB['bs_name'];?></option>
-				<?php }else{?>
-				<option value="<?php echo $rowTB['bs_code'];?>" ><?php echo $rowTB['bs_name'];?></option>
-				<?php }} ?>
-				</select>
-				</td>
-			</tr>
-			<tr>
-		<td width="" valign="top"><label>Company Name</label></td>
-		<td valign="top"><input name="comp_name" id="comp_name" type="text" class="textbox" style="width:210px" value="<?php echo $rob['company_name']; ?>" readonly /></td>
-	</tr>
-			<tr>
-				<td width="" valign="top"><label>Market Segment<em>*</em></label></td>
-				<td valign="top">
-				<?php $sqlBS=mysql_query("select distinct mscode,msname from bq_marketseg");?>
-				<select name="segment_code" id="segment_code"  class="fstChUPPRCase textbox" style="width:210px">
-				<option value="">--Select--</option>
-				<?php while($rowBS=mysql_fetch_array($sqlBS)) { ?>
-				<?php if($rowBS['mscode']==$rob['segment_code']){ ?>
-				<option value="<?php echo $rowBS['mscode'];?>" selected ><?php echo $rowBS['msname'];?></option>
-					<?php }else{?>
-						<option value="<?php echo $rowBS['mscode'];?>" ><?php echo $rowBS['msname'];?></option>
-					<?php } }?>
-				</select>
-				</td>
-			</tr>
-			<tr>
-				<td width="" valign="top"><label>Pay Mode <em>*</em></label></td>
-				<td valign="top">
-				<?php $sqlPm=mysql_query("select distinct pay_code,pay_desc from bq_paymode");?>
-				<select name="pay_mode" id="pay_mode" class="fstChUPPRCase textbox" style="width:210px">
-				<option value="">--Select--</option>
-				<?php while($rowPm=mysql_fetch_array($sqlPm)) { ?>
-				<?php if($rowPm['pay_code']==$rob['pay_mode']) { ?>
-				<option value="<?php echo $rowPm['pay_code'];?>" selected ><?php echo $rowPm['pay_desc'];?></option>
-				<?php }else{?>
-				<option value="<?php echo $rowPm['pay_code'];?>"><?php echo $rowPm['pay_desc'];?></option>
-				<?php } } ?>
-				</select>
-				</td>
-			</tr>
-			<tr>
-				<td width="" valign="top"><label>Remind Date</label></td>
-				<td valign="top"><input name="remind_date" id="remind_date" type="text" class="textbox datepicker1" style="width:210px" value="<?php echo $rob['remind_date']; ?>" /></td>
-			</tr>
-			<tr>
-				<td width="" valign="top"><label>Remarks</label></td>
-				<td valign="top"><textarea cols="34" rows="2" name="remarks" id="remarks" value="" style="text-transform:uppercase;font-size:12px;"><?php echo $rob['remarks']; ?></textarea></td>
-			</tr>	
-			</tbody>
-		</table>
-	</div>
-	
-<style>
-.btn-sm{
-    padding: 3px 10px;
-    margin-top: 6px;
-    width: 20%;
-}
-.nowrap{white-space: nowrap;}
-.table-responsive{
-overflow:hidden;
-}
-</style>
-
-<table style="border-left:1px solid #ddd;" class="table">
-	<tr>
-		<td>	
-	<div class="col-md-12  responsive nowrap " style=" padding-left:3px;">
-		<button type="submit" id="send" name="send" class="btn btn-primary btn-sm btn-responsive" style="" onclick="return checkformSubmit();"><img src="../../images/saves.png" class="sbtBtnImg frstChr"/>&nbsp;&nbsp;<span class="btnUndLine">S</span>ubmit</button>
-		
-		<a href="view-hall-booking.php"><button type="button" id="update" class="btn btn-primary btn-sm btn-responsive" onclick="return checkPropertyMasterq();"><img src="../../images/audit.png" class="sbtBtnImg "/>&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
-		
-		<!--<a href="view-hallbook-status.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>" target="_blank"><button type="button" id="hallsts" class="butExample" style="" onclick="hall_sts()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">H</span>all Status</button></a>-->
-		
-			<a href="<?php echo $home_path; ?>/dashboard.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>" target="_blank"><button type="button" id="hallsts" class="btn btn-primary btn-sm btn-responsive" style="" onclick="hall_sts()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">H</span>all Status</button></a>
-			
-		
-			<button type="reset" id="rest" class="btn btn-primary btn-sm btn-responsive" style="" onclick="cancel_ed()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
-			
-		<a href="<?php echo $home_path; ?>/dashboard.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>"><button type="button" id="exit" name="exit" class="btn btn-primary btn-sm btn-responsive" style=""  ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
-	</div>
-	</td>
-	</tr>
-</table>		
-	
-	
-	
 </div>
-	</div>
-	</div>
-	</form>	
-	<?php /* include("../../footer.php"); */ ?>
+
+<?php include("../../footer.php"); ?>
 </body>
 </html>

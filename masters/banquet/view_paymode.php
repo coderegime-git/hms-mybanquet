@@ -163,6 +163,30 @@ body, body.bgBODY {
 .mypay-edit-btn:hover {
     color: #005580 !important;
 }
+
+/* Status Badge Styling */
+.badge-status {
+    display: inline-block !important;
+    padding: 2px 8px !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    line-height: 1.2 !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+    letter-spacing: 0.3px !important;
+}
+
+.badge-active {
+    background-color: #e6f9ed !important;
+    color: #1a7f37 !important;
+    border: 1px solid #abefc6 !important;
+}
+
+.badge-passive, .badge-deactive {
+    background-color: #fbeae9 !important;
+    color: #cf222e !important;
+    border: 1px solid #f7c3c0 !important;
+}
 </style>
 
 <script>
@@ -221,12 +245,16 @@ jQuery(document).ready(function(){
         $sql = mysql_query("select * from bq_paymode order by bqpay_id asc");
         if($sql && is_resource($sql) && mysql_num_rows($sql) > 0) {
             while($row = mysql_fetch_array($sql)) {
-                $status = ($row['status'] == 1) ? "Active" : "Passive";
+                $isActive = ($row['status'] == 1 || $row['status'] == '1');
+                $statusText = $isActive ? "Active" : "Passive";
+                $badgeClass = $isActive ? "badge-active" : "badge-passive";
         ?>
             <tr>
                 <td><?php echo htmlspecialchars($row['pay_code']); ?></td>
-                <td><?php echo htmlspecialchars($row['pay_desc']); ?></td>
-                <td><?php echo $status; ?></td>
+                <td style="text-align:left;"><?php echo htmlspecialchars($row['pay_desc']); ?></td>
+                <td>
+                    <span class="badge-status <?php echo $badgeClass; ?>"><?php echo $statusText; ?></span>
+                </td>
                 <td>
                     <a href="edit_paymode.php?payMd=<?php echo $row['bqpay_id']; ?>" class="mypay-edit-btn" title="Edit">
                         <i class="fa fa-pencil-square-o"></i>

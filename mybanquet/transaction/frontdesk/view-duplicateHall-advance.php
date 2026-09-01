@@ -6,232 +6,412 @@ include("../../header.php");
 ?>
 <script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
 <link rel="stylesheet" href="<?php echo $home_path;?>/date-picker/jquery-ui.css">
-<script>
-	jQuery(document).ready(function(){
-		
-	$(".datepicker" ).datepicker({
-	changeMonth:true,
-	changeYear:true,
-	yearRange:"-5:+5",
-	/* minDate: 0, */
-	dateFormat:"dd/mm/yy"
-	});
 
-	$(".datepicker1" ).datepicker({
-	changeMonth:true,
-	changeYear:true,
-	yearRange:"-5:+5",
-	/* minDate: 0, */
-	dateFormat:"dd/mm/yy"
-	});
-	
-	
-	jQuery("#roommaster").validationEngine();
-	});
-	
-	
-	$("input").focus(function () {
-     $("").css('outline','yellow solid thin');
+<style type="text/css">
+body, body.bgBODY {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mypay-container {
+    width: 98% !important;
+    max-width: 100% !important;
+    margin: 15px auto 40px auto !important;
+    padding: 0 !important;
+}
+
+/* Action Buttons Bar on Top */
+.mypay-actions-bar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+    flex-wrap: wrap !important;
+}
+
+.mypay-filter-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+}
+
+.mypay-date-input {
+    width: 100px !important;
+    height: 28px !important;
+    text-align: center !important;
+    padding: 0 5px !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 4px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    box-sizing: border-box !important;
+}
+
+.mypay-search-input {
+    width: 260px !important;
+    height: 28px !important;
+    padding: 0 10px !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 4px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+}
+
+.btn-mypay-search {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    border: 1px solid #005b8a !important;
+    border-radius: 3px !important;
+    padding: 4px 12px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+}
+
+.btn-mypay-search:hover {
+    background-color: #005b8a !important;
+    color: #ffffff !important;
+}
+
+.btn-mypay-excel {
+    background-color: #28a745 !important;
+    color: #ffffff !important;
+    border: 1px solid #1e7e34 !important;
+    border-radius: 3px !important;
+    padding: 4px 12px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+}
+
+.btn-mypay-excel:hover {
+    background-color: #218838 !important;
+    color: #ffffff !important;
+}
+
+.btn-mypay-exit {
+    background-color: #005580 !important;
+    color: #ffffff !important;
+    border: 1px solid #004466 !important;
+    border-radius: 3px !important;
+    padding: 4px 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.btn-mypay-exit:hover {
+    background-color: #004466 !important;
+    color: #ffffff !important;
+}
+
+.mypay-icon-exit {
+    color: #f39c12 !important;
+    font-size: 13px !important;
+}
+
+/* Table Wrapper for Horizontal Scroll */
+.mypay-table-wrapper {
+    width: 100% !important;
+    max-height: 560px !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    border: 1px solid #0073B5 !important;
+    background: #ffffff !important;
+}
+
+/* View Data Table */
+.mypay-table {
+    width: 100% !important;
+    min-width: 1550px !important;
+    border-collapse: collapse !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+}
+
+.mypay-table thead tr.banner-row th {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    height: 34px !important;
+    padding: 8px 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: 1px solid #0073B5 !important;
+    vertical-align: middle !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+}
+
+.mypay-table thead tr.header-row th {
+    background-color: #f5f5f5 !important;
+    color: #222222 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 11px !important;
+    text-align: center !important;
+    height: 32px !important;
+    padding: 6px 6px !important;
+    border: 1px solid #e0e0e0 !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    position: sticky !important;
+    top: 34px !important;
+    z-index: 9 !important;
+}
+
+.mypay-table tbody td {
+    padding: 6px 6px !important;
+    border: 1px solid #e0e0e0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    color: #333333 !important;
+    text-align: center !important;
+    background-color: #ffffff !important;
+    height: 30px !important;
+    vertical-align: middle !important;
+}
+
+.mypay-table tbody tr:hover td {
+    background-color: #f8fbfe !important;
+}
+
+.btn-mypay-print-row {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    border: 1px solid #005b8a !important;
+    border-radius: 3px !important;
+    padding: 3px 10px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1.3 !important;
+}
+
+.btn-mypay-print-row:hover {
+    background-color: #005b8a !important;
+    color: #ffffff !important;
+}
+</style>
+
+<script>
+jQuery(document).ready(function(){
+    $(".datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-5:+5",
+        dateFormat: "dd/mm/yy"
+    });
+
+    $(".datepicker1").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-5:+5",
+        dateFormat: "dd/mm/yy"
+    });
+    
+    if(typeof shortcut !== 'undefined') {
+        shortcut.add("Ctrl+E", function() { 
+            window.location.href = "<?php echo $home_path; ?>/dashboard.php";
+        }); 
+    }
 });
 
 function clkSubmit() {
-fromdate=$('#from_date').val();
-todate=$('#to_date').val();
-srtx=$('#searchTxt').val();
-document.location="view-duplicateHall-advance.php?fromdate="+fromdate+"&todate="+todate+"&val="+srtx;
+    var fromdate = $('#from_date').val() || '';
+    var todate = $('#to_date').val() || '';
+    var srtx = $('#searchTxt').val().trim();
+    document.location = "view-duplicateHall-advance.php?fromdate=" + encodeURIComponent(fromdate) + "&todate=" + encodeURIComponent(todate) + "&val=" + encodeURIComponent(srtx);
 }
 
-function srcSub(){
-	$('#from_date').val('');
-	$('#to_date').val('');
-	$('#searchTxt').val('');
+function opnDupADv(a, b, c){
+    window.open('<?php echo $home_path;?>/transaction/view/print-HallReserv-advance.php?rserNo=' + encodeURIComponent(a) + '&rcptNo=' + encodeURIComponent(b) + '&sts=' + encodeURIComponent(c), '_blank', 'width=1000,height=700');
 }
-
-
-function opnDupADv(a,b,c){
-	bk=$('#bkn').val();
-	rct=$('#rct').val();
-	
-	
-	window.open('<?php echo $home_path;?>/transaction/view/print-HallReserv-advance.php?rserNo='+a+'&rcptNo='+b+'&sts='+c, '_blank','width=1000,height=700');
-}
- </script>
- 
-<style>
-   label {width: 205px; padding:0 20px 0 20px; display: inline-block;font-weight: bold;color: #000;font-size:12px; } 
-   
-input[type=text], textarea{
- height:26px;
-}
-.table td {text-align:center;} 
-check.png
-
-.butExample {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    color: #000;
-    font-family: arial,helvetica,sans-serif;
-    font-size: 12px;
-    margin-left: -3px;
-    padding: 4px 66px;
-}
-
-</style>	
+</script>
 
 <body class="bgBODY">
 
+<div class="mypay-container">
 
-<div style="margin:10px 0 0 0;">
-<table style="">
-<tr>
+    <!-- Top Action and Search Bar -->
+    <div class="mypay-actions-bar">
+        <div class="mypay-filter-group">
+            <span style="font-weight:bold;font-size:12px;">From:</span>
+            <input name="from_date" type="text" class="mypay-date-input datepicker" id="from_date" value="<?php if(isset($_GET['fromdate'])){ echo htmlspecialchars($_GET['fromdate']); } ?>" placeholder="From Date" />
+            <span style="font-weight:bold;font-size:12px;margin-left:4px;">To:</span>
+            <input name="to_date" type="text" class="mypay-date-input datepicker1" id="to_date" value="<?php if(isset($_GET['todate'])){ echo htmlspecialchars($_GET['todate']); } ?>" placeholder="To Date" />
+            <input type="text" id="searchTxt" name="searchTxt" class="mypay-search-input" placeholder="Enter Guest name / Bill# / Booking# / Receipt#" value="<?php if(isset($_GET['val'])) { echo htmlspecialchars($_GET['val']); } ?>" onkeypress="if(event.keyCode==13){ clkSubmit(); return false; }" />
+            <button type="button" name="submt" id="submt" class="btn-mypay-search" onclick="clkSubmit();">
+                <i class="fa fa-search"></i> Search
+            </button>
+            <a href="<?php echo $home_path ?>/reports/checkout/xt_viewDUpHAllADV-xls.php?fromdate=<?php echo urlencode($_GET['fromdate']); ?>&todate=<?php echo urlencode($_GET['todate']); ?>&val=<?php echo urlencode($_GET['val']); ?>" class="btn-mypay-excel">
+                <i class="fa fa-file-excel-o"></i> Export
+            </a>
+            <?php if((isset($_GET['val']) && trim($_GET['val']) != '') || (isset($_GET['fromdate']) && trim($_GET['fromdate']) != '')) { ?>
+                <a href="view-duplicateHall-advance.php" class="btn-mypay-search" style="background:#6c757d;border-color:#5a6268;text-decoration:none;">Reset</a>
+            <?php } ?>
+        </div>
 
-<td><label style="width:80px;"><b>From :</b></label></td>
-<td>
-	<input name="from_date" style="width:100px;margin-bottom:0px;text-align:center;" type="text" class="textbox datepicker" id="from_date"   value="<?php if(isset($_GET['todate'])){ echo $_GET['fromdate'];}?>" onChange="showsales()" placeholder="From Date"/>
-</td>
-<td><label style="width:70px;"><b>To :</b></label></td>
-<td>
-	<input name="to_date" style="width:100px;margin:0px 10px 0 0;text-align:center;" type="text" class="textbox datepicker1" id="to_date"  value="<?php if(isset($_GET['todate'])){ echo $_GET['todate'];}?>" onChange="showsales()" placeholder="To Date"/>
-</td>
-<td style="width:534px;">
-	<input type="text" id="searchTxt" name="searchTxt" placeholder="Enter Guest name / Bill# / Book#" style="margin-left: 30px;width:230px;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius:10px;border:1px solid #0B4F8C;height:32px;" value="<?php if(isset($_GET['val'])) {echo $_GET['val'];}else{echo '';}?>" onclick="srcSub();" />
+        <div>
+            <a href="<?php echo $home_path; ?>/dashboard.php" class="btn-mypay-exit" id="exit" title="Exit (Ctrl+E)">
+                <span class="mypay-icon-exit"><i class="fa fa-sign-out"></i></span>
+                <span>Exit</span>
+            </a>
+        </div>
+    </div>
 
-	<input name="submt" style="margin:0 0 0 10px;" type="button" id="submt"  class="btnH" value="Display" onClick="clkSubmit()" />
+    <!-- Data Table Container -->
+    <div class="mypay-table-wrapper" id="dvContainer">
+        <table class="mypay-table" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr class="banner-row">
+                    <th colspan="17">VIEW DUPLICATE HALL ADVANCE</th>
+                </tr>
+                <tr class="header-row">
+                    <th style="width: 3%;">Sl.No</th>
+                    <th style="width: 6%;">Booking#</th>
+                    <th style="width: 5%;">Receipt Date</th>
+                    <th style="width: 6%;">Receipt No</th>
+                    <th style="width: 6%;">Bill No</th>
+                    <th style="width: 5%;">Bill Date</th>
+                    <th style="width: 10%;">Guest Name</th>
+                    <th style="width: 8%;">Venue</th>
+                    <th style="width: 6%;">Function Date</th>
+                    <th style="width: 6%;">Phone</th>
+                    <th style="width: 8%;">Contact Person</th>
+                    <th style="width: 6%;">Contact Mobile</th>
+                    <th style="width: 5%;">Adv Amount</th>
+                    <th style="width: 5%;">Pay Mode</th>
+                    <th style="width: 7%;">Remarks</th>
+                    <th style="width: 5%;">User</th>
+                    <th style="width: 4%;">Print</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php 
+            $sqlAC = mysql_query("select * from audt_control where audtcontrol_id='1'");
+            $rowAC = mysql_fetch_array($sqlAC);
+            $adtCurDt = $rowAC['cur_date'];
+            $ad = array_map('trim', explode('/', $adtCurDt));
+            $cur = $ad[2] . '/' . $ad[1] . '/' . $ad[0];
 
-</td>
+            $frm = '';
+            if(isset($_GET['fromdate']) && trim($_GET['fromdate']) != '') {
+                $fr = array_map('trim', explode('/', $_GET['fromdate']));
+                $frm = $fr[2] . '-' . $fr[1] . '-' . $fr[0];
+            }
+            
+            $tod = '';
+            if(isset($_GET['todate']) && trim($_GET['todate']) != '') {
+                $to = array_map('trim', explode('/', $_GET['todate']));
+                $tod = $to[2] . '-' . $to[1] . '-' . $to[0];
+            }
 
-<td>
-	<a href="<?php echo $home_path ?>/reports/checkout/xt_viewDUpHAllADV-xls.php?fromdate=<?php echo $_GET['fromdate']?>&todate=<?php echo $_GET['todate']?>&val=<?php echo $_GET['val']?>" style="margin:0px 0 0 62px;color:#000;font-size:13px;font-weight:bold;"><button type="button" id="pdf" style="" class="myButeXL btnn"><img src="../../images/excel1.png"  class="sbtBtnImg"/>&nbsp;Export&nbsp;</button></a>
-</td>
+            if($frm != '' && $tod != '' && isset($_GET['val']) && trim($_GET['val']) != '') {
+                $val_esc = mysql_real_escape_string(trim($_GET['val']));
+                $item_where = " where str_to_date(cur_date,'%d/%m/%Y') >= '$frm' AND str_to_date(cur_date,'%d/%m/%Y') <= '$tod' AND (guest_name like '%$val_esc%' OR booking_no like '%$val_esc%' OR receipt_no like '%$val_esc%') AND status!='3' order by str_to_date(cur_date,'%d/%m/%Y') ASC";
+            } else if($frm != '' && $tod != '') {
+                $item_where = " where str_to_date(cur_date,'%d/%m/%Y') >= '$frm' AND str_to_date(cur_date,'%d/%m/%Y') <= '$tod' AND status!='3' order by str_to_date(cur_date,'%d/%m/%Y') ASC";
+            } else if(isset($_GET['val']) && trim($_GET['val']) != '') {
+                $val_esc = mysql_real_escape_string(trim($_GET['val']));
+                $item_where = " where (guest_name like '%$val_esc%' OR booking_no like '%$val_esc%' OR receipt_no like '%$val_esc%') AND status!='3' order by str_to_date(cur_date,'%d/%m/%Y') ASC";
+            } else {
+                $item_where = " where status!='3' order by str_to_date(cur_date,'%d/%m/%Y') DESC";
+            }
 
+            $sql = mysql_query("select * from bq_hallresvadv $item_where");
+            $x = 0;
+            if($sql && is_resource($sql) && mysql_num_rows($sql) > 0) {
+                while($row = mysql_fetch_array($sql)) {
+                    $x++;
+                    $rw = mysql_fetch_array(mysql_query("select * from bq_hallbooking where hallbook_id='".$row['hallbook_id']."'"));
+                    $rwHh = mysql_query("select * from bq_opbillstldtl where hallbook_id='".$row['hallbook_id']."'");
+                    if($rwHh && mysql_num_rows($rwHh) > 0) {
+                        $rwH = mysql_fetch_array($rwHh);
+                    } else {
+                        $rwH = mysql_fetch_array(mysql_query("select * from bq_opbillstldtl where bkno='".$row['booking_no']."'"));	
+                    }
+                    $advTot = $row['amount'] + $row['sgst'] + $row['cgst'];
+            ?>
+                <tr>
+                    <td><?php echo $x; ?></td>
+                    <td><b><?php echo htmlspecialchars($row['booking_no']); ?></b></td>
+                    <td><?php echo htmlspecialchars($row['cur_date']); ?></td>
+                    <td><?php echo htmlspecialchars($row['receipt_no']); ?></td>
+                    <td><?php echo isset($rwH['bill_no']) ? htmlspecialchars($rwH['bill_no']) : '-'; ?></td>
+                    <td><?php echo isset($rwH['bill_date']) ? htmlspecialchars($rwH['bill_date']) : '-'; ?></td>
+                    <td style="text-align:left;"><?php echo htmlspecialchars(strtoupper($row['guest_name'])); ?></td>
+                    <td style="text-align:left;"><?php echo isset($rw['venue']) ? htmlspecialchars(strtoupper($rw['venue'])) : ''; ?></td>
+                    <td><?php echo htmlspecialchars($row['function_date']); ?></td>
+                    <td><?php echo isset($rw['phone']) ? htmlspecialchars($rw['phone']) : ''; ?></td>
+                    <td style="text-align:left;"><?php echo isset($rw['contact_person']) ? htmlspecialchars(strtoupper($rw['contact_person'])) : ''; ?></td>
+                    <td><?php echo isset($rw['contact_mobile']) ? htmlspecialchars($rw['contact_mobile']) : ''; ?></td>
+                    <td><?php echo sprintf("%01.2f", $advTot); ?></td>
+                    <td><?php echo htmlspecialchars(ucfirst($row['pay_mode'])); ?></td>
+                    <td style="text-align:left;"><?php echo htmlspecialchars(ucfirst($row['remarks'])); ?></td>
+                    <td><?php echo htmlspecialchars(ucfirst($row['added_by'])); ?></td>
+                    <td>
+                        <button type="button" class="btn-mypay-print-row" onclick="opnDupADv('<?php echo htmlspecialchars($row['booking_no']); ?>','<?php echo htmlspecialchars($row['receipt_no']); ?>','<?php echo isset($rw['confirm_status']) ? htmlspecialchars($rw['confirm_status']) : ''; ?>');">
+                            <i class="fa fa-print"></i> Print
+                        </button>
+                    </td>
+                </tr>
+            <?php 
+                } 
+            } else { 
+            ?>
+                <tr>
+                    <td colspan="17" style="padding: 20px; color: #777; text-align: center; font-size: 13px;">
+                        No Duplicate Hall Advance records found
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
 
-</tr>
-</table>
- </div>
- 
- 
- 
- 
- 
- <form id="taxTypes" name="taxTypes" class="" style=""> 
+</div>
 
-<table cellpadding="0" cellspacing="0" border="1" class="table" style="margin:10px 0 0px 0px;text-align:center;font-size:12px;position;absolute;">
-	<tr class="info">
-		<td colspan="15" style="text-align:center;"><h3 class="viewDTT" style=""><b>View Duplicate Hall Advance</b></h3><b></b></td>
-	</tr>
-</table>
-
-<form id="taxTypes" name="taxTypes" class="" > 
-<div style="" >
-<div class="scrollingtable frmCentrR" id="dvContainer"  >
-  <div>
-    <div style="">
-
-<table style="text-align:center;font-size:12px;" border="1" cellpadding="0" cellspacing="0">
-	<thead >
-	<tr>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Sl.no" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Booking#" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Receipt Dt" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Receipt no" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Bill no" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Bill Dt" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Gst Name" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Venue" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Funct-Dt" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Phone" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Contact per." ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Contact no" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Adv" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Pay mode" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Remarks" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="User" ></div></th>
-		<th width="80" style="text-align:center;background-color:#d3524e;color:#fff;"><div label="Print" ></div></th>
-	</tr>
-</thead>
-
-
-
-
-<style>
-.btnH{
-	padding:3px 8px;
-	font-weight:bold;
-}
-</style>
-<?php 
-$sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
-$rowAC=mysql_fetch_array($sqlAC);
-$adtCurDt=$rowAC['cur_date'];
-$ad=explode('/',$adtCurDt);
-$cur=$ad[2].'/'.$ad[1].'/'.$ad[0];
-
-	$fr=explode('/',$_GET['fromdate']);
-	$frm=$fr[2].'-'.$fr[1].'-'.$fr[0];
-	
-	$to=explode('/',$_GET['todate']);
-	$tod=$to[2].'-'.$to[1].'-'.$to[0];
-
-if(isset($_GET['fromdate']) && $_GET['fromdate']!='' && isset($_GET['todate']) && $_GET['todate']!='' && isset($_GET['val']) && $_GET['val']!='') {
-$item_where= " where str_to_date(cur_date,'%d/%m/%Y') >= '$frm' AND str_to_date(cur_date,'%d/%m/%Y') <= '$tod'   order by str_to_date(cur_date,'%d/%m/%Y') ASC";
-$sql=mysql_query("select * from bq_hallresvadv $item_where");
-}else if(isset($_GET['fromdate']) && isset($_GET['todate']) && $_GET['fromdate']!='' && isset($_GET['todate']) && $_GET['todate']!='' && isset($_GET['val']) && $_GET['val']=='') {
-$item_where= " where str_to_date(cur_date,'%d/%m/%Y') >= '$frm' AND str_to_date(cur_date,'%d/%m/%Y') <= '$tod' order by str_to_date(cur_date,'%d/%m/%Y') ASC";
-$sql=mysql_query("select * from bq_hallresvadv $item_where");
-} else if(isset($_GET['val']) && $_GET['val']!='') {
-$item_where= " where guest_name like '%".$_GET['val']."%' OR booking_no like '%".$_GET['val']."%' OR receipt_no like '%".$_GET['val']."%'  order by str_to_date(cur_date,'%d/%m/%Y') ASC";
-$sql=mysql_query("select * from bq_hallresvadv $item_where");
-}else{
-$sql=mysql_query("select * from bq_hallresvadv where str_to_date(cur_date,'%d/%m/%Y') >= '$frm' AND str_to_date(cur_date,'%d/%m/%Y') <= '$tod' order by str_to_date(cur_date,'%d/%m/%Y') ASC"); 
-}
-/* $sql=mysql_query("select * from bq_hallresvadv where bill_status!='3'"); */
-$x=0;
-while($row=mysql_fetch_array($sql)) {
-$x++;
-
-$rw=mysql_fetch_array(mysql_query("select * from bq_hallbooking where hallbook_id='".$row['hallbook_id']."'"));
-/* $rwH=mysql_fetch_array(mysql_query("select * from bq_opbillstldtl where hallbook_id='".$row['hallbook_id']."'")); */
-$rwHh=(mysql_query("select * from bq_opbillstldtl where hallbook_id='".$row['hallbook_id']."'"));
-if(mysql_num_rows($rwHh)>0){
-	$rwH=mysql_fetch_array($rwHh);
-}else{
-$rwH=mysql_fetch_array(mysql_query("select * from bq_opbillstldtl where bkno='".$row['booking_no']."'"));	
-}
-
-
-if($row['status']!='3'){
-?>
-<tr>
-<input type="hidden" name="bkn" id="bkn" value="<?php echo $row['booking_no']?>"/>
-<input type="hidden" name="rct" id="rct" value="<?php echo $row['receipt_no']?>"/>
-
-	<td width="80" style="text-align:center;"><?php echo $x;  ?></td>
-	<td width="80" style="text-align:center;"><?php echo $row['booking_no']; ?></td>
-	<td width="80" style="text-align:center;"><?php echo $row['cur_date']; ?></td>
-	<td width="80" style="text-align:center;"><?php echo $row['receipt_no']; ?></td>
-	<td width="80" style="text-align:center;"><?php echo $rwH['bill_no']; ?></td>
-	<td width="80" style="text-align:center;"><?php echo $rwH['bill_date']; ?></td>
-	<td width="80" style="text-align:left;"><?php echo strtoupper($row['guest_name']); ?></td>
-	<td width="80" style="text-align:left;"><?php echo strtoupper($rw['venue']); ?></td>
-	<td width="80" style="text-align:left;"><?php echo strtoupper($row['function_date']); ?></td>
-	<td width="80" style="text-align:center;"><?php echo $rw['phone']; ?></td>
-	<td width="80" style="text-align:left;"><?php echo strtoupper($rw['contact_person']); ?></td>
-	<td width="80" style="text-align:center;"><?php echo $rw['contact_mobile']; ?></td>
-	<td width="80" style="text-align:center;"><?php echo $row['amount']+$row['sgst']+$row['cgst']; ?></td>
-	<td width="80" style="text-align:center;"><?php echo ucfirst($row['pay_mode']); ?></td>
-	<td width="80" style="text-align:center;"><?php echo ucfirst($row['remarks']); ?></td>
-	<td width="80" style="text-align:center;"><?php echo ucfirst($row['added_by']); ?></td>
-	<td width="80" style="text-align:center;" onclick="opnDupADv('<?php echo $row['booking_no']?>','<?php echo $row['receipt_no']?>','<?php echo $rw['confirm_status']?>');"><a href="#" style="" class="btnH">Print
-	</a></td>
-</tr>
-<?php } } ?>	
-</table>
-
-	</div>
-	</div>
-	</div>
-	</div>	
-
-	<?php include("../../footer.php"); ?>
-	</body>
- </form>
+<?php include("../../footer.php"); ?>
+</body>
+</html>

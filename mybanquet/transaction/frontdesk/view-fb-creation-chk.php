@@ -6,299 +6,489 @@ include("../../header.php");
 ?>
 
 <link href="<?php echo $home_path; ?>/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="<?php echo $home_path;?>/date-picker/jquery-ui.css">
-<link rel="stylesheet" href="<?php echo $home_path; ?>/css/dataTables.bootstrap.min.css">
-<script src="../../js/jquery.js"></script> 
-<script type="text/javascript" src="../../js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="../../js/dataTables.bootstrap.min.js"></script>
-<script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
 <script src="../../js/sweetalert.min.js"></script>
-<script>
-	jQuery(document).ready(function(){
-		$('#adave').DataTable({
-		 "scrollY": 350,
-	/* "scrollX": true,  */
-	"paging":   false,
-		 
-	 });
-	$(".datepicker" ).datepicker({
-	changeMonth:true,
-	changeYear:true,
-	yearRange:"-100:+0",
-	/* minDate: 0, */
-	dateFormat:"dd/mm/yy"
-	});
+<script type="text/javascript" src="<?php echo $home_path; ?>/js/shortcut.js"></script>
 
-	$(".datepicker1" ).datepicker({
-	changeMonth:true,
-	changeYear:true,
-	yearRange:"-100:+0",
-	/* minDate: 0, */
-	dateFormat:"dd/mm/yy"
-	});
-	
-		 $("#msgFo").fadeOut(5000);
-		$('#searchBtn').click(function(){
-		item="?val="+$('#searchTxt').val();
-		document.location.href="view-reservroom-booking.php"+item;
-	}); 
-	
-	jQuery("#roommaster").validationEngine();
-	});
-	
+<style type="text/css">
+body, body.bgBODY {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mypay-container {
+    width: 98% !important;
+    max-width: 100% !important;
+    margin: 15px auto 40px auto !important;
+    padding: 0 !important;
+}
+
+/* Action & Search Bar on Top */
+.mypay-actions-bar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 10px !important;
+    flex-wrap: wrap !important;
+}
+
+.mypay-filter-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.mypay-search-input {
+    width: 270px !important;
+    height: 28px !important;
+    line-height: 28px !important;
+    padding: 0 10px !important;
+    border: 1px solid #c0c8d0 !important;
+    border-radius: 3px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    transition: border-color 0.15s ease-in-out !important;
+}
+
+.mypay-search-input:focus {
+    border-color: #0084b4 !important;
+    box-shadow: 0 0 3px rgba(0, 132, 180, 0.3) !important;
+}
+
+.btn-mypay-search {
+    background-color: #0084b4 !important;
+    color: #ffffff !important;
+    border: 1px solid #00739c !important;
+    border-radius: 3px !important;
+    padding: 0 12px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    line-height: 26px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.btn-mypay-search:hover {
+    background-color: #00739c !important;
+    color: #ffffff !important;
+}
+
+.btn-mypay-reset {
+    background-color: #f6f8fa !important;
+    color: #57606a !important;
+    border: 1px solid #d0d7de !important;
+    border-radius: 3px !important;
+    padding: 0 10px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    line-height: 26px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.btn-mypay-reset:hover {
+    background-color: #e9ecef !important;
+    color: #24292f !important;
+}
+
+.btn-mypay-exit {
+    background-color: #005580 !important;
+    color: #ffffff !important;
+    border: 1px solid #004466 !important;
+    border-radius: 3px !important;
+    padding: 4px 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.btn-mypay-exit:hover {
+    background-color: #004466 !important;
+    color: #ffffff !important;
+}
+
+.mypay-icon-exit {
+    color: #f39c12 !important;
+    font-size: 13px !important;
+}
+
+/* Table Wrapper for Horizontal Scroll */
+.mypay-table-wrapper {
+    width: 100% !important;
+    max-height: 560px !important;
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    border: 1px solid #0073B5 !important;
+    background: #ffffff !important;
+}
+
+/* View Data Table Matching Refund Advance */
+.mypay-table {
+    width: 100% !important;
+    min-width: 1200px !important;
+    border-collapse: collapse !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+}
+
+.mypay-table thead tr.banner-row th {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    height: 34px !important;
+    padding: 8px 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: 1px solid #0073B5 !important;
+    vertical-align: middle !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+}
+
+.mypay-table thead tr.header-row th {
+    background-color: #f5f5f5 !important;
+    color: #222222 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 11px !important;
+    text-align: center !important;
+    height: 32px !important;
+    padding: 6px 6px !important;
+    border: 1px solid #e0e0e0 !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+    position: sticky !important;
+    top: 34px !important;
+    z-index: 9 !important;
+}
+
+.mypay-table tbody td {
+    padding: 6px 8px !important;
+    border: 1px solid #e0e0e0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 11px !important;
+    color: #333333 !important;
+    text-align: center !important;
+    background-color: #ffffff !important;
+    height: 30px !important;
+    vertical-align: middle !important;
+}
+
+.mypay-table tbody tr:hover td {
+    background-color: #f8fbfe !important;
+}
+
+/* Action Icons */
+.btn-mypay-action-icon {
+    font-size: 15px !important;
+    display: inline-block !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    transition: transform 0.15s ease, color 0.15s ease !important;
+    padding: 2px 4px !important;
+}
+
+.btn-mypay-action-icon:hover {
+    transform: scale(1.2) !important;
+    text-decoration: none !important;
+}
+
+.icon-create {
+    color: #28a745 !important;
+}
+.icon-create:hover {
+    color: #218838 !important;
+}
+
+.icon-edit {
+    color: #0073B5 !important;
+}
+.icon-edit:hover {
+    color: #005b8a !important;
+}
+
+.icon-print {
+    color: #333333 !important;
+}
+.icon-print:hover {
+    color: #000000 !important;
+}
+
+.icon-cancel {
+    color: #d9534f !important;
+}
+.icon-cancel:hover {
+    color: #c9302c !important;
+}
+
+.icon-disabled {
+    color: #bcc4bf !important;
+    font-size: 15px !important;
+    cursor: not-allowed !important;
+    display: inline-block !important;
+    padding: 2px 4px !important;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    if(typeof shortcut !== 'undefined') {
+        shortcut.add("Ctrl+E", function() { 
+            window.location.href = "<?php echo $home_path; ?>/dashboard.php";
+        });
+    }
+
+    $('#searchTxt').on('keypress', function(e){
+        if(e.which == 13){
+            e.preventDefault();
+            clkSubmit();
+        }
+    });
+});
+
 function clkSubmit() {
-// fromdate=$('#from_date').val();
-// todate=$('#to_date').val();
-srtx=$('#searchTxt').val();
-/* if(fromdate!="" && todate!="")
-{ */
-// document.location="view-fb-creation.php?fromdate="+fromdate+"&todate="+todate+"&val="+srtx;
-document.location="view-fb-creation-chk.php?val="+srtx;
-/* } */
-
+    var srtx = encodeURIComponent($('#searchTxt').val().trim());
+    document.location.href = "view-fb-creation-chk.php?val=" + srtx;
 }
 
 function srcSub(){
-	$('#from_date').val('');
-	$('#to_date').val('');
-	$('#searchTxt').val('');
+    document.location.href = "view-fb-creation-chk.php";
 }
- </script>
- 
-<style>
 
-   
-input[type=text], textarea{
- height:26px;
+function fpcancel(a, e){
+    var fpNum = a;
+    var bkno = e;
+    swal({
+        title: "Do You Want To Cancel FP?",
+        text: "FP NO: " + fpNum,
+        icon: "warning",
+        buttons: {
+            cancel: "No",
+            confirm: "Yes"
+        }
+    })
+    .then(function (isOkay) {
+        if (isOkay) {
+            document.location.href = "<?php echo $home_path;?>/action/cancel-fp-creation.php?fpNum=" + encodeURIComponent(fpNum) + "&bkno=" + encodeURIComponent(bkno);
+        }
+    });
+    return false;
 }
-.table td {text-align:center;} 
-
-
-
-</style>	
+</script>
 
 <body class="bgBODY">
-<?php 	
-/* echo $_GET['msg']; */ 
-if(isset($_GET['msg'])){
-?>
-<script>
-$(document).ready(function(){
-	//alert('hi');
-fpNum=$('#fpNum').val();
-msg=$('#msg').val();
-swal({
-            title: "Do You  Want To Print FP?",
-            text: "FP NO: <?php echo $_GET['fpNum']; ?>",
-            icon: "warning",
-           buttons:{
-				 cancel: "No",
-                 confirm: "Yes",
-			},
-        })
-        .then(function (isOkay) {
-            if (isOkay) {
-                // form.submit();
-			window.open('../view/print-fp-creation.php?fpNum='+fpNum+'');
-            }
-        });
-        return false;
-});
 
-</script>
-<?php } 
-if(isset($_GET['cmsg'])){
-?>
-<script>
+<?php if(isset($_GET['msg'])){ ?>
+<script type="text/javascript">
 $(document).ready(function(){
-	//alert('hi');
-fpNum=$('#fpNum').val();
-swal({
-            title: "FP: <?php echo $_GET['fpNum']; ?> Cancelled",
-            icon: "warning",
-           buttons:{
-                 confirm: "OK",
-			},
-        })
-        return false;
+    var fpNum = $('#fpNum').val();
+    swal({
+        title: "Do You Want To Print FP?",
+        text: "FP NO: <?php echo htmlspecialchars($_GET['fpNum']); ?>",
+        icon: "warning",
+        buttons: {
+            cancel: "No",
+            confirm: "Yes"
+        }
+    })
+    .then(function (isOkay) {
+        if (isOkay) {
+            window.open('../view/print-fp-creation.php?fpNum=' + encodeURIComponent(fpNum));
+        }
+    });
 });
-
 </script>
 <?php } ?>
-<input id="fpNum" value="<?php  echo $_GET['fpNum'];?>" hidden > 
-<input id="msg" value="<?php  echo $_GET['msg'];?>" hidden > 
 
+<?php if(isset($_GET['cmsg'])){ ?>
+<script type="text/javascript">
+$(document).ready(function(){
+    swal({
+        title: "FP: <?php echo htmlspecialchars($_GET['fpNum']); ?> Cancelled",
+        icon: "warning",
+        buttons: {
+            confirm: "OK"
+        }
+    });
+});
+</script>
+<?php } ?>
 
-<div style="margin:10px 0 0 0;">
-<table style="">
-<tr>
-<!--<td><label style="width:80px;"><b>From :</b></label></td>
-<td>
-	<input name="from_date" style="width:100px;margin-bottom:0px;text-align:center;" type="text" class="textbox datepicker" id="from_date"   value="<?php if(isset($_GET['fromdate'])){ echo $_GET['fromdate'];}?>" onChange="showsales()" placeholder="From Date"/>
-</td>
-<td><label style="width:70px;"><b>To :</b></label></td>
-<td>
-	<input name="to_date" style="width:100px;margin:0px 10px 0 0;text-align:center;" type="text" class="textbox datepicker1" id="to_date"  value="<?php if(isset($_GET['todate'])){ echo $_GET['todate'];}?>" onChange="showsales()" placeholder="To Date"/>
-</td>-->
-<td style="width:534px;">
-	<input type="text" id="searchTxt" name="searchTxt" placeholder="Guest Name / Function Date" style="width:230px;border-radius: 10px;-moz-border-radius: 10px;-webkit-border-radius:10px;border:1px solid #0B4F8C;height:32px;margin: 0 0 11px 25px;" value="<?php if(isset($_GET['val'])) {echo $_GET['val'];}else{echo '';}?>" onclick="srcSub();" />
+<input id="fpNum" type="hidden" value="<?php echo htmlspecialchars($_GET['fpNum']); ?>" /> 
+<input id="msg" type="hidden" value="<?php echo htmlspecialchars($_GET['msg']); ?>" /> 
 
-	<input name="submt" style="margin:0 0 0 10px;" type="button" id="submt"  class="btnH" value="Display" onClick="clkSubmit()" />
-	
-</td>
+<div class="mypay-container">
 
-<!--<td>
-<a href="fp_creation.php"><button type="button" id="add" class="button_example bnkSbt" onclick="return checkUnitMaster();" style="margin:4px 0 -8px 0px;"><img src="../../images/add-contact-iconn.png" class="sbtBtnImg"/>&nbsp;&nbsp;<span class="btnUndLine">A</span>dd FP Creation</button></a>
-</td>-->
-</tr>
-</table>
+    <!-- Top Action & Search Bar -->
+    <div class="mypay-actions-bar">
+        <div class="mypay-filter-group">
+            <input type="text" id="searchTxt" name="searchTxt" class="mypay-search-input" placeholder="Guest Name / Function Date / Booking No" value="<?php echo isset($_GET['val']) ? htmlspecialchars($_GET['val']) : ''; ?>" />
+            <button type="button" id="submt" class="btn-mypay-search" onclick="clkSubmit()" title="Display Records">
+                <i class="fa fa-search"></i> <span>Display</span>
+            </button>
+            <?php if(isset($_GET['val']) && $_GET['val'] != ''){ ?>
+            <button type="button" class="btn-mypay-reset" onclick="srcSub()" title="Clear Filter">
+                <i class="fa fa-times"></i> <span>Clear</span>
+            </button>
+            <?php } ?>
+        </div>
+
+        <a href="<?php echo $home_path; ?>/dashboard.php" class="btn-mypay-exit" id="exit" title="Exit (Ctrl+E)">
+            <span class="mypay-icon-exit"><i class="fa fa-sign-out"></i></span>
+            <span>Exit</span>
+        </a>
+    </div>
+
+    <!-- Data Table Container -->
+    <div class="mypay-table-wrapper" id="dvContainer">
+        <table class="mypay-table" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr class="banner-row">
+                    <th colspan="13">VIEW FUNCTION PROSPECTUS CREATION DETAILS</th>
+                </tr>
+                <tr class="header-row">
+                    <th style="width: 4%;">Sl.No</th>
+                    <th style="width: 9%;">Booking No#</th>
+                    <th style="width: 5%;">Id#</th>
+                    <th style="width: 18%;">Guest Name</th>
+                    <th style="width: 12%;">Venue</th>
+                    <th style="width: 8%;">Session</th>
+                    <th style="width: 9%;">Function Date</th>
+                    <th style="width: 6%;">Create</th>
+                    <th style="width: 5%;">Edit</th>
+                    <th style="width: 5%;">Print</th>
+                    <th style="width: 6%;">FP Cancel</th>
+                    <th style="width: 7%;">Created By</th>
+                    <th style="width: 6%;">Created On</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php 
+            $sqlAC = mysql_query("select * from audt_control where audtcontrol_id='1'");
+            $rowAC = mysql_fetch_array($sqlAC);
+            $adtCurDt = trim($rowAC['cur_date']);
+            $ad = explode('/', $adtCurDt);
+            $cur = $ad[2] . '-' . $ad[1] . '-' . $ad[0];
+
+            $val = isset($_GET['val']) ? trim($_GET['val']) : '';
+
+            if($val != ''){
+                $safeVal = mysql_real_escape_string($val);
+                $sql = mysql_query("select * from bq_hallbooking where (book_date = '$safeVal' or guest_name like '%$safeVal%' or booking_no like '%$safeVal%') and confirm_status='2' order by str_to_date(book_date,'%d/%m/%Y') ASC");
+            } else {
+                $sql = mysql_query("select * from bq_hallbooking where str_to_date(book_date,'%d/%m/%Y') >= '$cur' and confirm_status='2' order by str_to_date(book_date,'%d/%m/%Y') ASC");
+            }
+
+            $x = 0;
+            if($sql && is_resource($sql) && mysql_num_rows($sql) > 0) {
+                while($row = mysql_fetch_array($sql)) {
+                    $x++;
+
+                    $sqlC = mysql_fetch_array(mysql_query("select * from bq_opfpmenuhdr where bkno='" . mysql_real_escape_string($row['booking_no']) . "' and fpno='" . mysql_real_escape_string($row['fpno']) . "'"));
+
+                    $sqlv = mysql_query("select * from bq_venue where venue_code='" . mysql_real_escape_string($row['venue']) . "' AND status ='1'");
+                    $rov = mysql_fetch_array($sqlv);
+
+                    $billtype = ($pid == '1') ? 'print-fp-creation.php' : 'print-fp-creation.php';
+            ?>
+                <tr>
+                    <td><?php echo $x; ?></td>
+                    <td><b><?php echo htmlspecialchars($row['booking_no']); ?></b></td>
+                    <td><?php echo htmlspecialchars($row['hallbook_id']); ?></td>
+                    <td style="text-align:left;"><?php echo htmlspecialchars(strtoupper($row['guest_name'])); ?></td>
+                    <td><?php echo htmlspecialchars(strtoupper($rov['venue_desc'])); ?></td>
+                    <td><?php echo htmlspecialchars(strtoupper($row['session'])); ?></td>
+                    <td><?php echo htmlspecialchars(strtoupper($row['book_date'])); ?></td>
+                    <td>
+                        <?php if($sqlC['bill_status'] == 3 || $sqlC['bill_status'] == '') { ?>
+                            <a href="<?php echo $home_path;?>/transaction/frontdesk/fp_creation.php?bkNo=<?php echo urlencode($row['booking_no']);?>&bid=<?php echo urlencode($row['hallbook_id']);?>" class="btn-mypay-action-icon icon-create" title="Create FP">
+                                <i class="fa fa-plus-square"></i>
+                            </a>
+                        <?php } else { ?>
+                            <i class="fa fa-plus-square icon-disabled" title="FP Already Created"></i>
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <?php if($sqlC['bill_status'] == 1) { ?>
+                            <a href="<?php echo $home_path;?>/transaction/frontdesk/edit-fp-creation.php?fpNo=<?php echo urlencode($row['fpno']);?>" class="btn-mypay-action-icon icon-edit" title="Edit FP">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </a>
+                        <?php } else { ?>
+                            <i class="fa fa-pencil-square-o icon-disabled" title="Edit Disabled"></i>
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <?php if(!empty($row['fpno'])){ ?>
+                            <a href="<?php echo $home_path;?>/transaction/view/<?php echo $billtype; ?>?fpNum=<?php echo urlencode($row['fpno']);?>" target="_blank" class="btn-mypay-action-icon icon-print" title="Print FP">
+                                <i class="fa fa-print"></i>
+                            </a>
+                        <?php } else { ?>
+                            <i class="fa fa-print icon-disabled" title="Print Disabled"></i>
+                        <?php } ?>
+                    </td>
+                    <td>
+                        <?php if($sqlC['bill_status'] == 1) { ?>
+                            <a onclick="fpcancel('<?php echo htmlspecialchars($row['fpno']); ?>','<?php echo htmlspecialchars($row['booking_no']); ?>');" class="btn-mypay-action-icon icon-cancel" title="Cancel FP">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        <?php } else { ?>
+                            <i class="fa fa-trash-o icon-disabled" title="Cancel Disabled"></i>
+                        <?php } ?>
+                    </td>
+                    <td><?php echo htmlspecialchars($row['added_by']); ?></td>
+                    <td><?php echo htmlspecialchars($row['added_on']); ?></td>
+                </tr>
+            <?php 
+                } 
+            } else { 
+            ?>
+                <tr>
+                    <td colspan="13" style="padding: 20px; color: #777; text-align: center; font-size: 13px;">
+                        No Function Prospectus records found
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
-<form id="taxTypes" name="taxTypes" class="" style=""> 
-<table class="table table-striped table-success" id="adave" border="1" style="text-align:center;font-size:12px; border-color:#ddd;">
-<thead style="background-color:#FFFFFF;">
-<tr class="info">
-		<td colspan="21" style="text-align:center;"><h3 class="viewDTT" style=""><b>View Function Prospectus Creation Details</b></h3><b></b></td>
-	</tr>
-	<tr>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Sl.no</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Booking_No#</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Id#</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Guest name</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Venue</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Session</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Function Date</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Create</th>
-		<!--<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Approval Status</th>-->
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Edit</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Print</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">FP Cancel</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Created by</th>
-		<th  style="text-align:center;background-color:#0073B5;;color:#fff;">Created on</th>
-	</thead>
-	<tbody>
-	<style>
-.butExample {
-    padding: 4px 9px;
-}
-.butDisable{
-	padding: 4px 9px;
-}
-</style>
-<?php 
-$sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
-$rowAC=mysql_fetch_array($sqlAC);
-$adtCurDt=trim($rowAC['cur_date']);
-$ad=explode('/',$adtCurDt);
-$cur=$ad[2].'-'.$ad[1].'-'.$ad[0];
-	
-	if(isset($_GET['val']) && $_GET['val']!=''){
-       // $item_where= " where joborder ='".$_GET['val']."'";
-       $sql=mysql_query("select * from bq_hallbooking where book_date ='".$_GET['val']."' or guest_name ='".strtolower($_GET['val'])."' and confirm_status='2' order by str_to_date(book_date,'%d/%m/%Y') ASC");	
-	   
-	}else{
-	$sql=mysql_query("select * from bq_hallbooking where str_to_date(book_date,'%d/%m/%Y') >= '".$cur."' and confirm_status='2' order by str_to_date(book_date,'%d/%m/%Y') ASC");
-	}
-	
-
-$x=0;
-while($row=mysql_fetch_array($sql)) {
-$x++;
-
-	$sqlC=mysql_fetch_array(mysql_query("select * from bq_opfpmenuhdr where bkno='".$row['booking_no']."' and fpno='".$row['fpno']."'"));
-
-
-$sqlv=mysql_query("select * from bq_venue where venue_code='".$row['venue']."' AND status ='1'");
-$rov=mysql_fetch_array($sqlv);
-?>
-
-
-<tr>
-	<td  style="text-align:center;"><?php echo $x;  ?></td>
-	<td  style="text-align:center;"><?php echo $row['booking_no'];?></td>
-	<td  style="text-align:center;"><?php echo $row['hallbook_id']; ?></td>
-	<td  style="text-align:left;width:250px;"><?php echo strtoupper($row['guest_name']); ?></td>
-	<td  style="text-align:center;"><?php echo strtoupper($rov['venue_desc']); ?></td>
-	<td  style="text-align:center;"><?php echo strtoupper($row['session']); ?></td>
-	<td  style="text-align:center;"><?php echo strtoupper($row['book_date']); ?></td>
-	<td  style="text-align:center;">
-	<?php if($sqlC['bill_status']==3 || $sqlC['bill_status']=='' ) { ?>
-	<a href="<?php echo $home_path;?>/transaction/frontdesk/fp_creation.php?bkNo=<?php echo $row['booking_no'];?>&&bid=<?php echo $row['hallbook_id'];?>"><i class="fa fa-plus-square fa-2x" style="color:#2a9c33;" aria-hidden="true"></i></a>
-	<?php }else{?>
-	 <i class="fa fa-plus-square fa-2x" style="color:#bcc4bf;" aria-hidden="true"></i>
-    <?php }?>
-	</td>
-	<!--<td  style="text-align:center;">
-	<a href="<?php echo $home_path;?>/transaction/frontdesk/fp_creation.php?bkNo=<?php echo $row['booking_no'];?>&&bid=<?php echo $row['hallbook_id'];?>"><i class="fa fa-plus-square fa-2x" style="color:#2a9c33;" aria-hidden="true"></i></a>
-	</td>-->
-	<!--<td  style="text-align:center;">
-	<?php if($sqlC['aprove_sts']==1) { ?>
-	<a href="<?php echo $home_path;?>/transaction/frontdesk/approve_fp.php?fpNo=<?php echo $row['fpno'];?>">Pending</a>
-	<?php }elseif($sqlC['aprove_sts']==2){?>
-	<a href="#" style="color:#4f9c40;font-weight:bold;cursor:context-menu;">Approved</a>
-	<?php }?>
-	</td>-->
-	<td  style="text-align:center;">
-	<?php if($sqlC['bill_status']==1) { ?>
-	<a href="<?php echo $home_path;?>/transaction/frontdesk/edit-fp-creation.php?fpNo=<?php echo $row['fpno'];?>"><i class="fa fa-edit fa-2x" style="color:#000;" aria-hidden="true"></i></a>
-	<?php }else{?>
-    <i class="fa fa-edit fa-2x" style="color:#bcc4bf;" aria-hidden="true"></i>
-    <?php }?>
-	</td>
-	<td  style="text-align:center;">
-	<?php
-		if($pid == '1'){
-        $billtype='print-fp-creation.php';
-        }else{
-        $billtype='print-fp-creation.php';
-        }
-    ?>
-	<a href="<?php echo $home_path;?>/transaction/view/<?php echo $billtype; ?>?fpNum=<?php echo $row['fpno'];?>"><i class="fa fa-print fa-2x" style="color:#000;" aria-hidden="true"></i></a>
-	</td>
-	<td  style="text-align:center;">	
-    <?php if($sqlC['bill_status']==1) { ?>
-    <!--<a href="<?php echo $home_path;?>/action/cancel-fp-creation.php?fpNum=<?php echo $row['fpno'];?>&bkno=<?php echo $row['bkno'];?>">-->
-	<a onclick="fpcancel('<?php echo $row['fpno'];?>','<?php echo $row['booking_no'];?>');" ><i class="fa fa-trash fa-2x" style="color:#e62031;cursor:pointer;" aria-hidden="true"></i></a>
-    <?php }else{?>
-    <i class="fa fa-trash fa-2x" style="color:#bcc4bf;" aria-hidden="true"></i>
-    <?php }?>
-</td>
-<td><?php echo $row['added_by']; ?></td>
-<td><?php echo $row['added_on']; ?></td>
-</tr>
-<?php } ?>	
-</tbody>
-</table>
-
-	</div>
-	</div>
-	</div>
-	</div>
-
-
-	<?php include("../../footer.php"); ?>
-	</body>
- </form>
-<script>
-	function fpcancel(a,e){
-	fpNum=a;
-	bkno=e;
-    swal({
-            title: "Do You  Want To Cancel FP?",
-            text: "FP NO: <?php echo $_GET['fpNum']; ?>",
-            icon: "warning",
-           buttons:{
-				 cancel: "No",
-                 confirm: "Yes",
-			},
-        })
-        .then(function (isOkay) {
-            if (isOkay) {
-                // form.submit();
-			document.location.href="<?php echo $home_path;?>/action/cancel-fp-creation.php?fpNum="+fpNum+"&bkno="+bkno;
-            }
-        });
-        return false;
-	
-}
-</script>
+<?php include("../../footer.php"); ?>
+</body>
+</html>
