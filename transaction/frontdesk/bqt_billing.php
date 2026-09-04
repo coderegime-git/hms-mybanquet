@@ -1,1093 +1,1040 @@
 <?php
+error_reporting(0);
 ob_start();
 include("../../config.php");
 include("../../header.php");
 include("../../util.php");
 
-$sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
-$rowAC=mysql_fetch_array($sqlAC);
-$cr=array_map('trim', explode('/',$rowAC['cur_date']));
-$ctt=$cr[2].'-'.$cr[1].'-'.$cr[0];
-$curTime=date('H:i:s');
-?>	
-<style>
-.frmSearch {border: 1px solid #F0F0F0;/* background-color:#C8EEFD; */margin: 2px 0px;/* padding:40px; */}
-#country-list{float:left;font-size:14px;list-style:none;margin:18px 0 0 0px;padding:0;width:210px;position: absolute;z-index: 1;}
-#country-list li{padding: 2px; background:#FAFAFA;border-bottom:#F0F0F0 1px solid;}
-#country-list li:hover{background:#F0F0F0;}
-#search-box{padding: 10px;border: #F0F0F0 1px solid;}
-
-.butExmple {
-	-moz-box-shadow:inset 0px 1px 0px 0px #cf866c;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #cf866c;
-	box-shadow:inset 0px 1px 0px 0px #cf866c;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #d0451b), color-stop(1, #bc3315));
-	background:-moz-linear-gradient(top, #d0451b 5%, #bc3315 100%);
-	background:-webkit-linear-gradient(top, #d0451b 5%, #bc3315 100%);
-	background:-o-linear-gradient(top, #d0451b 5%, #bc3315 100%);
-	background:-ms-linear-gradient(top, #d0451b 5%, #bc3315 100%);
-	background:linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#d0451b', endColorstr='#bc3315',GradientType=0);
-	background-color:#d0451b;
-	-moz-border-radius:3px;
-	-webkit-border-radius:3px;
-	border-radius:3px;
-	border:1px solid #942911;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	 font-size: 12px;
-    font-weight: bold;
-    padding: 4px 25px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #854629;
-}
-.butExmple:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #bc3315), color-stop(1, #d0451b));
-	background:-moz-linear-gradient(top, #bc3315 5%, #d0451b 100%);
-	background:-webkit-linear-gradient(top, #bc3315 5%, #d0451b 100%);
-	background:-o-linear-gradient(top, #bc3315 5%, #d0451b 100%);
-	background:-ms-linear-gradient(top, #bc3315 5%, #d0451b 100%);
-	background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bc3315', endColorstr='#d0451b',GradientType=0);
-	background-color:#bc3315;
-}
-.butExmple:active {
-	position:relative;
-	top:1px;
-}
-
-     
-
-/* .butExmple{
-background: #fc8d83 linear-gradient(to bottom, #fc8d83 5%, #e4685d 100%) repeat scroll 0 0;
-    border: 1px solid #d83526;
-    border-radius: 2px;
-    box-shadow: 0 1px 0 0 #f7c5c0 inset;
-    color: #ffffff;
-    cursor: pointer;
-    display: inline-block;
-    font-family: Arial;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 4px 25px;
-    text-decoration: none;
-    text-shadow: 0 1px 0 #b23e35;
-	
-} */
-</style>
-<!--form validation-->	
- <script src="<?php echo $home_path;?>/images/bootstrap.min.js"></script>
+$sqlAC = mysql_query("select * from audt_control where audtcontrol_id='1'");
+$rowAC = mysql_fetch_array($sqlAC);
+$cr = array_map('trim', explode('/', $rowAC['cur_date']));
+$ctt = $cr[2] . '-' . $cr[1] . '-' . $cr[0];
+$curDate = $rowAC['cur_date'];
+$curTime = date('H:i:s');
+?>
+<link rel="stylesheet" href="<?php echo $home_path;?>/css/mypay-master.css">
+<link rel="stylesheet" href="<?php echo $home_path;?>/date-picker/jquery-ui.css">
+<script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
+<script src="<?php echo $home_path;?>/images/bootstrap.min.js"></script>
 <link rel="stylesheet" href="../../form-valid/validationEngine.jquery.css" type="text/css"/>
-<script src="../../form-valid/jquery-1.7.2.min.js" type="text/javascript"></script>
 <script src="../../form-valid/jquery.validationEngine-en.js" type="text/javascript" charset="utf-8"></script>
 <script src="../../form-valid/jquery.validationEngine.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $home_path;?>/tcal-picker/tcal.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $home_path;?>/tcal-picker/tcal.css" />
+<script type="text/javascript" src="<?php echo $home_path;?>/js/shortcut.js"></script>
 
-<!-- Datepicker start
-<script src="<?php echo $home_path;?>/date-picker/jquery-1.10.2.js"></script>-->
-<script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
-<link rel="stylesheet" href="<?php echo $home_path;?>/date-picker/jquery-ui.css">
-<!-- End -->
+<style type="text/css">
+/* ==========================================================================
+   Banquet Billing - Standardized Unified Payroll (MyPay) Design System
+   ========================================================================== */
+body, body.bgBODY {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
+.mypay-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 20px auto 40px auto !important;
+    padding: 0 15px !important;
+    box-sizing: border-box !important;
+}
 
-<!-- <script src="<?php echo $home_path;?>/images/jquery.min.js"></script>-->
- 
- 
-<!---//-form valid---->
+/* Master Billing Form Card */
+.mypay-card {
+    width: 1080px !important;
+    max-width: 98% !important;
+    margin: 0 auto !important;
+    background: #ffffff !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0, 115, 181, 0.08) !important;
+}
+
+.mypay-card-header {
+    background: #0073B5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    height: 38px !important;
+    line-height: 38px !important;
+    padding: 0 15px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 5px 5px 0 0 !important;
+}
+
+.mypay-card-body {
+    padding: 20px 25px 25px 25px !important;
+    background: #ffffff !important;
+}
+
+/* Header Info Grid */
+.bqt-header-grid {
+    display: flex !important;
+    gap: 15px !important;
+    margin-bottom: 15px !important;
+    flex-wrap: wrap !important;
+}
+
+.bqt-col-left {
+    flex: 1.1 1 340px !important;
+}
+
+.bqt-col-center {
+    flex: 1.1 1 340px !important;
+}
+
+.bqt-col-right {
+    flex: 0.8 1 240px !important;
+}
+
+/* Field Table */
+.bqt-field-table {
+    width: 100% !important;
+    border-collapse: separate !important;
+    border-spacing: 0 6px !important;
+    border: none !important;
+}
+
+.bqt-field-table td {
+    padding: 2px 0 !important;
+    border: none !important;
+    vertical-align: middle !important;
+}
+
+.bqt-field-table td.label-col {
+    width: 32% !important;
+    font-size: 12.5px !important;
+    font-weight: bold !important;
+    color: #333333 !important;
+    padding-right: 8px !important;
+    text-align: left !important;
+}
+
+.bqt-field-table td.input-col {
+    width: 68% !important;
+}
+
+/* Input Styles */
+.bqt-input {
+    width: 100% !important;
+    height: 28px !important;
+    line-height: 28px !important;
+    padding: 0 8px !important;
+    border: 1px solid #d0d7de !important;
+    border-radius: 4px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12.5px !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    transition: border-color 0.15s ease-in-out !important;
+}
+
+.bqt-input:focus {
+    border-color: #0084b4 !important;
+    box-shadow: 0 0 3px rgba(0, 132, 180, 0.3) !important;
+}
+
+.bqt-input[readonly] {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    border-color: #cbd5e1 !important;
+}
+
+.bqt-select {
+    width: 100% !important;
+    height: 28px !important;
+    line-height: 28px !important;
+    padding: 0 6px !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 4px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12.5px !important;
+    color: #1e293b !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    cursor: pointer !important;
+}
+
+.bqt-select:focus {
+    border-color: #005b8a !important;
+    box-shadow: 0 0 3px rgba(0, 115, 181, 0.3) !important;
+}
+
+/* Voucher Link Table */
+.bqt-link-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1px solid #0073B5 !important;
+    background: #ffffff !important;
+}
+
+.bqt-link-table th {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    padding: 6px 4px !important;
+    border: 1px solid #0073B5 !important;
+}
+
+.bqt-link-table td {
+    padding: 4px !important;
+    border: 1px solid #e2e8f0 !important;
+    text-align: center !important;
+}
+
+/* Table Section Styling */
+.bqt-section-title {
+    background-color: #f1f5f9 !important;
+    color: #0073B5 !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    padding: 6px 12px !important;
+    margin: 15px 0 8px 0 !important;
+    border-left: 4px solid #0073B5 !important;
+    border-radius: 2px !important;
+}
+
+/* Data Table in Billing Form */
+.bqt-items-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+}
+
+.bqt-items-table thead tr th {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    height: 30px !important;
+    padding: 4px 6px !important;
+    border: 1px solid #0073B5 !important;
+    white-space: nowrap !important;
+}
+
+.bqt-items-table tbody td {
+    padding: 4px !important;
+    border: 1px solid #e2e8f0 !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.bqt-items-table tbody tr:hover td {
+    background-color: #f8fbfe !important;
+}
+
+.bqt-cell-input {
+    width: 100% !important;
+    height: 24px !important;
+    line-height: 24px !important;
+    padding: 0 4px !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 3px !important;
+    font-size: 12px !important;
+    box-sizing: border-box !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    outline: none !important;
+}
+
+.bqt-cell-input[readonly] {
+    background-color: #f8fafc !important;
+    color: #334155 !important;
+    border-color: #e2e8f0 !important;
+}
+
+.bqt-cell-input.text-right {
+    text-align: right !important;
+}
+
+.bqt-cell-input.text-center {
+    text-align: center !important;
+}
+
+/* Bottom Split Grids */
+.bqt-bottom-grid {
+    display: flex !important;
+    gap: 20px !important;
+    margin-top: 15px !important;
+    flex-wrap: wrap !important;
+}
+
+.bqt-bottom-col {
+    flex: 1 1 450px !important;
+}
+
+.bqt-subtable {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+.bqt-subtable th {
+    background-color: #f8fafc !important;
+    color: #1e293b !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    padding: 6px !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+.bqt-subtable td {
+    padding: 4px 6px !important;
+    border: 1px solid #e2e8f0 !important;
+    text-align: center !important;
+}
+
+/* Card Bottom Action Bar */
+.mypay-card-footer {
+    background: #0073B5 !important;
+    height: 46px !important;
+    padding: 0 15px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 0 5px 5px !important;
+}
+
+.btn-mypay-action {
+    background: #005b8a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border-radius: 3px !important;
+    padding: 0 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12.5px !important;
+    font-weight: bold !important;
+    height: 30px !important;
+    line-height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.btn-mypay-action:hover {
+    background: #00496e !important;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.btn-mypay-action:disabled {
+    background: #64748b !important;
+    opacity: 0.65 !important;
+    cursor: not-allowed !important;
+}
+
+.btn-mypay-action i {
+    font-size: 13px !important;
+}
+</style>
 
 <script type="text/javascript">
 $(document).ready(function(){
-/* $('input[name^=disc_flag]').on('click', function() {
-	qtyVal =($(this).val()); 
-	alert('drds'+qtyVal);
-}); item_disc*/
-$('.tree-toggle').click(function () {
-	$(this).parent().children('ul.tree').toggle(200);
-	});
-$('input[name^=disc_flag]').live("click",function(){
-	vl =($(this).val()); 
-	/* alert(vl); */
-	if(vl=='N'){
-		$(this).val('Y');
-	}else{
-		$(this).val('N');
-	}
-	
-});
+    $("#msgFo").fadeOut(5000);
 
-$('input[name^=disc_perc]').live("click",function(){
-	vl =($(this).val()); 
-	/* alert(vl); */
-	if(vl=='Perc'){
-		$(this).val('Amt');
-	}else{
-		$(this).val('Perc');
-	}
-	
-});
+    $('.tree-toggle').click(function () {
+        $(this).parent().children('ul.tree').toggle(200);
+    });
 
-$('input[name^=disc_amount]').live("click",function(){
-	$(this).val(''); 
-});	
+    $('input[name^=disc_flag]').live("click",function(){
+        vl = ($(this).val()); 
+        if(vl == 'N'){
+            $(this).val('Y');
+        } else {
+            $(this).val('N');
+        }
+    });
 
-$('input[name^=disc_amount]').on("keyup",function(){
-	rowid=($(this).attr("id")).substr(11);
-	$(this).parent().next().find('input').val('');
-	vlu =($(this).val()); 
-	vl =($(this).parent().prev().find('input').val());
-	vlP =($(this).parent().prev().prev().find('input').val());
-	lnTot =parseFloat($(this).parent().prev().prev().prev().find('input').val());
-		if(vl=='Perc' && vlu>=0){
-			
-			per=lnTot*vlu/100;
-			
-			$(this).parent().prev().prev().find('input').val('Y');
-			$(this).parent().next().find('input').val(per);
-			pvl=$(this).parent().next().find('input').val();
-			perc=$(this).parent().next().next().next().find('input').val();
-			totvl=parseFloat(perc)-parseFloat(pvl);
-			$(this).parent().next().next().next().find('input').val(totvl.toFixed(2));
-			
-			
-			vucNo=$("#voucher_no").val();
-			itCd=$(this).parent().prev().prev().prev().prev().prev().prev().prev().find('input').val();
-			$.ajax({
-			type:'GET',
-			url:'  ../../action/selBqtBilltaxCalc.php',
-			data:{
-			per:per,
-			vucNo:vucNo,
-			itCd:itCd
-			},
-			success:function(data){
-			 $("#tax_amount"+rowid).val(data);
-			 ln=$("#item_total"+rowid).val();
-			 ds=$("#disc_val"+rowid).val();
-			 tx=$("#tax_amount"+rowid).val();
-			
-			 
-			 tot=parseFloat(ln)-parseFloat(ds)+parseFloat(tx);
-			 $("#net_amount"+rowid).val(tot);
-			 
-			 
-			 
-				}
-			});
-			
-			
-			
-			
-			
-		}else if(vl=='Amt' && vlu>=0){
-			per=vlu;
-			$(this).parent().prev().prev().find('input').val('Y');
-			$(this).parent().next().find('input').val(per);
-			pvl=$(this).parent().next().find('input').val();
-			perc=$(this).parent().next().next().next().find('input').val();
-			totvl=parseFloat(perc)-parseFloat(pvl);
-			$(this).parent().next().next().next().find('input').val(totvl.toFixed(2));
-			
-			
-			vucNo=$("#voucher_no").val();
-			itCd=$(this).parent().prev().prev().prev().prev().prev().prev().prev().find('input').val();
-			$.ajax({
-			type:'GET',
-			url:'  ../../action/selBqtBilltaxCalc.php',
-			data:{
-			per:per,
-			vucNo:vucNo,
-			itCd:itCd
-			},
-			success:function(data){
-			 $("#tax_amount"+rowid).val(data);
-			 ln=$("#item_total"+rowid).val();
-			 ds=$("#disc_val"+rowid).val();
-			 tx=$("#tax_amount"+rowid).val();
-			
-			 
-			 tot=parseFloat(ln)-parseFloat(ds)+parseFloat(tx);
-			 $("#net_amount"+rowid).val(tot);
-			 
-			 
-			 
-				}
-			});
-			
-			
-		}
+    $('input[name^=disc_perc]').live("click",function(){
+        vl = ($(this).val()); 
+        if(vl == 'Perc'){
+            $(this).val('Amt');
+        } else {
+            $(this).val('Perc');
+        }
+    });
 
-});
+    $('input[name^=disc_amount]').live("click",function(){
+        $(this).val(''); 
+    });	
 
+    $('input[name^=disc_amount]').on("keyup",function(){
+        rowid = ($(this).attr("id")).substr(11);
+        $(this).parent().next().find('input').val('');
+        vlu = ($(this).val()); 
+        vl = ($(this).parent().prev().find('input').val());
+        vlP = ($(this).parent().prev().prev().find('input').val());
+        lnTot = parseFloat($(this).parent().prev().prev().prev().find('input').val());
+        
+        if(vl == 'Perc' && vlu >= 0){
+            per = lnTot * vlu / 100;
+            $(this).parent().prev().prev().find('input').val('Y');
+            $(this).parent().next().find('input').val(per);
+            pvl = $(this).parent().next().find('input').val();
+            perc = $(this).parent().next().next().next().find('input').val();
+            totvl = parseFloat(perc) - parseFloat(pvl);
+            $(this).parent().next().next().next().find('input').val(totvl.toFixed(2));
+            
+            vucNo = $("#voucher_no").val();
+            itCd = $(this).parent().prev().prev().prev().prev().prev().prev().prev().find('input').val();
+            $.ajax({
+                type: 'GET',
+                url: '../../action/selBqtBilltaxCalc.php',
+                data: { per: per, vucNo: vucNo, itCd: itCd },
+                success: function(data){
+                    $("#tax_amount" + rowid).val(data);
+                    ln = $("#item_total" + rowid).val();
+                    ds = $("#disc_val" + rowid).val();
+                    tx = $("#tax_amount" + rowid).val();
+                    tot = parseFloat(ln) - parseFloat(ds) + parseFloat(tx);
+                    $("#net_amount" + rowid).val(tot);
+                }
+            });
+        } else if(vl == 'Amt' && vlu >= 0){
+            per = vlu;
+            $(this).parent().prev().prev().find('input').val('Y');
+            $(this).parent().next().find('input').val(per);
+            pvl = $(this).parent().next().find('input').val();
+            perc = $(this).parent().next().next().next().find('input').val();
+            totvl = parseFloat(perc) - parseFloat(pvl);
+            $(this).parent().next().next().next().find('input').val(totvl.toFixed(2));
+            
+            vucNo = $("#voucher_no").val();
+            itCd = $(this).parent().prev().prev().prev().prev().prev().prev().prev().find('input').val();
+            $.ajax({
+                type: 'GET',
+                url: '../../action/selBqtBilltaxCalc.php',
+                data: { per: per, vucNo: vucNo, itCd: itCd },
+                success: function(data){
+                    $("#tax_amount" + rowid).val(data);
+                    ln = $("#item_total" + rowid).val();
+                    ds = $("#disc_val" + rowid).val();
+                    tx = $("#tax_amount" + rowid).val();
+                    tot = parseFloat(ln) - parseFloat(ds) + parseFloat(tx);
+                    $("#net_amount" + rowid).val(tot);
+                }
+            });
+        }
+    });
 
-$('input[name^=spitem_amount]').live("click",function(){
-	vl =($(this).val()); 
-	val=$('.ckPrint:checkbox:checked').val();
-	newwindow=window.open('<?php echo $home_path;?>/transaction/frontdesk/itmBILLDiscount.php',"_blank",'scrollbars=1,menubar=0,resizable=1,left=500,width=450,height=300');
-	/* newwindow=window.open('<?php echo $home_path;?>/transaction/frontdesk/openItemInsert.php?cnt='+rowid+'&out='+out+'&tx='+tx+'&dis='+dis+'&sub='+sub+'&gnd='+gnd,"_blank",'scrollbars=1,menubar=0,resizable=1,left=500,width=450,height=300'); */
-	/* newwindow.focus();  */
-	newwindow.focus(); 
-});
+    $('input[name^=spitem_amount]').live("click",function(){
+        vl = ($(this).val()); 
+        val = $('.ckPrint:checkbox:checked').val();
+        newwindow = window.open('<?php echo $home_path;?>/transaction/frontdesk/itmBILLDiscount.php',"_blank",'scrollbars=1,menubar=0,resizable=1,left=500,width=450,height=300');
+        newwindow.focus(); 
+    });
 
-
+    if(typeof shortcut !== 'undefined') {
+        shortcut.add("Ctrl+S", function() { 
+            chkOutBillPrint();
+        });
+        shortcut.add("Ctrl+V", function() { 
+            window.location.href = "view-bqtbill-details.php?fromdate=<?php echo $curDate;?>&todate=<?php echo $curDate;?>&val=";
+        });
+        shortcut.add("Ctrl+E", function() { 
+            extBUtton();
+        });
+    }
 });
 
 function selBQTBillVCHrDet() {
-  vucNo=$("#voucher_no").val(); 
-   $.ajax({
-		type:'GET',
-		url:'  ../../action/selBqtBlVCHRBill.php',
-			data:{
-			vucNo:vucNo
-			},
-			success:function(data){
-			/* alert(data); */ 
-				if(data==1){
-					r=confirm("Bill already printed. Do you want to continue?"); 
-					if(r==true){
-						document.location.href="../../action/cancel_bqt_billing.php?vucNo="+vucNo;
-					}
-				}else{ 
-					document.location.href="bqt_billing.php?vucNo="+vucNo;				
-					/* $("#hotelDefi").attr("action","<?php echo $home_path; ?>/action/add_bqt_billing.php");
-					$("#hotelDefi").submit(); */
-				}			  
-			}
-	});
-	
-	/* vucNo=$('#voucher_no').val();
-	document.location.href="bqt_billing.php?vucNo="+vucNo; */
+    var vucNo = $("#voucher_no").val(); 
+    if(vucNo == '') {
+        document.location.href = "bqt_billing.php?vucNo=";
+        return;
+    }
+    $.ajax({
+        type: 'GET',
+        url: '../../action/selBqtBlVCHRBill.php',
+        data: { vucNo: vucNo },
+        success: function(data){
+            if(data == 1){
+                var r = confirm("Bill already printed. Do you want to continue?"); 
+                if(r == true){
+                    document.location.href = "../../action/cancel_bqt_billing.php?vucNo=" + vucNo;
+                }
+            } else { 
+                document.location.href = "bqt_billing.php?vucNo=" + vucNo;				
+            }			  
+        }
+    });
 }
-
-/* function selBQTBillVCHrDet() {
-	vucNo=$('#voucher_no').val();
-	$.ajax({
-		type:'GET',
-		url:'  ../../action/selBQTBillVCHrDetails.php',
-			data:{
-			vucNo:vucNo
-			},
-			success:function(data){
-				opt=data.split(',');
-				if(data==1){
-					r=confirm("Bill already generated. Do you want to continue?");
-					if(r==true){
-						document.location.href="../../action/cancel_bqt_billing.php?vucNo="+vucNo;
-					}else{
-						
-					}
-				}else{
-				$('#fp_no').val(opt[0]);
-				$('#booking_no').val(opt[1]);
-				$('#bill_inst').val(opt[2]);
-				$('#guest_name').val(opt[3]);
-				$('#venue').val(opt[4]);
-				$('#book_date').val(opt[5]);
-				$('#session').val(opt[6]);
-				$('#total_pax').val(opt[7]);
-				$('#dispItmHde').hide();
-				$('#dispItmShw').show();
-				$('#dispItmShw').html(opt[8]);
-				$('#disADvHDE').hide();
-				$('#disADvSHW').show();
-				$('#disADvSHW').html(opt[9]);
-				$('#discHde').hide();
-				$('#discShw').show();
-				$('#discShw').html(opt[10]);
-				}
-				
-			}
-	});	
-} */
 
 function selDisBill(c){
-	vl=$('#disc_flag'+c).val();
-	/* alert(vl); */
-	if(vl=='N'){
-		$('#disc_flag'+c).val('Y');
-	}else{
-		$('#disc_flag'+c).val('N');
-	}
-	
-	
+    var vl = $('#disc_flag' + c).val();
+    if(vl == 'N'){
+        $('#disc_flag' + c).val('Y');
+    } else {
+        $('#disc_flag' + c).val('N');
+    }
 }
-
-/* function selDisPerc(vl){
-	alert(vl);
-	val=$('#item_disc'+vl).val();
-	alert(val);
-		var txtFood = document.getElementById("item_disc"+vl).value; 
-		alert(txtFood);
-	
-	
-} */
-
 
 function chkOutBillPrint(){
-	 $("#billsbt").removeAttr('disabled',true); 
-	 $("#hotelDefi").attr("action","<?php  echo $home_path; ?>/action/add_checkout_savesplit.php");
-	 $("#hotelDefi").submit(); 
+    $("#billsbt").removeAttr('disabled'); 
+    $("#hotelDefi").attr("action", "<?php echo $home_path; ?>/action/add_checkout_savesplit.php");
+    $("#hotelDefi").submit(); 
 }
 
-
-
-function popupBillPrint()
-{
-  sptNo=$("#hid_menu").val(); 
-  vucNo=$("#voucher_no").val(); 
-   $.ajax({
-		type:'GET',
-		url:'  ../../action/selROUNDFOFF.php',
-			data:{
-			sptNo:sptNo,
-			vucNo:vucNo
-			},
-			success:function(data){
-				/* alert(data); */
-				if(sptNo==""){
-					alert("check the split!.");
-					$("#billsbt").attr('disabled','disabled');
-				}else{  	
-					$("#hotelDefi").attr("action","<?php echo $home_path; ?>/action/add_bqt_billing.php");
-					$("#hotelDefi").submit();
-				}			  
-			}
-	});
+function popupBillPrint() {
+    var sptNo = $("#hid_menu").val(); 
+    var vucNo = $("#voucher_no").val(); 
+    $.ajax({
+        type: 'GET',
+        url: '../../action/selROUNDFOFF.php',
+        data: { sptNo: sptNo, vucNo: vucNo },
+        success: function(data){
+            if(sptNo == ""){
+                alert("Please check the split first!");
+                $("#billsbt").attr('disabled', 'disabled');
+            } else {  	
+                $("#hotelDefi").attr("action", "<?php echo $home_path; ?>/action/add_bqt_billing.php");
+                $("#hotelDefi").submit();
+            }			  
+        }
+    });
 }
 
 function printFolio() {
-	sptNo=$("#hid_menu").val(); 
-	vucNo=$("#voucher_no").val(); 
-	document.location.href="<?php echo $home_path; ?>/transaction/view/folio-print-bqt-billing.php?vucNo="+vucNo+"&sptNo="+sptNo;
+    var sptNo = $("#hid_menu").val(); 
+    var vucNo = $("#voucher_no").val(); 
+    document.location.href = "<?php echo $home_path; ?>/transaction/view/folio-print-bqt-billing.php?vucNo=" + vucNo + "&sptNo=" + sptNo;
 }
 
-
-
 function setMenu() {
-	var menuStr="";
-	vucN=$("#voucher_no").val();
-	$('.chk').each(function(i,v){
-		if($(this).is(':checked'))
-		{
-		menuStr +=$(this).val()+',';
-		}
-	});
-	menuStr = menuStr.slice(0,-1);
-	$("#hid_menu").val(menuStr);
-	$("#billsbt").removeAttr('disabled',true);	
-	hd=$("#hid_menu").val();
-	var cT = hd.split(',').length;
-	$("#countT").val(cT);
-	$("#countTt").val(cT);
-		
+    var menuStr = "";
+    $('.chk').each(function(i,v){
+        if($(this).is(':checked')) {
+            menuStr += $(this).val() + ',';
+        }
+    });
+    menuStr = menuStr.slice(0, -1);
+    $("#hid_menu").val(menuStr);
+    $("#billsbt").removeAttr('disabled');	
+    var hd = $("#hid_menu").val();
+    var cT = hd ? hd.split(',').length : 0;
+    $("#countT").val(cT);
+    $("#countTt").val(cT);
 }
 
 function extBUtton(){
-	document.location.href="<?php echo $home_path; ?>/transaction/frontdesk/view-bqtbill-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val=";
+    document.location.href = "<?php echo $home_path; ?>/transaction/frontdesk/view-bqtbill-details.php?fromdate=<?php echo $curDate;?>&todate=<?php echo $curDate;?>&val=";
 }
 
-shortcut.add("Ctrl+V",function() { 
-	window.location.href = "view-bqtbill-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val=";
-});
-shortcut.add("Ctrl+E",function() { 
-	window.location.href = "view-bqtbill-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val=";
-});
-
-
 function sbtBtnN(){
-	bl=$("#bl_name").val();
-	bl1=$("#bl_addr").val();
-	bl2=$("#bl_addr1").val();
-	blcy=$("#bl_city").val();
-	blpn=$("#bl_pin").val();
-	
-	$("#guestt_name").val(bl);
-	$("#add1").val(bl1);
-	$("#add2").val(bl2);
-	$("#cty").val(blcy);
-	$("#pncd").val(blpn);
+    $("#guestt_name").val($("#bl_name").val());
+    $("#add1").val($("#bl_addr").val());
+    $("#add2").val($("#bl_addr1").val());
+    $("#cty").val($("#bl_city").val());
+    $("#pncd").val($("#bl_pin").val());
 }
 
 function selBadFeed(){
-	/* alert(a); */
-	snt=$("#countTt").val();
-	bkN=$("#booking_no").val();
-	fpno=$("#fp_no").val();
-	$.ajax({
-	type:'GET',
-	url:'  ../../action/selpopupADdRpt.php',
-		data:{
-		snt:snt,
-		bkN:bkN,
-	    fpno:fpno
-		},
-		success:function(data){
-			/* alert(data); */
-			$('#feedBk').html(data);
-		}
-	});	 
+    var snt = $("#countTt").val();
+    var bkN = $("#booking_no").val();
+    var fpno = $("#fp_no").val();
+    $.ajax({
+        type: 'GET',
+        url: '../../action/selpopupADdRpt.php',
+        data: { snt: snt, bkN: bkN, fpno: fpno },
+        success: function(data){
+            $('#feedBk').html(data);
+        }
+    });	 
 }
-
-
-</script> 
-<style>
-.spanClr{
-	color: #5b503b;
-    display: block;
-    float: left;
-    font-size: 12px;
-    font-weight: normal;
-    padding: 0px 9px 0 5px;
-		
-}
-hr.style-one {
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
-	margin:-3px 0 0 0;
-}
-hr.style-one1 {
-    border: 0;
-    height: 1px;
-    background: #333;
-    background-image: linear-gradient(to right, #ccc, #333, #ccc);
-	margin:-7px 0 0 0;
-}
-
-
-/* thead, tbody { display: block; }
-
-tbody {
-    height: 300px;      
-    overflow-y: auto;    
-    overflow-x: hidden;  
-} */
-
-.tathead{ display: block;border:none; }
-
-.tatbody {
-   /*  height: 350px; */       /* Just for the demo          */
-    overflow-y: auto;    /* Trigger vertical scroll    */
-    overflow-x: hidden;  /* Hide the horizontal scroll */
-	border:none;
-}
-.tbHd{
-	color: #5b503b;
-    display: block;
-    float: right;
-    font-size: 12px;
-    font-weight: normal;
-    padding: 3px 9px 0 0;
-	font-weight:normal;
-}
-
-
-.tableS > thead > tr > th, .tableS > tbody > tr > th, .table > tfoot > tr > th, .tableS > thead > tr > td, .tableS > tbody > tr > td, .tableS > tfoot > tr > td {
-  color: #333333;
-  border:1px solid #CCCCCC;
-}
-
-::-webkit-scrollbar
-{
-  width: 6px;  /* for vertical scrollbars */
-  height: 12px; /* for horizontal scrollbars */
-}
-
-::-webkit-scrollbar-track
-{
-  background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-thumb
-{
-  background: rgba(0, 0, 0, 0.5);
-}
-</style>
-
- <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-<body class="bgBODY">
-<div class="about" style="margin:0px 0 0 0;">
-<?php 	
-/* echo $_GET['msg']; */ 
-if(isset($_GET['msg'])){
-?>
-	<p style="text-align:center;margin:-16px 0 0 0;">
-		<label id="msgFo" class="" style="color:#7B0E0E;"><?php echo $_GET['msg']; ?></label>
-	</p>
-<?php } ?>
-<div id="invoice" style="">
-	<!--<div class="container" >-->
-		<div class="" >
-
-
-<?php
-$sqlAC=mysql_query("select * from audt_control where audtcontrol_id='1'");
-$rowAC=mysql_fetch_array($sqlAC);
-$curDate=$rowAC['cur_date'];
-?>
-<link rel="stylesheet" type="text/css" href="<?php echo $home_path;?>/tcal-picker/tcal.css" />
-<script type="text/javascript" src="<?php echo $home_path;?>/tcal-picker/tcal.js"></script> 
-<div id="addcustomer" class="frmCentr divBrd frmBgClr" style="width:801px;">
-<!--<div id="addcustomer" class="frmCentr divBrd frmBgClr" style="width:1112px;overflow:auto;height:500px;">-->
-	<h3 id="Userhd"><b>Banquet Billing </b></h3>
-<form id="hotelDefi" name="hotelDefi" enctype="multipart/form-data" action="#" method="post" class="" style="">
-	<input name="incLc" id="incLc" type="hidden" style="" value=""/>
-	<input type="hidden" name="rowVl" id="rowVl"/>
-	<input type="hidden" name="rmomType" id="rmomType"/>
-	<input type="hidden" name="hid_menu" id="hid_menu"/>
-	<input type="hidden" name="countTt" id="countTt"/>
-	
-	<input type="hidden" name="adtDate" id="adtDate" value="<?php echo $curDate?>"/>
-	<div>
-	
-
-	
-<!-- Start popup -->
-<?php
-if(isset($_GET['vucNo']) && $_GET['vucNo']!='' ){
-?>
-<!-- Start popup -->
-<div id="myModal" class="modal fade" role="dialog" style="padding:20px 0 0 0;width:1000px;margin:0 auto;">
-  <div class="modal-dialog" style="width:900px;">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">&nbsp;</h4>
-      </div>
-      <div class="modal-body">
-
-	  
-<table style="float:left;margin:8px 0 0 5px;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<thead class="tathead">
-<tr>
-<td colspan="8"><h3 id="rmTyp" style="background-color:#7b0e0e;color:#fff;"><b>Guest Address Details</b></h3></td>
-</tr>
-<tr>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">Title</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:150px;">Name</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:150px;">Address1</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:150px;">Address2</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:80px;">City</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:80px;">Pincode</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:140px;">GST NO</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">Split</th>
-</tr>
-</thead>
-<tbody class="tathead tatbody tableS" id="feedBk" style="overflow:auto;height:200px;">
-
-</tbody>
-</table>
-      </div>
-      <div class="modal-footer" style="width:900px;">
-        <button type="button" onclick="btnFcs();" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-<!-- End popup -->
-
-
-
-<!--<div id="myModal" class="modal fade" role="dialog" >
-  <div class="modal-dialog" style="padding:130px 0 0 0;width:630px;margin:0 auto;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="" data-dismiss="modal">&times;</button>
-       </div>
-      <div class="">
-	  
-<table style="float:left;margin:8px 0 0 5px;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<thead class="tathead">
-<tr>
-<td colspan="6"><h3 id="rmTyp" style="background-color:#7b0e0e;color:#fff;"><b>Guest Address Details</b></h3></td>
-</tr>
-<tr>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:150px;">Name</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:150px;">Address1</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:150px;">Address2</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:80px;">City</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:80px;">Pincode</th>
-</tr>
-</thead>
-<input type="text" name="countT" id="countT"/>
-<tbody class="tathead tatbody tableS" id="countTTat" style="overflow:auto;height:200px;">
-<script type="text/javascript"> 
-cnt=$("#countT").val();
-cntt=$("#countTt").val();
- 
-cntT=document.getElementById("countT").value; 
-
- for (i = 0; i<parseFloat(cntt); i++) {  
-document.write('<tr id=""><td style="text-align:center;" class="sourceonVAL"><input name="bl_name" id="bl_name" type="text" class="textbox fstChUPPRCase expet" style="width:150px;margin:5px 0 0 0px" value="" /></td><td style="text-align:center;" class="sourceonVAL"><input name="bl_addr" id="bl_addr" type="text" class="textbox fstChUPPRCase expet" style="width:150px;margin:5px 0 0 0px" value="" /></td><td style="text-align:center;" class="sourceonVAL"><input name="bl_addr1" id="bl_addr1" type="text" class="textbox fstChUPPRCase expet" style="width:150px;margin:5px 0 0 0px" value="" /></td><td style="text-align:center;" class="sourceonVAL"><input name="bl_city" id="bl_city" type="text" class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px" value="" /></td><td style="text-align:center;" class="sourceonVAL"><input name="bl_pin" id="bl_pin" type="text" class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px" value="" /></td></tr>');
-} 
 </script>
-</tbody>
-</table>
 
-<table style="float:left;width:81%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >	
-<tr>
-<td style="width:150px;border:none;">&nbsp;</td>
-<td style="width:150px;border:none;"><button type="button" class="btnH" data-dismiss="modal" onclick="sbtBtnN();">Submit</button></td>
-</tr>
-</table> 
- 
-      </div>
-      <div class="modal-footer" style="">
-        &nbsp;
-      </div>
+<body class="bgBODY">
+
+<div class="mypay-container">
+
+    <?php if(isset($_GET['msg'])){ ?>
+        <p style="text-align:center;margin:10px 0;">
+            <label id="msgFo" style="color:#7B0E0E;font-weight:bold;font-size:13px;"><?php echo htmlspecialchars($_GET['msg']); ?></label>
+        </p>
+    <?php } ?>
+
+    <!-- Modal Popup for Guest Address Details -->
+    <?php if(isset($_GET['vucNo']) && $_GET['vucNo'] != ''){ ?>
+    <div id="myModal" class="modal fade" role="dialog" style="padding:20px 0 0 0;width:920px;margin:0 auto;">
+        <div class="modal-dialog" style="width:900px;">
+            <div class="modal-content">
+                <div class="modal-header" style="background:#0073B5;color:#fff;padding:10px 15px;">
+                    <button type="button" class="close" data-dismiss="modal" style="color:#fff;opacity:0.9;">&times;</button>
+                    <h4 class="modal-title" style="font-size:14px;font-weight:bold;margin:0;">Guest Address Details</h4>
+                </div>
+                <div class="modal-body" style="padding:15px;">
+                    <table class="bqt-items-table" cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;">Title</th>
+                                <th style="width:150px;">Name</th>
+                                <th style="width:150px;">Address1</th>
+                                <th style="width:150px;">Address2</th>
+                                <th style="width:90px;">City</th>
+                                <th style="width:80px;">Pincode</th>
+                                <th style="width:140px;">GST NO</th>
+                                <th style="width:60px;">Split</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feedBk" style="overflow:auto;max-height:220px;">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer" style="padding:8px 15px;background:#f1f5f9;">
+                    <button type="button" class="btn-mypay-action" data-dismiss="modal" onclick="sbtBtnN();">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+
+    <?php
+    $vucNoParam = isset($_GET['vucNo']) ? trim($_GET['vucNo']) : '';
+    $row = array();
+    $rowb = array();
+    $robV = array();
+    $rob = array();
+    $roS = array();
+    $rov = array();
+
+    if ($vucNoParam != '') {
+        $sqlm = mysql_query("select * from bq_opvchrhdr where vouchrno='$vucNoParam'");
+        if ($sqlm && mysql_num_rows($sqlm) > 0) {
+            $row = mysql_fetch_array($sqlm);
+            
+            $sqlb = mysql_query("select * from bq_hallbooking where booking_no='".$row['bkno']."' and fpno='".$row['fpno']."'");
+            if ($sqlb && mysql_num_rows($sqlb) > 0) {
+                $rowb = mysql_fetch_array($sqlb);
+                
+                $sqb = mysql_query("select * from bq_billinstruc where bill_code='".$rowb['top_code']."'");
+                if ($sqb && mysql_num_rows($sqb) > 0) {
+                    $rob = mysql_fetch_array($sqb);
+                }
+                
+                $sqS = mysql_query("select sess_name from bqt_session where sess_code='".$rowb['session']."'");
+                if ($sqS && mysql_num_rows($sqS) > 0) {
+                    $roS = mysql_fetch_array($sqS);
+                }
+                
+                $sqlv = mysql_query("select * from bq_venue where venue_code='".$rowb['venue']."' AND status ='1'");
+                if ($sqlv && mysql_num_rows($sqlv) > 0) {
+                    $rov = mysql_fetch_array($sqlv);
+                }
+            }
+            
+            $sqbV = mysql_query("select * from bq_opvchrdtl where vouchrno='$vucNoParam'");
+            if ($sqbV && mysql_num_rows($sqbV) > 0) {
+                $robV = mysql_fetch_array($sqbV);
+            }
+        }
+    }
+    ?>
+
+    <!-- Main Card Container Matching Master Style -->
+    <div class="mypay-card">
+        <div class="mypay-card-header">
+            BANQUET BILLING
+        </div>
+
+        <form id="hotelDefi" name="hotelDefi" enctype="multipart/form-data" action="#" method="post">
+            <input name="incLc" id="incLc" type="hidden" value=""/>
+            <input type="hidden" name="rowVl" id="rowVl"/>
+            <input type="hidden" name="rmomType" id="rmomType"/>
+            <input type="hidden" name="hid_menu" id="hid_menu"/>
+            <input type="hidden" name="countTt" id="countTt"/>
+            <input type="hidden" name="adtDate" id="adtDate" value="<?php echo htmlspecialchars($curDate); ?>"/>
+
+            <input name="guestt_name" id="guestt_name" type="hidden" value="" />
+            <input name="add1" id="add1" type="hidden" value="" />
+            <input name="add2" id="add2" type="hidden" value="" />
+            <input name="cty" id="cty" type="hidden" value="" />
+            <input name="pncd" id="pncd" type="hidden" value="" />
+
+            <div class="mypay-card-body">
+
+                <!-- Header Info Grid -->
+                <div class="bqt-header-grid">
+
+                    <!-- Column 1 -->
+                    <div class="bqt-col-left">
+                        <table class="bqt-field-table">
+                            <tr>
+                                <td class="label-col">Voucher # :</td>
+                                <td class="input-col">
+                                    <select name="voucher_no" id="voucher_no" onChange="selBQTBillVCHrDet();" class="bqt-select">
+                                        <option value="">--Select Voucher--</option>
+                                        <?php
+                                        $sqle = mysql_query("select distinct vouchrno from bq_opvchrhdr where str_to_date(vouchrdate,'%d/%m/%Y')='$ctt' AND bill_status='1'");
+                                        if ($sqle && mysql_num_rows($sqle) > 0) {
+                                            while($res = mysql_fetch_array($sqle)){
+                                                $selected = ($res['vouchrno'] == $vucNoParam) ? 'selected' : '';
+                                        ?>
+                                            <option value="<?php echo htmlspecialchars($res['vouchrno']); ?>" <?php echo $selected; ?>><?php echo htmlspecialchars(strtoupper($res['vouchrno'])); ?></option>
+                                        <?php 
+                                            } 
+                                        } 
+                                        ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">FP # :</td>
+                                <td class="input-col">
+                                    <input name="fp_no" id="fp_no" type="text" class="bqt-input" value="<?php echo isset($row['fpno']) ? htmlspecialchars($row['fpno']) : ''; ?>" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Booking # :</td>
+                                <td class="input-col">
+                                    <input name="booking_no" id="booking_no" type="text" class="bqt-input" value="<?php echo isset($row['bkno']) ? htmlspecialchars($row['bkno']) : ''; ?>" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Billing Instr :</td>
+                                <td class="input-col">
+                                    <input name="bill_inst" id="bill_inst" type="text" class="bqt-input" value="<?php echo isset($rob['bill_desc']) ? htmlspecialchars($rob['bill_desc']) : ''; ?>" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">No of Splits :</td>
+                                <td class="input-col">
+                                    <input name="no_split" id="no_split" type="text" class="bqt-input" readonly />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="bqt-col-center">
+                        <table class="bqt-field-table">
+                            <tr>
+                                <td class="label-col">Guest Name :</td>
+                                <td class="input-col">
+                                    <input name="guest_name" id="guest_name" type="text" class="bqt-input" value="<?php echo isset($rowb['guest_name']) ? htmlspecialchars($rowb['guest_name']) : ''; ?>" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Venue :</td>
+                                <td class="input-col">
+                                    <input name="venue" id="venue" type="text" class="bqt-input" value="<?php echo isset($rov['venue_desc']) ? htmlspecialchars($rov['venue_desc']) : (isset($rowb['venue']) ? htmlspecialchars($rowb['venue']) : ''); ?>" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Date :</td>
+                                <td class="input-col">
+                                    <input name="book_date" id="book_date" type="text" class="bqt-input" value="<?php echo isset($rowb['book_date']) ? htmlspecialchars($rowb['book_date']) : ''; ?>" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Session :</td>
+                                <td class="input-col">
+                                    <input name="session" id="session" type="text" class="bqt-input" value="<?php echo isset($roS['sess_name']) ? htmlspecialchars($roS['sess_name']) : (isset($rowb['session']) ? htmlspecialchars($rowb['session']) : ''); ?>" readonly />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="label-col">Total Pax :</td>
+                                <td class="input-col">
+                                    <input name="total_pax" id="total_pax" type="text" class="bqt-input" value="<?php echo isset($rowb['guaranted']) ? htmlspecialchars($rowb['guaranted']) : ''; ?>" readonly />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Column 3: Voucher Link Table -->
+                    <div class="bqt-col-right">
+                        <table class="bqt-link-table" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th style="width:65%;">Voucher</th>
+                                    <th style="width:35%;">Link</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php for($cc = 1; $cc <= 5; $cc++){ ?>
+                                <tr>
+                                    <td>
+                                        <input name="spitem_group[]" id="item_group<?php echo $cc;?>" type="text" class="bqt-cell-input text-center" value="" readonly />
+                                    </td>
+                                    <td>
+                                        <input name="spitem_split[]" id="item_split<?php echo $cc;?>" type="checkbox" style="cursor:pointer;" value="" />
+                                    </td>
+                                </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- Items Section -->
+                <div class="bqt-section-title">Item Details</div>
+
+                <div style="overflow-x:auto;">
+                    <table class="bqt-items-table" cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th style="width: 35px;">S.No</th>
+                                <th style="width: 140px;">Item Name</th>
+                                <th style="width: 50px;">Qty</th>
+                                <th style="width: 75px;">Rate</th>
+                                <th style="width: 80px;">Total</th>
+                                <th style="width: 50px;">D.Flag</th>
+                                <th style="width: 50px;">Disc</th>
+                                <th style="width: 55px;">D.Amt</th>
+                                <th style="width: 55px;">D.Val</th>
+                                <th style="width: 65px;">Tax</th>
+                                <th style="width: 85px;">Net Amount</th>
+                                <th style="width: 50px;">Split</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dispItmHde">
+                        <?php 
+                        $Tnetamt = 0;
+                        $nmRs = 0;
+                        $x = 0;
+
+                        if ($vucNoParam != '') {
+                            $sqD = mysql_query("select * from bq_opvchrdtl where vouchrno='$vucNoParam'");
+                            if ($sqD && mysql_num_rows($sqD) > 0) {
+                                $nmRs = mysql_num_rows($sqD);
+                                while($roD = mysql_fetch_array($sqD)){
+                                    $x++;
+                                    $lnitmTot = $roD['item_qty'] * $roD['item_rate'];
+                                    $itmTot = ($roD['item_qty'] * $roD['item_rate']) - $roD['discamt'];
+                                    
+                                    $sqI = mysql_query("select * from bq_itemmaster where item_name='".$roD['item_name']."'");
+                                    $roI = ($sqI && mysql_num_rows($sqI) > 0) ? mysql_fetch_array($sqI) : array();
+
+                                    $allow_disc = (isset($roI['allow_disc']) && $roI['allow_disc'] == 'yes') ? 'Y' : 'N';
+                                    
+                                    $sqT = mysql_query("select SUM(taxamt)AS txAmt, taxcode from bq_opvchrtaxdtl where item_name='".$roD['item_name']."' AND vouchrno='$vucNoParam'");
+                                    $roT = ($sqT && mysql_num_rows($sqT) > 0) ? mysql_fetch_array($sqT) : array();
+                                    $txAmt = isset($roT['txAmt']) ? (float)$roT['txAmt'] : 0.00;
+                                    $netAmt = $itmTot + $txAmt;	
+                                    $Tnetamt += $netAmt;
+                        ?>
+                            <tr>
+                                <td>
+                                    <input name="opvchrdtl_id[]" id="opvchrdtl_id<?php echo $x;?>" type="hidden" value="<?php echo htmlspecialchars($roD['opvchrdtl_id']); ?>" />
+                                    <input name="s_no[]" id="s_no<?php echo $x;?>" type="text" class="bqt-cell-input text-center" value="<?php echo $x; ?>" readonly />
+                                    <input name="taxcde[]" id="taxcde<?php echo $x;?>" type="hidden" value="<?php echo htmlspecialchars($roD['taxstruccode']); ?>" />
+                                    <input name="item_code[]" id="item_code<?php echo $x;?>" type="hidden" value="<?php echo isset($roD['item_code']) ? htmlspecialchars($roD['item_code']) : ''; ?>" />
+                                    <input name="sac[]" id="sac<?php echo $x;?>" type="hidden" value="<?php echo isset($roD['sac']) ? htmlspecialchars($roD['sac']) : ''; ?>" />
+                                </td>
+                                <td>
+                                    <input name="item_name[]" id="item_name<?php echo $x;?>" type="text" class="bqt-cell-input" value="<?php echo isset($roD['item_name']) ? htmlspecialchars($roD['item_name']) : ''; ?>" readonly />
+                                </td>
+                                <td>
+                                    <input name="item_qty[]" id="item_qty<?php echo $x;?>" type="text" class="bqt-cell-input text-center" value="<?php echo isset($roD['item_qty']) ? htmlspecialchars($roD['item_qty']) : ''; ?>" readonly />
+                                </td>
+                                <td>
+                                    <input name="item_rate[]" id="item_rate<?php echo $x;?>" type="text" class="bqt-cell-input text-right" value="<?php echo isset($roD['item_rate']) ? htmlspecialchars($roD['item_rate']) : ''; ?>" readonly />
+                                </td>
+                                <td>
+                                    <input name="item_total[]" id="item_total<?php echo $x;?>" type="text" class="bqt-cell-input text-right" value="<?php echo number_format($lnitmTot, 2); ?>" readonly />
+                                </td>
+                                <td>
+                                    <?php if($roD['discamt'] > 0) { ?>
+                                        <input name="disc_flag[]" id="disc_flag<?php echo $x;?>" class="bqt-cell-input text-center" value="Y" />
+                                    <?php } else { ?>
+                                        <input name="disc_flag[]" id="disc_flag<?php echo $x;?>" class="bqt-cell-input text-center" value="<?php echo htmlspecialchars($allow_disc); ?>" />
+                                    <?php } ?>
+                                </td>
+                                <td>
+                                    <input name="disc_perc[]" id="disc_perc<?php echo $x;?>" class="bqt-cell-input text-center" value="Amt" />
+                                </td>
+                                <td>
+                                    <input name="disc_amount[]" id="disc_amount<?php echo $x;?>" type="text" class="bqt-cell-input text-right" value="<?php echo isset($roD['discperamt']) ? sprintf("%01.2f", $roD['discperamt']) : '0.00'; ?>" />
+                                </td>
+                                <td>
+                                    <input name="disc_val[]" id="disc_val<?php echo $x;?>" type="text" class="bqt-cell-input text-right" value="<?php echo isset($roD['discamt']) ? sprintf("%01.2f", $roD['discamt']) : '0.00'; ?>" readonly />
+                                </td>
+                                <td>
+                                    <input name="tax_code[]" id="tax_code<?php echo $x;?>" type="hidden" value="<?php echo isset($roT['taxcode']) ? htmlspecialchars($roT['taxcode']) : ''; ?>" />
+                                    <input name="str_code[]" id="str_code<?php echo $x;?>" type="hidden" value="<?php echo isset($roD['taxstruccode']) ? htmlspecialchars($roD['taxstruccode']) : ''; ?>" />
+                                    <input name="tax_amount[]" id="tax_amount<?php echo $x;?>" type="text" class="bqt-cell-input text-right" value="<?php echo sprintf("%01.2f", $txAmt); ?>" readonly />
+                                </td>
+                                <td>
+                                    <input name="net_amount[]" id="net_amount<?php echo $x;?>" type="text" class="bqt-cell-input text-right" style="font-weight:bold;" value="<?php echo sprintf("%01.2f", $netAmt); ?>" readonly />
+                                </td>
+                                <td>
+                                    <input name="split[]" id="split<?php echo $x;?>" type="text" class="bqt-cell-input text-center" value="<?php echo isset($roD['split']) ? htmlspecialchars($roD['split']) : ''; ?>" />
+                                </td>
+                            </tr>
+                        <?php 
+                                } 
+                            } 
+                        } 
+                        ?>
+
+                        <?php for($cc = $nmRs + 1; $cc <= 6; $cc++){ ?>
+                            <tr>
+                                <td><input name="s_no[]" id="s_no<?php echo $cc;?>" type="text" class="bqt-cell-input text-center" value="<?php echo $cc;?>" readonly /></td>
+                                <td><input name="itemnamem[]" id="itemm_name<?php echo $cc;?>" type="text" class="bqt-cell-input" value="" readonly /></td>
+                                <td><input name="itemm_qty[]" id="itemm_qty<?php echo $cc;?>" type="text" class="bqt-cell-input text-center" value="" readonly /></td>
+                                <td><input name="itemm_rate[]" id="itemm_rate<?php echo $cc;?>" type="text" class="bqt-cell-input text-right" value="" readonly /></td>
+                                <td><input name="itemm_total[]" id="itemm_total<?php echo $cc;?>" type="text" class="bqt-cell-input text-right" value="" readonly /></td>
+                                <td><input name="discm_flag[]" id="discm_flag<?php echo $cc;?>" type="text" class="bqt-cell-input text-center" value="" readonly /></td>
+                                <td><input name="discm_flag[]" id="discm_flag2_<?php echo $cc;?>" type="text" class="bqt-cell-input text-center" value="" readonly /></td>
+                                <td><input name="discm_amount[]" id="discm_amount<?php echo $cc;?>" type="text" class="bqt-cell-input text-right" value="" readonly /></td>
+                                <td><input name="discm_amount[]" id="discm_amount2_<?php echo $cc;?>" type="text" class="bqt-cell-input text-right" value="" readonly /></td>
+                                <td><input name="taxm_amount[]" id="taxm_amount<?php echo $cc;?>" type="text" class="bqt-cell-input text-right" value="" readonly /></td>
+                                <td><input name="netm_amount[]" id="netm_amount<?php echo $cc;?>" type="text" class="bqt-cell-input text-right" value="" readonly /></td>
+                                <td><input name="splitm[]" id="splitm<?php echo $cc;?>" type="text" class="bqt-cell-input text-center" value="" readonly /></td>
+                            </tr>
+                        <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Bottom Sections Grid -->
+                <div class="bqt-bottom-grid">
+
+                    <!-- Advance Receipts -->
+                    <div class="bqt-bottom-col">
+                        <div class="bqt-section-title">Advance Details</div>
+                        <table class="bqt-subtable" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th style="width:35%;">Receipt</th>
+                                    <th style="width:35%;">Date</th>
+                                    <th style="width:30%;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            $nmrA = 0;
+                            if ($vucNoParam != '' && isset($row['fpno']) && $row['fpno'] != '') {
+                                $ssC_res = mysql_query("select hallbook_id from bq_opfpmenuhdr where fpno='".$row['fpno']."' AND bill_status!='3'");
+                                if ($ssC_res && mysql_num_rows($ssC_res) > 0) {
+                                    $ssC = mysql_fetch_array($ssC_res);
+                                    $sqsC = mysql_query("select * from bq_hallresvadv where booking_no='".$row['bkno']."' AND status='1' AND hallbook_id='".$ssC['hallbook_id']."'");
+                                    if ($sqsC && mysql_num_rows($sqsC) > 0) {
+                                        $nmrA = mysql_num_rows($sqsC);
+                                        while($rwsC = mysql_fetch_array($sqsC)){
+                            ?>
+                                <tr>
+                                    <td><input name="receipt[]" type="text" class="bqt-cell-input text-center" value="<?php echo htmlspecialchars($rwsC['receipt_no']); ?>" readonly /></td>
+                                    <td><input name="receipt_date[]" type="text" class="bqt-cell-input text-center" value="<?php echo htmlspecialchars($rwsC['cur_date']); ?>" readonly /></td>
+                                    <td><input name="receipt_amount[]" type="text" class="bqt-cell-input text-right" value="<?php echo number_format($rwsC['amount'] + $rwsC['sgst'] + $rwsC['cgst'], 2); ?>" readonly /></td>
+                                </tr>
+                            <?php 
+                                        } 
+                                    } 
+                                }
+                            }
+                            ?>
+                            <?php for($cc = $nmrA; $cc < 3; $cc++){ ?>
+                                <tr>
+                                    <td><input name="receiptm[]" type="text" class="bqt-cell-input text-center" value="" readonly /></td>
+                                    <td><input name="receiptm_date[]" type="text" class="bqt-cell-input text-center" value="" readonly /></td>
+                                    <td><input name="receiptm_amount[]" type="text" class="bqt-cell-input text-right" value="" readonly /></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Split Bill Totals -->
+                    <div class="bqt-bottom-col">
+                        <div class="bqt-section-title">Bill Split Summary</div>
+                        <table class="bqt-subtable" cellpadding="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th style="width:35%;">Bill #</th>
+                                    <th style="width:45%;">Amount</th>
+                                    <th style="width:20%;">Y/N</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php 
+                            $nmD = 0;
+                            $xS = 0;
+                            if ($vucNoParam != '') {
+                                $sqD_s = mysql_query("select sum(net_amount)AS totV, sum(tax_amt)AS totA, split from bq_opvchrdtl where vouchrno='$vucNoParam' AND bill_status='1' group by split");
+                                if ($sqD_s && mysql_num_rows($sqD_s) > 0) {
+                                    $nmD = mysql_num_rows($sqD_s);
+                                    while($rw = mysql_fetch_array($sqD_s)){
+                                        $xS++;
+                            ?>
+                                <tr>
+                                    <td><input name="billm_no[]" type="text" class="bqt-cell-input text-center" value="<?php echo $xS; ?>" readonly /></td>
+                                    <td><input name="bill_amount[]" type="text" class="bqt-cell-input text-right" style="font-weight:bold;" value="<?php echo sprintf("%01.2f", $Tnetamt); ?>" readonly /></td>
+                                    <td><input name="bill_sel[]" type="checkbox" class="chk" onclick="setMenu();" style="cursor:pointer;" value="<?php echo htmlspecialchars($rw['split']); ?>" /></td>
+                                </tr>
+                            <?php 
+                                    } 
+                                }
+                            }
+                            ?>
+                            <?php for($cc = $nmD; $cc < 3; $cc++){ ?>
+                                <tr>
+                                    <td><input name="billm_no[]" type="text" class="bqt-cell-input text-center" value="" readonly /></td>
+                                    <td><input name="billm_amount[]" type="text" class="bqt-cell-input text-right" value="" readonly /></td>
+                                    <td><input name="billm_sel[]" type="checkbox" disabled /></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Card Bottom Action Bar Matching Master Standard -->
+            <div class="mypay-card-footer">
+                <button type="button" id="submit" class="btn-mypay-action" onclick="chkOutBillPrint();" title="Save Split (Ctrl+S)">
+                    <i class="fa fa-floppy-o"></i> Save
+                </button>
+                <button type="button" id="billsbt" name="billsbt" class="btn-mypay-action" onClick="popupBillPrint();" title="Generate Bill">
+                    <i class="fa fa-file-text-o"></i> Bill
+                </button>
+                <button type="button" id="printFlio" class="btn-mypay-action" data-toggle="modal" data-target="#myModal" onclick="selBadFeed();" title="View Guest Details">
+                    <i class="fa fa-eye"></i> View Bill
+                </button>
+                <a href="view-bqtbill-details.php?fromdate=<?php echo $curDate;?>&todate=<?php echo $curDate;?>&val=" class="btn-mypay-action" title="View Bill Register (Ctrl+V)">
+                    <i class="fa fa-list"></i> View Register
+                </a>
+                <button type="button" id="exit" name="exit" class="btn-mypay-action" onClick="extBUtton();" title="Exit (Ctrl+E)">
+                    <i class="fa fa-times" style="color:#e74c3c;"></i> Exit
+                </button>
+            </div>
+
+        </form>
     </div>
 
-  </div>
-</div>-->
-
-<?php } ?>
-
-<!-- End popup -->
-
-<?php
-$sqlm=mysql_query("select * from bq_opvchrhdr where vouchrno='".$_GET['vucNo']."'");
-$row=mysql_fetch_array($sqlm);
-
-$sqlb=mysql_query("select * from bq_hallbooking where booking_no='".$row['bkno']."' and fpno='".$row['fpno']."'");
-$rowb=mysql_fetch_array($sqlb);
-
-$sqbV=mysql_query("select * from bq_opvchrdtl where vouchrno='".$_GET['vucNo']."'");
-$robV=mysql_fetch_array($sqbV);
-
-$sqb=mysql_query("select * from bq_billinstruc where bill_code='".$rowb['top_code']."'");
-$rob=mysql_fetch_array($sqb);
-
-$sqS=mysql_query("select sess_name from bqt_session where sess_code='".$rowb['session']."'");
-$roS=mysql_fetch_array($sqS);
-
-$sqlv=mysql_query("select * from bq_venue where venue_code='".$rowb['venue']."' AND status ='1'");
-$rov=mysql_fetch_array($sqlv);
-?>				
-
-<table style="float:left;width:40%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<tr>
-	<td width="" valign="top"><label>Voucher #</label></td>
-	<td valign="top">
-	<select name="voucher_no" id="voucher_no" style="font-size:12px;width:160px;" onChange="selBQTBillVCHrDet();" class="wagRw1 textbox">
-			<option value="">--Select--</option>
-			<?php
-			
-			$sqle=mysql_query("select distinct vouchrno from bq_opvchrhdr where str_to_date(vouchrdate,'%d/%m/%Y')='$ctt' AND bill_status='1'");
-			while($res=mysql_fetch_array($sqle)){
-				if($res['vouchrno']==$_GET['vucNo']){
-			?>
-			<option value="<?php echo $res['vouchrno']  ?>" selected ><?php echo strtoupper($res['vouchrno']); ?></option>
-				<?php }else{?>
-			<option value="<?php echo $res['vouchrno']  ?>" ><?php echo strtoupper($res['vouchrno']); ?></option>
-			<?php } } ?>
-	</select>
-	</td>
-</tr>
-<tr>
-<td width="" valign="top"><label>FP # <em>*</em></label></td>
-<td valign="top"><input name="fp_no" id="fp_no" type="text" class="textbox fstChUPPRCase" style="width:160px" value="<?php if(isset($row['fpno'])) {echo $row['fpno'];}else{echo "";}?>" readonly /></td>
-</tr>
-<tr>
-	<td width="" valign="top"><label>Booking #</label></td>
-	<td valign="top"><input name="booking_no" id="booking_no" type="text" class="textbox fstChUPPRCase" style="width:160px" value="<?php if(isset($row['bkno'])) {echo $row['bkno'];}else{echo "";}?>" readonly /></td>
-	</tr>
-	<tr>
-	<td width="" valign="top"><label>Billing Instr</label></td>
-	<td valign="top"><input name="bill_inst" id="bill_inst" type="text" class="textbox fstChUPPRCase" style="width:160px" value="<?php if(isset($rob['bill_desc'])) {echo $rob['bill_desc'];}else{echo "";}?>" readonly /></td>
-	</tr>
-	<tr>
-	<td width="" valign="top"><label>No of Splits</label></td>
-	<td valign="top"><input name="no_split" id="no_split" type="text" class="textbox fstChUPPRCase" style="width:160px" readonly /></td>
-	</tr>
-</table>
-
-
-
-<table style="float:left;width:40%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<tr>
-		<td width="" valign="top"><label>Guest Name </label></td>
-		<td valign="top"><input name="guest_name" id="guest_name" type="text" class="textbox fstChUPPRCase guest_name" style="width:160px" value="<?php if(isset($rowb['guest_name'])) {echo $rowb['guest_name'];}else{echo "";}?>" readonly /></td>
-		
-<input name="guestt_name" id="guestt_name" type="hidden" class="textbox fstChUPPRCase guest_name" style="width:160px" value="" readonly />
-<input name="add1" id="add1" type="hidden" class="textbox fstChUPPRCase" style="" value="" readonly />
-<input name="add2" id="add2" type="hidden" class="textbox fstChUPPRCase" style="" value="" readonly />
-<input name="cty" id="cty" type="hidden" class="textbox fstChUPPRCase" style="" value="" readonly />
-<input name="pncd" id="pncd" type="hidden" class="textbox fstChUPPRCase" style="" value="" readonly />
-		
-</tr>
-<tr>
-<td width="" valign="top"><label>Venue <em>*</em></label></td>
-<td valign="top"><input name="venue" id="venue" type="text" class="textbox fstChUPPRCase" style="width:160px" value="<?php if(isset($rowb['venue'])) {echo $rov['venue_desc'];}else{echo "";}?>" readonly /></td>
-</tr>
-<tr>
-		<td width="" valign="top"><label>Date</label></td>
-		<td valign="top"><input name="book_date" id="book_date" type="text" class="textbox fstChUPPRCase" style="width:160px" value="<?php if(isset($rowb['book_date'])) {echo $rowb['book_date'];}else{echo "";}?>" readonly /></td>
-		</tr>
-		<tr>
-		<td width="" valign="top"><label>Session</label></td>
-		<td valign="top"><input name="session" id="session" type="text" class="textbox fstChUPPRCase" style="width:160px" value="<?php if(isset($rowb['session'])) {echo $roS['sess_name'];}else{echo "";}?>" readonly /></td>
-		</tr>
-		<tr>
-		<td width="" valign="top"><label>Total Pax</label></td>
-		<td valign="top"><input name="total_pax" id="total_pax" type="text" class="textbox fstChUPPRCase" style="width:160px;" value="<?php if(isset($rowb['guaranted'])) {echo $rowb['guaranted'];}else{echo "";}?>" readonly /></td>
-		</tr>
-</table>
-
-
-
-<table style="float:right;width:20%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<thead class="tathead">
-<tr>
-	<th colspan="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:105px;">Voucher </th>
-	<th colspan="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">Link</th>
-</tr>
-</thead>
-<tbody class="tathead tatbody tableS" id="" style="overflow:auto;height:128px;">
-<?php 
-for($cc=1;$cc<=5;$cc++){
-?>
-<tr id="">
-	<td style="text-align:center;" class="sourceonVAL"><input name="spitem_group[]" id="item_group<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:105px;margin:5px 0 0 0px" value="" readonly /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="spitem_split[]" id="item_split<?php echo $cc;?>" type="checkbox"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px;" value="" /></td>
-	
-</tr>	
-<?php } ?>
-</tbody>
-</table>
-
-
-
-<!--<div class="" style="margin-top:0px;width:30%;float:right;">
-	
-<table style="float:left;width:99%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<thead class="tathead">
-<tr>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:80px;">Item Group</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:100px;">Discount</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:70px;">Amount</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:70px;">Split</th>
-</tr>
-</thead>
-	<tbody class="tathead tatbody tableS" id="discHde" style="overflow:auto;height:110px;">
-	<?php 
-for($cc=1;$cc<5;$cc++){
-?>
-<tr id="">
-	<td style="text-align:center;" class="sourceonVAL"><input name="spitem_group[]" id="item_group<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px" value="" /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="spitem_disc[]" id="item_disc<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:100px;margin:5px 0 0 0px" value="" /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="spitem_amount[]" id="item_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:70px;margin:5px 0 0 0px" value=""  /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="spitem_split[]" id="item_split<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:70px;margin:5px 0 0 0px" value="" /></td>
-</tr>	
-<?php } ?>
-</tbody>
-
-<tbody class="tathead tatbody tableS" id="discShw" style="overflow:auto;height:110px;display:none;">
-</tbody>
-
-</table>
-
-
-</div>-->
-
-
-
-<table style="float:left;width:100%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<thead class="tathead">
-<tr>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:35px;">S.No.</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:120px;">Item Name</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">Qty</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:80px;">Rate</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:80px;">Total</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">D.Flag</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">Disc</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">D.Amt</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">D.Val</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:70px;">Tax</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:80px;">Net Amount</th>
-	<th style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">Split</th>
-</tr>
-</thead>
-<tbody class="tathead tatbody tableS" id="dispItmHde" style="overflow:auto;height:180px;">
-<?php 
-	$Tnetamt=0;
-$sqD=mysql_query("select * from bq_opvchrdtl where vouchrno='".$_GET['vucNo']."'");
-$x=0;
-$nmRs=mysql_num_rows($sqD);
-while($roD=mysql_fetch_array($sqD)){
-	$x++;
-$lnitmTot=$roD['item_qty']*$roD['item_rate'];
-$itmTot=$roD['item_qty']*$roD['item_rate']-$roD['discamt'];
-	
-$sqI=mysql_query("select * from bq_itemmaster where item_name='".$roD['item_name']."'");
-$roI=mysql_fetch_array($sqI);
-
-if($roI['allow_disc']=='yes'){
-	$allow_disc='Y';
-}else {
-	$allow_disc='N';
-}
-/* echo "select SUM(taxamt)AS txAmt from bq_opvchrtaxdtl where item_code='".$roD['item_code']."'"; */
-$sqT=mysql_query("select SUM(taxamt)AS txAmt,taxcode from bq_opvchrtaxdtl where item_name='".$roD['item_name']."' AND vouchrno='".$_GET['vucNo']."'");
-$roT=mysql_fetch_array($sqT);
-$netAmt=$itmTot+$roT['txAmt'];	
-$Tnetamt+=$netAmt;
-
-?>
-<tr id="">
-<td style="text-align:center;" class="sourceonVAL">
-
-<input name="opvchrdtl_id[]" id="opvchrdtl_id<?php echo $cc;?>" type="hidden"  class="textbox fstChUPPRCase expet" style="width:35px;margin:5px 0 0 0px" value="<?php echo $roD['opvchrdtl_id']; ?>" readonly />
-
-<input name="s_no[]" id="s_no<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:35px;margin:5px 0 0 0px" value="<?php echo $x; ?>" readonly />
-<input name="taxcde[]" id="taxcde<?php echo $cc;?>" type="hidden"  class="textbox fstChUPPRCase expet" style="width:35px;margin:5px 0 0 0px" value="<?php echo $roD['taxstruccode']; ?>" readonly />
-</td>
-<td style="text-align:center;" class="sourceonVAL" hidden ><input name="item_code[]" id="item_code<?php echo $x;?>" type="hidden"  class="textbox fstChUPPRCase expet" style="" value="<?php if(isset($roD['item_code'])) {echo $roD['item_code'];}else{echo "";}?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL" hidden ><input name="sac[]" id="sac<?php echo $x;?>" type="hidden"  class="textbox fstChUPPRCase expet" style="" value="<?php if(isset($roD['sac'])) {echo $roD['sac'];}else{echo "";}?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="item_name[]" id="item_name<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px" value="<?php if(isset($roD['item_name'])) {echo $roD['item_name'];}else{echo "";}?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="item_qty[]" id="item_qty<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px" value="<?php if(isset($roD['item_qty'])) {echo $roD['item_qty'];}else{echo "";}?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="item_rate[]" id="item_rate<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px;text-align:right;" value="<?php if(isset($roD['item_rate'])) {echo $roD['item_rate'];}else{echo "";}?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="item_total[]" id="item_total<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px;text-align:right;" value="<?php if(isset($lnitmTot)) {echo $lnitmTot;}else{echo "0.00";}?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL">
-
-<?php /* if($roD['item_code']=='Hall' || $roD['item_code']=='Rate') { */ ?>
-<!--<input name="disc_flag[]" id="disc_flag<?php /* echo $x; */?>" class="textbox fstChUPPRCase disF" style="width:50px;margin:5px 0 0 0px;text-align:center;" value="<?php /* if(isset($allow_disc)) {echo $allow_disc;}else{echo "";} */?>"   />-->
-<?php /* }else{  */?>
-
-<?php if($roD['discamt']>0) { ?>
-<input name="disc_flag[]" id="disc_flag<?php echo $x;?>" class="textbox fstChUPPRCase disF" style="width:50px;margin:5px 0 0 0px;text-align:center;" value="Y" />
-<?php } else { ?>
-<input name="disc_flag[]" id="disc_flag<?php echo $x;?>" class="textbox fstChUPPRCase disF" style="width:50px;margin:5px 0 0 0px;text-align:center;" value="<?php if(isset($allow_disc)) {echo $allow_disc;}else{echo "0.00";} ?>"   />
-<?php } ?>
-</td>
-<td style="text-align:center;" class="sourceonVAL">
-<!--<input name="disc_perc[]" id="disc_perc<?php echo $x;?>" class="textbox fstChUPPRCase disF" style="width:50px;margin:5px 0 0 0px;text-align:center;" value="<?php /* if(isset($roD['disccode'])) {echo ($roD['disccode']);}else{echo "0.00";} */?>" />-->
-<input name="disc_perc[]" id="disc_perc<?php echo $x;?>" class="textbox fstChUPPRCase disF" style="width:50px;margin:5px 0 0 0px;text-align:center;" value="Amt" />
-</td>
-<td style="text-align:center;" class="sourceonVAL"><input name="disc_amount[]" id="disc_amount<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px;text-align:right;" value="<?php if(isset($roD['discperamt'])) {echo sprintf("%01.2f",$roD['discperamt']);}else{echo "0.00";}?>"  /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="disc_val[]" id="disc_val<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px;text-align:right;" value="<?php if(isset($roD['discamt'])) {echo sprintf("%01.2f",$roD['discamt']);}else{echo "0.00";}?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL">
-
-<input name="tax_code[]" id="tax_code<?php echo $x;?>" type="hidden"  class="textbox fstChUPPRCase expet" style="width:70px;margin:5px 0 0 0px;text-align:right;" value="<?php if(isset($roT['taxcode'])) {echo $roT['taxcode'];}else{echo "";}?>" readonly />
-<input name="str_code[]" id="str_code<?php echo $x;?>" type="hidden"  class="textbox fstChUPPRCase expet" style="width:70px;margin:5px 0 0 0px;text-align:right;" value="<?php if(isset($roD['taxstruccode'])) {echo $roD['taxstruccode'];}else{echo "";}?>" readonly />
-
-<input name="tax_amount[]" id="tax_amount<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:70px;margin:5px 0 0 0px;text-align:right;" value="<?php if(isset($roT['txAmt'])) {echo sprintf("%01.2f",$roT['txAmt']);}else{echo "";}?>" readonly />
-</td>
-<td style="text-align:center;" class="sourceonVAL"><input name="net_amount[]" id="net_amount<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px;text-align:right;" value="<?php if(isset($netAmt)) {echo sprintf("%01.2f",$netAmt);}else{echo "";}?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="split[]" id="split<?php echo $x;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px;text-align:center;" value="<?php if(isset($roD['split'])) {echo $roD['split'];}else{echo "";}?>" /></td>
-</tr>
-<?php } ?>
-
-<?php 
-for($cc=$nmRs+1;$cc<15;$cc++){
-?>
-<tr id="">
-<td style="text-align:center;" class="sourceonVAL">
-<input name="s_no[]" id="s_no<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:35px;margin:5px 0 0 0px" value="<?php echo $cc;?>" readonly />
-</td>
-<td style="text-align:center;" class="sourceonVAL"><input name="itemnamem[]" id="itemm_name<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="itemm_qty[]" id="itemm_qty<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="itemm_rate[]" id="itemm_rate<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="itemm_total[]" id="itemm_total<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="discm_flag[]" id="discm_flag<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="discm_flag[]" id="discm_flag<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="discm_amount[]" id="discm_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="discm_amount[]" id="discm_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="taxm_amount[]" id="taxm_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:70px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="netm_amount[]" id="netm_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:80px;margin:5px 0 0 0px" value="" /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="splitm[]" id="splitm<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px" value="" /></td>
-</tr>	
-<?php 
-}
-?>	
- </tbody>
- 
-<tbody class="tathead tatbody tableS" id="dispItmShw" style="overflow:auto;height:180px;display:none;">
-</tbody>
-</table>
-
-
-
-<style>
-.butExample {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    color: #fff;
-    font-family: arial,helvetica,sans-serif;
-    font-size: 12px;
-    margin-left: -3px;
-    padding: 4px 82px;
-	/* width:250px; */
-	float:left;
-}
-
-.buttExaS {
-    background-color: #ffffff;
-    border: 1px solid #888888;
-    color: #000;
-    font-family: arial,helvetica,sans-serif;
-    font-size: 12px;
-   /*  margin-left: -3px; */
-    padding: 5px 0px;
-    /* padding: 5px 59px; */
-	width:125px;
-}
-</style>
-
-
-<table style="float:left;width:44%;border-right:1px solid #ddd;margin:8px 0px 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<thead class="tathead">
-<tr>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:120px;">Receipt</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:120px;">Date</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:120px;">Amount</th>
-</tr>
-</thead>
-<tbody class="tathead tatbody tableS" id="disADvHDE" style="overflow:auto;height:100px;">
-<?php
-$adv="";
-
-$ssC=mysql_fetch_array(mysql_query("select hallbook_id from bq_opfpmenuhdr where fpno='".$row['fpno']."' AND bill_status!='3'"));
-
-$sqsC=mysql_query("select * from bq_hallresvadv where booking_no='".$row['bkno']."'  AND status='1' AND hallbook_id='".$ssC['hallbook_id']."'");
-$nmrA=mysql_num_rows($sqsC);
-while($rwsC=mysql_fetch_array($sqsC)){
-?>
-<tr id="">
-<td style="text-align:center;" class="sourceonVAL"><input name="receipt[]" id="receipt<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px;text-align:center;" value="<?php echo $rwsC['receipt_no']; ?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="receipt_date[]" id="receipt_date<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px;text-align:right;" value="<?php echo $rwsC['cur_date']?>" readonly /></td>
-<td style="text-align:center;" class="sourceonVAL"><input name="receipt_amount[]" id="receipt_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px;text-align:right;" value="<?php echo $rwsC['amount']+$rwsC['sgst']+$rwsC['cgst']?>" readonly /></td>
-</tr>
-<?php } ?>	
-	
-<?php 
-for($cc=$nmrA;$cc<4;$cc++){
-?>
-<tr id="">
-	<td style="text-align:center;" class="sourceonVAL"><input name="receiptm[]" id="receipt<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px" value="" /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="receiptm_date[]" id="receipt_date<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px" value="" /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="receiptm_amount[]" id="receipt_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px" value="" /></td>
-</tr>	
-<?php } ?>
-</tbody>
-
-<tbody class="tathead tatbody tableS" id="disADvSHW" style="overflow:auto;height:100px;display:none;">
-</tbody>
-
-</table>
-				
-				
-<table style="float:left;width:38%;border-right:1px solid #ddd;margin:8px 0 0 0;" cellpadding="0" cellspacing="0" class="table tableS " border="0" >
-<thead class="tathead">
-<tr>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:120px;">Bill</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:120px;">Amount</th>
-	<th width="" style="text-align:center;background-color:#F5F5F5;font-size:12px;width:50px;">Y/N</th>
-</tr>
-</thead>
-<tbody class="tathead tatbody tableS" id="" style="overflow:auto;height:100px;">
-<?php 
-$sqD=mysql_query("select sum(net_amount)AS totV,sum(tax_amt)AS totA,split from bq_opvchrdtl where vouchrno='".$_GET['vucNo']."' AND bill_status='1' group by split");
-$x=0;$totV=0;
-$nmD=mysql_num_rows($sqD);
-while($rw=mysql_fetch_array($sqD)){
-	$totV=$rw['totV']+$rw['totA'];
-/* $sqTx=mysql_query("select sum(taxamt)AS Txt,split from bq_opvchrtaxdtl where vouchrno='".$_GET['vucNo']."' AND bill_status='1' group by split");
-$rwTx=mysql_fetch_array($sqTx);
-	$totV=$rw['totV']+$rwTx['Txt']; */
-	/* $totV+=$rw['item_qty']*$rw['item_rate']; */
-	
-	/* SUM(item_qty)*SUM(item_rate)AS totV */
-	
-	$x++;
-?>	
-<tr id="">
-	<td style="text-align:center;" class="sourceonVAL"><input name="billm_no[]" id="bill_no<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px;text-align:center;" value="<?php echo $x; ?>" readonly /></td>
-	<td style="text-align:right;" class="sourceonVAL"><input name="bill_amount[]" id="bill_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px;text-align:right;" value="<?php echo sprintf("%01.2f",$Tnetamt);?>" readonly /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="bill_sel[]" id="bill_sel<?php echo $cc;?>" type="checkbox"  class="textbox fstChUPPRCase expet chk" onclick="setMenu();" style="width:50px;margin:5px 0 0 0px" value="<?php echo $rw['split']; ?>" readonly /></td>
-</tr>
-<?php } ?>
-<?php 
-for($cc=$nmD;$cc<4;$cc++){
-?>
-<tr id="">
-	<td style="text-align:center;" class="sourceonVAL"><input name="billm_no[]" id="bill_no<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px" value="" readonly /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="billm_amount[]" id="bill_amount<?php echo $cc;?>" type="text"  class="textbox fstChUPPRCase expet" style="width:120px;margin:5px 0 0 0px" value="" readonly /></td>
-	<td style="text-align:center;" class="sourceonVAL"><input name="billm_sel[]" id="bill_sel<?php echo $cc;?>" type="checkbox"  class="textbox fstChUPPRCase expet" style="width:50px;margin:5px 0 0 0px" value="" readonly /></td>
-</tr>	
-<?php } ?>
-</tbody>
-</table>
-
-
-	
 </div>
-	
 
-
-<!--<table style="border-left:1px solid #ddd;" class="table">
-	<tr>
-		<td>	
-	<div style="margin:0px 0 0 0px;">
-		<button type="submit" id="send" name="send" class="butExample bnkSbt frstChr" style="" onclick="return checkformSubmit();"><img src="../../images/saves.png" class="sbtBtnImg frstChr"/>&nbsp;&nbsp;<span class="btnUndLine">S</span>ubmit</button>
-		
-		<a href="view-room-booking.php"><button type="button" id="update" class="butExample bnkSbt" onclick="return checkPropertyMasterq();"><img src="../../images/audit.png" class="sbtBtnImg "/>&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
-		
-		<a href="#" target="_blank"><button type="button" id="hallsts" class="butExample" style="" onclick="hall_sts()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">U</span>pdate</button></a>
-		
-			<button type="reset" id="rest" class="butExample" style="" onclick="cancel_ed()"><img src="../../images/clear-icon.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">C</span>lear</button>
-			
-		<a href="<?php/*  echo $home_path; */ ?>/dashboard.php"><button type="button" id="exit" name="exit" class="butExample" style="" onClick="self.close();" ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button></a>
-	</div>
-	</td>
-	</tr>
-</table>-->
-	</form>	
-	
-	
-<table style="float:right;margin:5px 0 0 0;">
-
-<tr>
-<td>
-<button type="button" id="submit" class="buttExaS bnkSbt frstChr submit" style="font-weight:bold;" onclick="chkOutBillPrint();" ><img src="../../images/saves.png" class="sbtBtnImg frstChr"/>&nbsp;&nbsp;<span class="btnUndLine">S</span>ave </button>
-</td>
-</tr>
-
-<tr>
-<td>
-<button type="button" id="billsbt" name="billsbt" class="buttExaS" style="font-weight:bold;" onClick="popupBillPrint();" ><img src="../../images/imprimer.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">B</span>ill</button>
-</td>
-</tr>
-
-<tr>
-<td>
-<a href="#"><button type="button" id="printFlio" class="buttExaS" style="font-weight:bold;" data-toggle="modal" data-target="#myModal" onclick="selBadFeed();"  ><img src="../../images/prtfoli.png" class="sbtBtnImg" style="width:20px;height:20px;" />&nbsp;&nbsp;<span class="btnUndLine">V</span>iew Bill</button></a>
-</td>
-</tr>
-
-<tr>
-<td>
-<a href="view-bqtbill-details.php?fromdate=<?php echo $rowAC['cur_date'];?>&todate=<?php echo $rowAC['cur_date'];?>&val="><button type="button" id="update" class="buttExaS" style="font-weight:bold;"><img src="../../images/audit.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">V</span>iew</button></a>
-</td>
-</tr>
-
-<tr>
-<td>
-<button type="button" id="exit" name="exit" class="buttExaS" style="font-weight:bold;" onClick="extBUtton();" ><img src="../../images/exitBut.png" class="sbtBtnImg" />&nbsp;&nbsp;<span class="btnUndLine">E</span>xit</button>
-</td>
-</tr>
-
-</table>
-
-</div>
-	</div>
-	</div>
-
-	<?php /* include("../../footer.php"); */ ?>
+<?php include("../../footer.php"); ?>
 </body>
 </html>

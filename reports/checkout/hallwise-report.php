@@ -1,484 +1,970 @@
 <?php
-ob_start();
 error_reporting(0);
+ob_start();
 include("../../config.php");
 include("../../header.php");
+
+$sqlAC = mysql_query("select * from audt_control where audtcontrol_id='1'");
+$rowAC = mysql_fetch_array($sqlAC);
+$adtCurDt = trim($rowAC['cur_date']);
+
+// Filter inputs
+$frDateParam = isset($_GET['fromdate']) ? trim($_GET['fromdate']) : '';
+$toDateParam = isset($_GET['todate']) ? trim($_GET['todate']) : '';
+$venueParam  = isset($_GET['venue']) ? trim($_GET['venue']) : '';
+$valParam    = isset($_GET['val']) ? trim($_GET['val']) : '';
+
+// Default dates if empty
+$displayFrom = ($frDateParam != '') ? $frDateParam : ($adtCurDt ? $adtCurDt : date('d/m/Y'));
+$displayTo   = ($toDateParam != '') ? $toDateParam : ($adtCurDt ? $adtCurDt : date('d/m/Y'));
+
+// Property definition for Print Header
+$sqlPd = mysql_query("select * from property_definition where propdef_id='1'");
+$rowPd = mysql_fetch_array($sqlPd);
+$prop_name = !empty($rowPd['prop_name']) ? $rowPd['prop_name'] : 'MY BANQUET';
+$city = !empty($rowPd['city']) ? $rowPd['city'] : '';
+
+// Pagination parameters
+$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int)$_GET['limit'] : 25;
+if (!in_array($limit, [10, 25, 50, 100, 500])) {
+    $limit = 25;
+}
+
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($page < 1) {
+    $page = 1;
+}
+
+// Construct WHERE clause
+$where = " where 1=1 ";
+if ($displayFrom != '' && $displayTo != '') {
+    $fr = explode('/', $displayFrom);
+    $to = explode('/', $displayTo);
+    if (count($fr) == 3 && count($to) == 3) {
+        $frm = $fr[2] . '-' . $fr[1] . '-' . $fr[0];
+        $tod = $to[2] . '-' . $to[1] . '-' . $to[0];
+        $where .= " AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' ";
+    }
+}
+
+if ($venueParam != '' && $venueParam != 'all') {
+    $vEsc = mysql_real_escape_string($venueParam);
+    $where .= " AND venue = '$vEsc' ";
+}
+
+if ($valParam != '') {
+    $v = mysql_real_escape_string($valParam);
+    $where .= " AND (bill_no like '%$v%' OR fname like '%$v%' OR bkno like '%$v%' OR fpno like '%$v%') ";
+}
+
+// Preload Dynamic Group Codes
+$grpCodes = array();
+$sqlTS = mysql_query("select distinct grpcode, grpname from bq_grpcode where status='1' order by grpcode ASC");
+if ($sqlTS) {
+    while ($rowTS = mysql_fetch_assoc($sqlTS)) {
+        $grpCodes[] = $rowTS;
+    }
+}
+
+// Check if GST is present in this date range or use standard tax structures
+$hasGST = false;
+$checkGST = mysql_query("select count(*) as cnt from bq_opbillhdr $where AND (cgst > 0 or sgst > 0)");
+if ($checkGST) {
+    $rowGST = mysql_fetch_assoc($checkGST);
+    if ($rowGST['cnt'] > 0) {
+        $hasGST = true;
+    }
+}
+
+$taxCodes = array();
+if (!$hasGST) {
+    $sqlTax = mysql_query("select * from bq_taxstruct where status='1' group by tax_code order by tax_code ASC");
+    if ($sqlTax) {
+        while ($rTax = mysql_fetch_assoc($sqlTax)) {
+            $taxCodes[] = $rTax['tax_code'];
+        }
+    }
+}
+
+// Count total matching records
+$countSql = mysql_query("select count(*) as total from bq_opbillhdr $where");
+$countRow = mysql_fetch_array($countSql);
+$totalRecords = $countRow['total'] ? (int)$countRow['total'] : 0;
+
+$totalPages = ceil($totalRecords / $limit);
+if ($totalPages < 1) {
+    $totalPages = 1;
+}
+if ($page > $totalPages) {
+    $page = $totalPages;
+}
+
+$offset = ($page - 1) * $limit;
+$startRecord = ($totalRecords > 0) ? ($offset + 1) : 0;
+$endRecord = min($offset + $limit, $totalRecords);
+
+// Total column count for banner row
+$colSpanTotal = 7 + count($grpCodes) + 1 + ($hasGST ? 2 : count($taxCodes)) + 4;
+
+// Helper for pagination links
+function getPageUrl($p, $frDateParam, $toDateParam, $venueParam, $valParam, $limit) {
+    return "hallwise-report.php?fromdate=" . urlencode($frDateParam) . "&todate=" . urlencode($toDateParam) . "&venue=" . urlencode($venueParam) . "&val=" . urlencode($valParam) . "&limit=" . $limit . "&page=" . $p;
+}
 ?>
- 
-<style>
-label {width: 205px; padding:0 20px 0 20px; display: inline-block;font-weight: bold;color: #000;font-size:12px; } 
-   
-input[type=text], textarea{
- height:26px;
-}
-.table td {text-align:center;} 
-
-  #searchTxt{
-	background
-	:url("../../images/search.png") no-repeat scroll right center #FFFFFF;
-	}
-</style>	
-<script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
+<link rel="stylesheet" href="<?php echo $home_path;?>/css/mypay-master.css">
 <link rel="stylesheet" href="<?php echo $home_path;?>/date-picker/jquery-ui.css">
-<script>
-$(document).ready(function(){
+<script src="<?php echo $home_path;?>/date-picker/jquery-ui.js"></script>
+<script src="../../js/sweetalert.min.js"></script>
+<script type="text/javascript" src="<?php echo $home_path; ?>/js/shortcut.js"></script>
 
-	$(".datepicker" ).datepicker({
-	changeMonth:true,
-	changeYear:true,
-	yearRange:"-5:+5",
-	/* minDate: 0, */
-	dateFormat:"dd/mm/yy"
-	});
-
-	$(".datepicker1" ).datepicker({
-	changeMonth:true,
-	changeYear:true,
-	yearRange:"-5:+5",
-	/* minDate: 0, */
-	dateFormat:"dd/mm/yy"
-	});
-	
- $(':checkbox').click(function(e){
-	if($("input:checked").length>0){
-	$('#print').show();
-	}else{
-	$('#print').hide();
-	}
-});
-
-
-	
-	
-jQuery("#roommaster").validationEngine();
-$(".ckPrint").show();
-
-});
-
-
-function setPrint(id,val)
-{	
-	if($("#"+id).is(":checked"))
-	{  
-			$('.ckPrint').each(function(){
-			a_id=this.id.split('_');
-			if($(this).attr('id') != id)
-			{
-				$(this).attr("disabled",true);
-				$("#ed"+a_id[1]).attr("style","display:none");
-			}
-		});
-	}
-	else
-	{
-		$('.ckPrint').each(function(){
-			a_id=this.id.split('_');
-			$(this).removeAttr("disabled");
-			$("#ed"+a_id[1]).attr("style","display:inline");
-		});
-	}
+<style type="text/css">
+/* ==========================================================================
+   Master Pages Style - Standardized Unified Hall Wise Sales Report (MyPay)
+   ========================================================================== */
+body, body.bgBODY {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
+.mypay-container {
+    width: 98% !important;
+    max-width: 100% !important;
+    margin: 15px auto 40px auto !important;
+    padding: 0 !important;
+}
 
+/* Action Bar above List View */
+.mypay-actions-bar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+    flex-wrap: wrap !important;
+}
 
-function popupBillPrint()
-{
-	val=$('.ckPrint:checkbox:checked').val();
-	newwindow=window.open('<?php echo $home_path;?>/transaction/view/bill-print-pdout.php?billNo='+val,"_blank",'scrollbars=1,menubar=0,resizable=1,width=1000,height=700');
-	newwindow.focus(); 
+.mypay-filter-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+}
+
+.mypay-filter-label {
+    font-size: 13px !important;
+    font-weight: bold !important;
+    color: #222222 !important;
+    margin: 0 !important;
+    padding: 0 2px !important;
+}
+
+.mypay-date-input {
+    width: 105px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    text-align: center !important;
+    padding: 0 6px !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 4px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+}
+
+.mypay-date-input:focus {
+    border-color: #0084b4 !important;
+    box-shadow: 0 0 3px rgba(0, 132, 180, 0.4) !important;
+}
+
+.mypay-select {
+    height: 30px !important;
+    line-height: 28px !important;
+    padding: 0 8px !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 4px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    min-width: 140px !important;
+}
+
+.mypay-select:focus {
+    border-color: #0084b4 !important;
+    box-shadow: 0 0 3px rgba(0, 132, 180, 0.4) !important;
+}
+
+.mypay-search-input {
+    width: 250px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    padding: 0 10px !important;
+    border: 1px solid #0073B5 !important;
+    border-radius: 4px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+    color: #333333 !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+    outline: none !important;
+    transition: border-color 0.15s ease-in-out !important;
+}
+
+.mypay-search-input:focus {
+    border-color: #0084b4 !important;
+    box-shadow: 0 0 3px rgba(0, 132, 180, 0.4) !important;
+}
+
+.btn-mypay-search {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    border: 1px solid #005b8a !important;
+    border-radius: 3px !important;
+    padding: 0 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 30px !important;
+    line-height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.btn-mypay-search:hover {
+    background-color: #005b8a !important;
+    color: #ffffff !important;
+}
+
+.btn-mypay-reset {
+    background-color: #6c757d !important;
+    color: #ffffff !important;
+    border: 1px solid #5a6268 !important;
+    border-radius: 3px !important;
+    padding: 0 10px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 30px !important;
+    line-height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.btn-mypay-reset:hover {
+    background-color: #5a6268 !important;
+    color: #ffffff !important;
+}
+
+.btn-mypay-excel {
+    background-color: #107c41 !important;
+    color: #ffffff !important;
+    border: 1px solid #0b5a2e !important;
+    border-radius: 3px !important;
+    padding: 0 12px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 30px !important;
+    line-height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.btn-mypay-excel:hover {
+    background-color: #0b5a2e !important;
+    color: #ffffff !important;
+}
+
+.btn-mypay-print {
+    background-color: #28a745 !important;
+    color: #ffffff !important;
+    border: 1px solid #1e7e34 !important;
+    border-radius: 3px !important;
+    padding: 0 12px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 30px !important;
+    line-height: 28px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    cursor: pointer !important;
+    transition: background-color 0.15s ease-in-out !important;
+}
+
+.btn-mypay-print:hover {
+    background-color: #218838 !important;
+    color: #ffffff !important;
+}
+
+.mypay-btn-group {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn-mypay-exit {
+    background-color: #005580 !important;
+    color: #ffffff !important;
+    border: 1px solid #004466 !important;
+    border-radius: 3px !important;
+    padding: 4px 14px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    height: 30px !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+}
+
+.btn-mypay-exit:hover {
+    background-color: #004466 !important;
+    color: #ffffff !important;
+}
+
+.mypay-icon-exit {
+    color: #f39c12 !important;
+    font-size: 13px !important;
+}
+
+/* Scroll Container for Wide Tables */
+.mypay-table-wrapper {
+    width: 100% !important;
+    overflow-x: auto !important;
+    border: 1px solid #0073B5 !important;
+    background: #ffffff !important;
+}
+
+/* Master-style View Data Table */
+.mypay-table {
+    width: 100% !important;
+    min-width: 1750px !important;
+    border-collapse: collapse !important;
+    border: none !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    background-color: #ffffff !important;
+    margin: 0 !important;
+}
+
+.mypay-table thead tr.banner-row th {
+    background-color: #0073B5 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 13px !important;
+    height: 36px !important;
+    padding: 8px 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: 1px solid #0073B5 !important;
+    vertical-align: middle !important;
+}
+
+.mypay-table thead tr.header-row th {
+    background-color: #f5f5f5 !important;
+    color: #222222 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-weight: bold !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    height: 32px !important;
+    padding: 6px 8px !important;
+    border: 1px solid #e0e0e0 !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+}
+
+.mypay-table tbody td {
+    padding: 6px 8px !important;
+    border: 1px solid #e0e0e0 !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12px !important;
+    color: #333333 !important;
+    text-align: center !important;
+    background-color: #ffffff !important;
+    height: 30px !important;
+    vertical-align: middle !important;
+}
+
+.mypay-table tbody tr:hover td {
+    background-color: #f8fbfe !important;
+}
+
+.mypay-table tbody tr.row-cancelled td {
+    color: #cf222e !important;
+}
+
+.mypay-table tbody tr.venue-group-row td {
+    background-color: #e8f4fd !important;
+    color: #005b8a !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    padding: 8px 12px !important;
+    border: 1px solid #c8e2f8 !important;
+    font-size: 12.5px !important;
+}
+
+.bill-link {
+    color: #0073B5 !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+}
+
+.bill-link:hover {
+    text-decoration: underline !important;
+    color: #005580 !important;
+}
+
+/* Alignment Helpers */
+.mypay-table td.text-right, .mypay-table th.text-right {
+    text-align: right !important;
+    padding-right: 10px !important;
+}
+
+.mypay-table td.text-left, .mypay-table th.text-left {
+    text-align: left !important;
+    padding-left: 10px !important;
+}
+
+/* Page Totals Row */
+.mypay-table tfoot tr.totals-row td {
+    background-color: #f8fafc !important;
+    font-weight: bold !important;
+    color: #0f172a !important;
+    border-top: 2px solid #0073B5 !important;
+    font-size: 12px !important;
+    height: 34px !important;
+}
+
+/* Standardized Pagination Styling */
+.mypay-pagination-bar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: 15px !important;
+    padding: 8px 4px !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 13px !important;
+}
+
+.mypay-page-info {
+    color: #555555 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.mypay-page-select {
+    height: 28px !important;
+    padding: 2px 6px !important;
+    border: 1px solid #c0c8d0 !important;
+    border-radius: 3px !important;
+    font-size: 12px !important;
+    background: #ffffff !important;
+    color: #333333 !important;
+    cursor: pointer !important;
+    outline: none !important;
+}
+
+.mypay-page-select:focus {
+    border-color: #0084b4 !important;
+}
+
+.mypay-pagination {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.mypay-page-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 28px !important;
+    height: 28px !important;
+    padding: 0 6px !important;
+    border: 1px solid #d0d7de !important;
+    border-radius: 3px !important;
+    background-color: #ffffff !important;
+    color: #0073B5 !important;
+    text-decoration: none !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    box-sizing: border-box !important;
+}
+
+.mypay-page-link:hover:not(.disabled):not(.active) {
+    background-color: #f0f4f8 !important;
+    border-color: #0073B5 !important;
+    color: #005b8a !important;
+    text-decoration: none !important;
+}
+
+.mypay-page-link.active {
+    background-color: #0073B5 !important;
+    border-color: #005b8a !important;
+    color: #ffffff !important;
+    cursor: default !important;
+    text-decoration: none !important;
+}
+
+.mypay-page-link.disabled {
+    background-color: #f6f8fa !important;
+    border-color: #e1e4e8 !important;
+    color: #adb5bd !important;
+    cursor: not-allowed !important;
+    text-decoration: none !important;
+}
+</style>
+
+<script>
+jQuery(document).ready(function(){
+    $(".datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:+5",
+        dateFormat: "dd/mm/yy"
+    });
+
+    $(".datepicker1").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: "-100:+5",
+        dateFormat: "dd/mm/yy"
+    });
+    
+    if(typeof shortcut !== 'undefined') {
+        shortcut.add("Ctrl+E", function() { 
+            window.location.href = "<?php echo $home_path; ?>/dashboard.php";
+        });
+    }
+
+    $('#searchTxt').on('keypress', function(e){
+        if(e.which == 13){
+            e.preventDefault();
+            clkSubmit();
+        }
+    });
+});
+
+function clkSubmit() {
+    var fromdate = $('#from_date').val() || '';
+    var todate = $('#to_date').val() || '';
+    var venue = $('#venue').val() || '';
+    var srtx = $('#searchTxt').val().trim();
+    var limit = $('#limitSelect').val() || '25';
+    document.location = "hallwise-report.php?fromdate=" + encodeURIComponent(fromdate) + "&todate=" + encodeURIComponent(todate) + "&venue=" + encodeURIComponent(venue) + "&val=" + encodeURIComponent(srtx) + "&limit=" + encodeURIComponent(limit) + "&page=1";
+}
+
+function changeLimit(lim) {
+    var fromdate = $('#from_date').val() || '';
+    var todate = $('#to_date').val() || '';
+    var venue = $('#venue').val() || '';
+    var srtx = $('#searchTxt').val().trim();
+    document.location = "hallwise-report.php?fromdate=" + encodeURIComponent(fromdate) + "&todate=" + encodeURIComponent(todate) + "&venue=" + encodeURIComponent(venue) + "&val=" + encodeURIComponent(srtx) + "&limit=" + encodeURIComponent(lim) + "&page=1";
+}
+
+function srcSub(){
+    document.location = "hallwise-report.php";
+}
+
+function selRefNo(val){
+    var printUrl = '<?php echo $home_path; ?>/transaction/view/bill-print-pdout.php?billNo=' + encodeURIComponent(val);
+    var newwindow = window.open(printUrl, "_blank", 'scrollbars=1,menubar=0,resizable=1,width=1000,height=700');
+    if (newwindow) {
+        newwindow.focus();
+    }
 }
 
 function printPage(){
-			/* $(".ckPrint").hide(); */
-			 /* $('.ckPrint').delay(5000).hide(0);  */ 
-			$('.ckPrint').hide().delay(3000).show(0);
-			$('.Ckk').hide().delay(3000).show(0);
-			$('.dispSHw').show().delay(1000).hide(0);			
-			var divContents = $("#dvContainer").html();
-		    var printWindow = window.open('', '', 'height=400,width=800');
-            printWindow.document.write('<html><head><title>&nbsp;</title>');
-            printWindow.document.write('</head><body >');
-            printWindow.document.write(divContents);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print(); 
+    var divContents = $("#dvContainer").html();
+    var printWindow = window.open('', '', 'height=600,width=950');
+    printWindow.document.write('<html><head><title>Hall Wise Sales Report</title>');
+    printWindow.document.write('<style>table {width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;} th, td {border:1px solid #ccc;padding:5px;text-align:center;} th {background-color:#0073B5;color:#fff;} .text-right {text-align:right;} .text-left {text-align:left;} th.banner-row th {font-size:13px;} .venue-group-row td {background-color:#e8f4fd !important;color:#005b8a !important;font-weight:bold;text-align:left;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write('<h3 style="text-align:center;font-family:Arial;margin-bottom:5px;"><?php echo htmlspecialchars($prop_name); ?><?php echo !empty($city) ? ", ".htmlspecialchars($city) : ""; ?></h3>');
+    printWindow.document.write('<h4 style="text-align:center;font-family:Arial;margin-top:0;margin-bottom:10px;">HALL WISE SALES REPORT (<?php echo htmlspecialchars($displayFrom); ?> to <?php echo htmlspecialchars($displayTo); ?>)</h4>');
+    printWindow.document.write(divContents);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print(); 
 }
-
-function clkSubmit() {
-fromdate=$('#from_date').val();
-todate=$('#to_date').val();
-out=$('#outlet').val();
-venue=$('#venue').val();
-if(fromdate!="" && todate!="" && out!="")
-{
-document.location="hallwise-report.php?fromdate="+fromdate+"&todate="+todate+"&venue="+venue;
-}
-
-}
-
-
-function selRefNo(vl,ot){
-	val=$('#bn'+vl).val();
-	/* alert(ot); */
-	if(ot=='SPA'){
-		newwindow=window.open('<?php /* echo $_SERVER['HTTP_HOST']; */?>http://localhost:8081/mybanquet/transaction/view/spa-bill-print.php?billNo='+val+'&ouLt='+ot,"_blank",'scrollbars=1,menubar=0,resizable=1,width=1000,height=700');
-		newwindow.focus(); 
-	}else{
-		newwindow=window.open('<?php /* echo $_SERVER['HTTP_HOST']; */?>http://localhost:8081/mybanquet/transaction/view/roomservice_bill_print_trans.php?billNo='+val+'&ouLt='+ot,"_blank",'scrollbars=1,menubar=0,resizable=1,width=1000,height=700');
-		newwindow.focus(); 
-	}
-	
-}
-
-
 </script>
-<?php
-$sql=mysql_query("select * from property_definition where propdef_id='1'");
-$row=mysql_fetch_array($sql);
-$prop_name=$row['prop_name'];
-$city=$row['city'];
-$phone=$row['phone'];
 
-?>
 <body class="bgBODY">
 
-<div class="" style="">	
-<table style="width:50%;margin:10px 0 10px 0px;">	
-<tr>
-<td><label style="width:80px;"><b>From :</b></label></td>
-<td>
-	<input name="from_date" style="width:100px;margin:0px 0 0 0;text-align:center;" type="text" class="textbox datepicker" id="from_date"   value="<?php if(isset($_GET['todate'])){ echo $_GET['fromdate'];}?>" onChange="showsales()" placeholder="From Date"/>
-</td>
-<td><label style="width:70px;"><b>To :</b></label></td>
-<td style="width:80px;">
-	<input name="to_date" style="width:100px;margin:0px 10px 0 0;text-align:center;" type="text" class="textbox datepicker1" id="to_date"  value="<?php if(isset($_GET['todate'])){ echo $_GET['todate'];}?>" onChange="showsales()" placeholder="To Date"/>
-</td>
+<div class="mypay-container">
 
-<td><label style="width:70px;"><b>Venue</b>&nbsp;&nbsp;</label></td>
-<td>
-<?php 
-$sqlBS=mysql_query("select distinct venue_code,venue_desc from bq_venue where status='1'"); ?>
-	<select name="venue" id="venue" class="fstChUPPRCase" style="width:100px;float:left;font-size:12px;" onChange="selVenueName();">
-	<option value="">--Select--</option>
-	<option value="">All</option>
-	<?php 
-	
-	while($rowBS=mysql_fetch_array($sqlBS)) {
-if($rowBS['venue_code']==$_GET['venue']){		
-	?>
+    <!-- Top Action & Search Bar Matching Master Style -->
+    <div class="mypay-actions-bar">
+        <div class="mypay-filter-group">
+            <span class="mypay-filter-label">From:</span>
+            <input name="from_date" type="text" class="mypay-date-input datepicker" id="from_date" value="<?php echo htmlspecialchars($displayFrom); ?>" placeholder="From Date" autocomplete="off" />
+            
+            <span class="mypay-filter-label" style="margin-left:4px;">To:</span>
+            <input name="to_date" type="text" class="mypay-date-input datepicker1" id="to_date" value="<?php echo htmlspecialchars($displayTo); ?>" placeholder="To Date" autocomplete="off" />
+            
+            <span class="mypay-filter-label" style="margin-left:4px;">Venue:</span>
+            <select name="venue" id="venue" class="mypay-select">
+                <option value="">All Venues</option>
+                <?php 
+                $sqlBS = mysql_query("select distinct venue_code, venue_desc from bq_venue where status='1' order by venue_desc ASC");
+                if ($sqlBS) {
+                    while ($rowBS = mysql_fetch_array($sqlBS)) {
+                        $sel = ($rowBS['venue_code'] == $venueParam) ? 'selected' : '';
+                        echo '<option value="' . htmlspecialchars($rowBS['venue_code']) . '" ' . $sel . '>' . htmlspecialchars($rowBS['venue_desc']) . '</option>';
+                    }
+                }
+                ?>
+            </select>
 
-	<option value="<?php  echo $rowBS['venue_code']; ?>" selected ><?php  echo $rowBS['venue_desc'];?></option>
-<?php }else{ ?>
-	<option value="<?php  echo $rowBS['venue_code']; ?>"><?php  echo $rowBS['venue_desc'];?></option>
-	<?php  } }  ?>
-	</select>
-</td>	
-<td>
-	<input name="submt" style="margin:0 0 0 20px;" type="button" id="submt"  class="btnH" value="Display" onClick="clkSubmit()" />
-</td>
-<td>
-	<a href="<?php echo $home_path ?>/reports/checkout/xt_hallWise_report_xls.php?fromdate=<?php echo $_GET['fromdate']?>&todate=<?php echo $_GET['todate']?>&venue=<?php echo $_GET['venue']?>" style="margin:0px 0 0 62px;color:#000;font-size:13px;font-weight:bold;"><button type="button" id="pdf" style="margin:0 0 0 44px;" class="myButeXL btnn"><img src="../../images/excel1.png"  class="sbtBtnImg"/>&nbsp;Export&nbsp;</button></a>
-</td>
-<td>
-	<input type="button" value="Print" class="myButsprn" onclick="printPage();" style="margin:0 0 0 75px;font-weight: bold;padding: 5px;">
-</td>
+            <input type="text" id="searchTxt" name="searchTxt" class="mypay-search-input" placeholder="Search Bill# / Guest / Venue..." value="<?php if($valParam != '') { echo htmlspecialchars($valParam); } ?>" />
+            
+            <button type="button" name="submt" id="submt" class="btn-mypay-search" onclick="clkSubmit()" title="Display Records">
+                <i class="fa fa-search"></i> <span>Display</span>
+            </button>
+            
+            <?php if(($valParam != '') || ($frDateParam != '') || ($venueParam != '')) { ?>
+                <button type="button" class="btn-mypay-reset" onclick="srcSub()" title="Clear Filter">
+                    <i class="fa fa-times"></i> <span>Clear</span>
+                </button>
+            <?php } ?>
 
-</tr>
-</table>
-</div>
+            <a href="<?php echo $home_path ?>/reports/checkout/xt_hallWise_report_xls.php?fromdate=<?php echo urlencode($displayFrom); ?>&todate=<?php echo urlencode($displayTo); ?>&venue=<?php echo urlencode($venueParam); ?>" class="btn-mypay-excel" title="Export to Excel">
+                <i class="fa fa-file-excel-o"></i> <span>Export</span>
+            </a>
 
+            <button type="button" class="btn-mypay-print" onclick="printPage()" title="Print Current View">
+                <i class="fa fa-print"></i> <span>Print</span>
+            </button>
+        </div>
 
+        <div class="mypay-btn-group">
+            <a href="<?php echo $home_path; ?>/dashboard.php" class="btn-mypay-exit" id="exit" title="Exit (Ctrl+E)">
+                <span class="mypay-icon-exit"><i class="fa fa-sign-out"></i></span>
+                <span>Exit</span>
+            </a>
+        </div>
+    </div>
 
-<table class="table table-condensed table-hover table-striped table-bordered" cellpadding="0" cellspacing="0" border="1" class="table" style="margin:0px 0 0px -5px;text-align:center;font-size:12px;">
-	<tr class="info">
-	
-	<td colspan="35" style="text-align:center;"><h3 class="viewDTT"><b>HALL WISE SALES REPORT</b></h3><b></b></td>
-	</tr>
-</table>
+    <!-- Data Table Container Matching Master Layout -->
+    <div class="mypay-table-wrapper" id="dvContainer">
+        <table class="mypay-table" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr class="banner-row">
+                    <th colspan="<?php echo $colSpanTotal; ?>">HALL WISE SALES REPORT</th>
+                </tr>
+                <tr class="header-row">
+                    <th style="width: 3%;">Sl.no</th>
+                    <th style="width: 6%;">Bill#</th>
+                    <th style="width: 5.5%;">Bill Date</th>
+                    <th style="width: 10%;">Guest / Company</th>
+                    <th style="width: 6.5%;">Venue</th>
+                    <th style="width: 6.5%;">Function</th>
+                    <th style="width: 3.5%;" class="text-right">Pax</th>
+                    
+                    <?php foreach ($grpCodes as $gc) { ?>
+                        <th class="text-right" style="min-width: 80px;"><?php echo htmlspecialchars(ucwords($gc['grpname'])); ?></th>
+                    <?php } ?>
+                    
+                    <th class="text-right" style="min-width: 80px;">Net Amt</th>
+                    
+                    <?php if ($hasGST) { ?>
+                        <th class="text-right" style="min-width: 75px;">CGST</th>
+                        <th class="text-right" style="min-width: 75px;">SGST</th>
+                    <?php } else { ?>
+                        <?php foreach ($taxCodes as $tc) { ?>
+                            <th class="text-right" style="min-width: 75px;"><?php echo htmlspecialchars($tc); ?></th>
+                        <?php } ?>
+                    <?php } ?>
+                    
+                    <th class="text-right" style="min-width: 70px;">Disc</th>
+                    <th class="text-right" style="min-width: 65px;">RND</th>
+                    <th class="text-right" style="min-width: 85px;">Grand Total</th>
+                    <th style="min-width: 75px;">Billed by</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php 
+            // Paginated query
+            $sql = mysql_query("select * from bq_opbillhdr $where order by venue ASC, opbillhdr_id ASC LIMIT $offset, $limit");
+            $x = $offset;
 
-<form id="taxTypes" name="taxTypes" class="" style="overflow:auto;"> 
-<div style="" >
-<div class="scrollingtable frmCentrR" id="dvContainer" style="top:134px;" >
-  <div>
-    <div style="">
-<table border="1" cellpadding="0" cellspacing="0" style="text-align:center;font-size:12px;">
-<thead>
-	<tr>
-		<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:50px;"><div label="Sl.no" ></div></th>
-		<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="Bill#" ></div></th>
-		<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="Bill Date" ></div></th>
-		<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:70px;"><div label="Gst/Comp" ></div></th>
-		<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:50px;"><div label="Venue" ></div></th>
-		<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:50px;"><div label="Function" ></div></th>
-		<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:50px;"><div label="Pax" ></div></th>
-	
-<?php
-$sqlTS=mysql_query("select distinct grpcode,grpname from bq_grpcode where status='1'");
-while($rowtS=mysql_fetch_array($sqlTS)){
-?>
-<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="<?php echo ucwords($rowtS['grpname']); ?>" ></div></th>
-<?php } ?>
-<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="Net Amt" ></div></th>
-<?php
-$sqlTS=mysql_query("select * from bq_taxstruct where status='1' group by tax_code");
-while($rowtS=mysql_fetch_array($sqlTS)){
-?>
-<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="<?php echo $rowtS['tax_code']; ?>"></div></th>
-<?php } ?>
-<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="Disc" ></div></th>
-<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="RND" ></div></th>
-<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="Grand Total" ></div></th>
-<th class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><div label="Billed by" ></div></th>
-<th class="scrollbarhead"></th>
-</tr>
+            // Page total accumulators
+            $pagePax = 0;
+            $pageGrpTotals = array();
+            foreach ($grpCodes as $gc) {
+                $pageGrpTotals[$gc['grpcode']] = 0;
+            }
+            $pageNet = 0;
+            $pageCGST = 0;
+            $pageSGST = 0;
+            $pageTaxTotals = array();
+            foreach ($taxCodes as $tc) {
+                $pageTaxTotals[$tc] = 0;
+            }
+            $pageDisc = 0;
+            $pageRnd = 0;
+            $pageGrand = 0;
 
-</thead>
-	
-<thead class="dispSHw" style="display:none;">
-<tr >
-	<td colspan="37" style="text-align:center;font-size:14px;font-weight:bold;"><?php echo $prop_name.', '.$city; ?></td>
-</tr>
-<tr>
-	<td colspan="37" style="text-align:center;"><h3 class="viewDT"><b>HALL WISE SALES REPORT from <?php if(isset($_GET['fromdate'])){echo $_GET['fromdate']; } ?> to <?php if(isset($_GET['todate'])){echo $_GET['todate']; } ?></b></h3><b></b></td>
-</tr>
-<tr>
-	<th width="40" style="text-align:center;background-color:#F5F5F5;border:1px solid #000;">Sl.no</th>
-	<th width="110" style="text-align:center;background-color:#F5F5F5;border:1px solid #000;">Bill#</th>
-	<th width="110" style="text-align:center;background-color:#F5F5F5;border:1px solid #000;">Bill Date</th>
-	<th width="110" style="text-align:center;background-color:#F5F5F5;border:1px solid #000;">Guest/Company Name</th>
-	<th width="80" style="text-align:center;background-color:#F5F5F5;border:1px solid #000;">Venue</th>
-	<th width="80" style="text-align:center;background-color:#F5F5F5;border:1px solid #000;">Function</th>
-	<th width="80" style="text-align:center;background-color:#F5F5F5;border:1px solid #000;">Pax</th>
-<?php
-$sqS=mysql_query("select distinct grpcode,grpname from bq_grpcode where status='1'");
-while($roS=mysql_fetch_array($sqS)){
-?>
-<th width="80" class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><?php echo ucwords($roS['grpname']); ?></th>
-<?php } ?>
-<th width="80" class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;">Net Amt</th>
-<?php
+            $currentVenueGroup = null;
 
-$sqlTS=mysql_query("select * from bq_taxstruct where status='1' group by tax_code");
-while($rowtS=mysql_fetch_array($sqlTS)){
-?>
-<th width="80" class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:100px;"><?php echo $rowtS['tax_code']; ?></th>
-<?php } ?>
+            if ($sql && is_resource($sql) && mysql_num_rows($sql) > 0) {
+                while ($row = mysql_fetch_array($sql)) {
+                    $x++;
 
-<th width="80" class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:80px;">Disc</th>
-<th width="80" class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:80px;">RND</th>
-<th width="80" class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:80px;">Grand Total</th>
-<th width="80" class="codesUPPERCase" style="text-align:center;background-color:#F5F5F5;width:80px;">Billed by</th>
-</tr>
-</thead>
-	
-<tbody>
-<?php 
-if(isset($_GET['fromdate'],$_GET['todate'])) {
-	$fr=explode('/',$_GET['fromdate']);
-	$frm=$fr[2].'-'.$fr[1].'-'.$fr[0];
-	
-	$to=explode('/',$_GET['todate']);
-	$tod=$to[2].'-'.$to[1].'-'.$to[0];
-if(isset($_GET['venue']) && $_GET['venue']!=''){
-$sdep=mysql_query("select distinct venue_code,venue_desc from bq_venue where venue_code='".$_GET['venue']."' AND status='1'");
-}else{
-$sdep=mysql_query("select distinct venue_code,venue_desc from bq_venue where status='1'");	
-}
-while($rwp=mysql_fetch_array($sdep)){
-$item_where=" where str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND venue='".$rwp['venue_code']."' order by opbillhdr_id ASC";
-/* echo "select * from bq_opbillhdr $item_where"; */
-$sql=mysql_query("select * from bq_opbillhdr $item_where");
-$x=0;$debt=0;$crdt=0;$taxAmt=0;$ratechrg=0;$billamt=0;$advamt=0;$gpax=0;$Tgpax=0;$cgst=0;$sgst=0;
-if(mysql_num_rows($sql)>0) {
-	?>
-<tr>
-<td style="text-align:left;width:120px;color:#FF0034;font-weight:bold;" colspan="24"><?php echo strtoupper($rwp['venue_desc']); ?></td>
-</tr>
-<?php
-while($row=mysql_fetch_array($sql)) {
-	$x++;
+                    $isCancelled = ($row['bill_status'] == '3');
+                    $rowClass = $isCancelled ? 'row-cancelled' : '';
 
-if($row['bill_status']=='3'){
-	$bgcolor= '#ff0000';
-}else{
-	$bgcolor= '#000';
-}
+                    // Booking & Function info
+                    $rbk = mysql_fetch_array(mysql_query("select venue, funct from bq_hallbooking where booking_no='".$row['bkno']."'"));
+                    $venueCurrent = !empty($row['venue']) ? $row['venue'] : $rbk['venue'];
+                    
+                    // Venue description lookup
+                    $rbv = mysql_fetch_array(mysql_query("select venue_desc from bq_venue where venue_code='".$venueCurrent."'"));
+                    $venueDesc = !empty($rbv['venue_desc']) ? $rbv['venue_desc'] : $venueCurrent;
 
+                    $rbf = mysql_fetch_array(mysql_query("select func_desc from bq_function where func_code='".$rbk['funct']."'"));
 
-if($row['remarks']==''){
-	$remarks= $row['remarks'];
-}else{
-	$remarks= '';
-}
-$rem=rtrim($remarks,',');
+                    // If venue changed, display a clean venue subheader row
+                    if ($venueCurrent !== $currentVenueGroup && empty($venueParam)) {
+                        $currentVenueGroup = $venueCurrent;
+                    ?>
+                        <tr class="venue-group-row">
+                            <td colspan="<?php echo $colSpanTotal; ?>">
+                                <i class="fa fa-building-o"></i> VENUE / HALL: <?php echo htmlspecialchars(strtoupper($venueDesc)); ?>
+                            </td>
+                        </tr>
+                    <?php
+                    }
 
-$rbk=mysql_fetch_array(mysql_query("select * from bq_hallbooking where booking_no='".$row['bkno']."'"));
-$rbf=mysql_fetch_array(mysql_query("select func_desc from bq_function where func_code='".$rbk['funct']."'"));
-$rbp=mysql_fetch_array(mysql_query("select ratechrg,fpno from bq_opfpmenuhdr where bkno='".$row['bkno']."'"));
-$rbh=mysql_fetch_array(mysql_query("select * from bq_opbillhdtl where itemcode='Hall' AND bill_no='".$row['bill_no']."'"));
-if($rbh['item_total']>0){
-	$item_total=$rbh['item_total'];
-	
-}else{
-	$item_total='0';
-}
-$gpax+=$row['gpax'];
+                    // Pax
+                    $rbp = mysql_fetch_array(mysql_query("select fpno from bq_opfpmenuhdr where bkno='".$row['bkno']."'"));
+                    $sqV = mysql_fetch_array(mysql_query("select gpax from bq_opvchrhdr where fpno='".$rbp['fpno']."' AND bill_status!='3'"));
+                    $paxCount = !empty($sqV['gpax']) ? (int)$sqV['gpax'] : (int)$row['gpax'];
+                    $pagePax += $paxCount;
 
-$sqV=mysql_fetch_array(mysql_query("select * from bq_opvchrhdr where fpno='".$rbp['fpno']."' AND bill_status!='3'"));
-$Tgpax+=$sqV['gpax'];
+                    // Round-off
+                    $rRnd = mysql_fetch_array(mysql_query("select itemrate from bq_opbillhdtl where itemcode='RND' AND bill_no='".$row['bill_no']."'"));
+                    $rndRate = isset($rRnd['itemrate']) ? (float)$rRnd['itemrate'] : (float)$row['roundoff'];
 
-?>
-<tr>
-	<td width="" style="text-align:center;" style="width:50px;"><?php echo $x; ?></td>
+                    // Net amount, disc, grand total
+                    $netAmt = (float)$row['nontaxableamt'];
+                    $discAmt = (float)$row['discamt'];
+                    $advAmt = (float)$row['advamt'];
+                    $grandTotal = round((float)$row['billamt'] + $rndRate + $advAmt);
 
-	<td width="" class="codesUPPERCase bN" style="width:100px;text-align:left;color:<?php echo $bgcolor; ?>" onclick="selRefNo('<?php echo $row['bill_no']; ?>');"><input type="hidden" id="bn<?php echo $row['bill_no'];?>" value="<?php echo $row['bill_no']; ?>"/><?php echo $row['bill_no']; ?></td>
-	<td width="" class="fstChUPPRCase" style="width:100px;color:<?php echo $bgcolor; ?>"><?php echo $row['bill_date']; ?></td>
-	<td width="" class="fstChUPPRCase" style="width:70px;text-align:left;color:<?php echo $bgcolor; ?>"><?php echo $row['fname']; ?></td>
-	<td width="" class="fstChUPPRCase" style="text-align:left;width:50px;color:<?php echo $bgcolor; ?>"><?php echo $rbk['venue']; ?></td>
-	<td width="" class="fstChUPPRCase" style="text-align:left;width:50px;color:<?php echo $bgcolor; ?>"><?php echo strtoupper($rbf['func_desc']); ?></td>
-	<td width="" class="fstChUPPRCase" style="text-align:left;width:50px;color:<?php echo $bgcolor; ?>"><?php echo $sqV['gpax']; ?></td>
-	
-<?php
-$sqlTS=mysql_query("select distinct grpcode,grpname from bq_grpcode where status='1'");
-while($rowtS=mysql_fetch_array($sqlTS)){ 
-$sqL=mysql_query("select sum(item_total)AS grpAmt from bq_opbillhdtl where bill_no='".$row['bill_no']."' AND grpcode='".$rowtS['grpcode']."' AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND bill_status!='3'");
-$rowL=mysql_fetch_array($sqL);
-?>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo sprintf("%01.2f",$rowL['grpAmt']); ?></td>	
-<?php } ?>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo $row['nontaxableamt']; ?></td>	
-<?php
-if($row['sgst']>0){ 
-$cgst+=$row['cgst'];
-$sgst+=$row['sgst'];
-?>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo $row['cgst']; ?></td>	
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo $row['sgst']; ?></td>	
-<?php } else {
-$sTS=mysql_query("select * from bq_taxstruct where status='1' group by tax_code");
-$txAMt=0;
-while($rwS=mysql_fetch_array($sTS)){
-	
-	$rw=mysql_fetch_array(mysql_query("select vouchrno from bq_opbillhdtl where bill_no='".$row['bill_no']."' "));
-	$sqS=mysql_query("select sum(taxamt)AS txAMt from bq_opvchrtaxdtl where vouchrno='".$rw['vouchrno']."' AND taxcode='".$rwS['tax_code']."' AND str_to_date(vchrdate,'%d/%m/%Y') >= '$frm' AND str_to_date(vchrdate,'%d/%m/%Y') <= '$tod' AND bill_status!='3'");
-	while($rotS=mysql_fetch_array($sqS)){
-		if($rotS['txAMt']!="" && $rotS['txAMt']!="0"){
-			$txAMt=sprintf("%01.2f",$rotS['txAMt']);
-		}else if($rotS['txAMt']==0.00){
-			$txAMt="";
-		}
-		}
-?>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo $txAMt; ?></td>
-<?php } } ?>
-<?php
-$rRnd=mysql_fetch_array(mysql_query("select * from bq_opbillhdtl where itemcode='RND' AND bill_no='".$row['bill_no']."'"));
-?>
-	
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo $row['discamt']; ?></td>	
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo $rRnd['itemrate']; ?></td>	
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo round($row['billamt']+$row['roundoff']+$row['advamt']); ?></td>	
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;color:<?php echo $bgcolor; ?>"><?php echo strtoupper($row['added_by']); ?></td>	
-	</tr>
-<?php
-$ratechrg+=$rbp['ratechrg'];
-$billamt+=$row['billamt'];
-$advamt+=$row['advamt'];
-?>
-<?php } } } } ?>
+                    $pageNet += $netAmt;
+                    $pageDisc += $discAmt;
+                    $pageRnd += $rndRate;
+                    $pageGrand += $grandTotal;
+            ?>
+                <tr class="<?php echo $rowClass; ?>">
+                    <td><?php echo $x; ?></td>
+                    <td>
+                        <a href="javascript:void(0);" onclick="selRefNo('<?php echo htmlspecialchars($row['bill_no']); ?>');" class="bill-link" title="Click to print bill">
+                            <b><?php echo htmlspecialchars(strtoupper($row['bill_no'])); ?></b>
+                        </a>
+                    </td>
+                    <td><?php echo htmlspecialchars($row['bill_date']); ?></td>
+                    <td class="text-left"><b><?php echo htmlspecialchars(strtoupper($row['fname'])); ?></b></td>
+                    <td class="text-left"><?php echo htmlspecialchars(strtoupper($venueDesc)); ?></td>
+                    <td class="text-left"><?php echo htmlspecialchars(strtoupper($rbf['func_desc'])); ?></td>
+                    <td class="text-right"><?php echo number_format($paxCount); ?></td>
 
- 
-<?php
-if(isset($_GET['venue']) && $_GET['venue']!=''){
-$sqlbl=mysql_query("select SUM(nontaxableamt)AS nontax,SUM(taxableamt)AS taxable,SUM(discamt)AS discable,SUM(billamt)AS billable,SUM(gpax)AS tGpax from bq_opbillhdr where str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND venue='".$_GET['venue']."'  AND bill_status!='3'");
-}else{
-$sqlbl=mysql_query("select SUM(nontaxableamt)AS nontax,SUM(taxableamt)AS taxable,SUM(discamt)AS discable,SUM(billamt)AS billable,SUM(gpax)AS tGpax from bq_opbillhdr where str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND bill_status!='3'");	
-}
-$rwbl=mysql_fetch_array($sqlbl);
+                    <!-- Dynamic Group Code Amounts -->
+                    <?php 
+                    foreach ($grpCodes as $gc) {
+                        $sqL = mysql_query("select sum(item_total) as grpAmt from bq_opbillhdtl where bill_no='".$row['bill_no']."' AND grpcode='".$gc['grpcode']."' AND bill_status!='3'");
+                        $rowL = mysql_fetch_array($sqL);
+                        $gAmt = !empty($rowL['grpAmt']) ? (float)$rowL['grpAmt'] : 0.00;
+                        $pageGrpTotals[$gc['grpcode']] += $gAmt;
+                    ?>
+                        <td class="text-right"><?php echo ($gAmt > 0) ? number_format($gAmt, 2) : '0.00'; ?></td>
+                    <?php } ?>
 
-?>
- 
-<tr>
-	<td width="" style="text-align:center;" style="width:50px;">&nbsp;</td>
+                    <!-- Net Amount -->
+                    <td class="text-right"><b><?php echo number_format($netAmt, 2); ?></b></td>
 
-	<td width="" class="codesUPPERCase bN" style="width:100px;text-align:left;color:<?php echo $bgcolor; ?>" >&nbsp;</td>
-	<td width="" class="fstChUPPRCase" style="width:100px;color:<?php echo $bgcolor; ?>">&nbsp;</td>
-	<td width="" class="fstChUPPRCase" style="width:70px;text-align:left;color:<?php echo $bgcolor; ?>">&nbsp;</td>
-	<td width="" class="fstChUPPRCase" style="text-align:left;width:50px;color:<?php echo $bgcolor; ?>">&nbsp;</td>
-	<td width="" class="fstChUPPRCase" style="text-align:left;width:50px;font-weight:bold;color:<?php echo $bgcolor; ?>">Total</td>
-	<td width="" class="fstChUPPRCase" style="text-align:right;width:50px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php  /* echo $rwbl['tGpaxx']; */?></td>
-<?php
-$sqlTS=mysql_query("select distinct grpcode,grpname from bq_grpcode where status='1'");
-while($rowtS=mysql_fetch_array($sqlTS)){
-if(isset($_GET['venue']) && $_GET['venue']!=''){
-$sqL=mysql_query("select SUM(item_total)AS itmTot  from bq_opbillhdtl where grpcode='".$rowtS['grpcode']."' AND venue='".$_GET['venue']."' AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND bill_status!='3'");
-}else{
-$sqL=mysql_query("select SUM(item_total)AS itmTot  from bq_opbillhdtl where grpcode='".$rowtS['grpcode']."' AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND bill_status!='3'");	
-}
-$rowL=mysql_fetch_array($sqL);
-?>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php echo sprintf("%01.2f",$rowL['itmTot']); ?></td>	
-<?php } ?>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php  echo sprintf("%01.2f",$rwbl['nontax']); ?></td>	
-<?php
-if($cgst>0){ 
+                    <!-- Taxes / GST -->
+                    <?php if ($hasGST) { 
+                        $cgstVal = (float)$row['cgst'];
+                        $sgstVal = (float)$row['sgst'];
+                        $pageCGST += $cgstVal;
+                        $pageSGST += $sgstVal;
+                    ?>
+                        <td class="text-right"><?php echo ($cgstVal > 0) ? number_format($cgstVal, 2) : '0.00'; ?></td>
+                        <td class="text-right"><?php echo ($sgstVal > 0) ? number_format($sgstVal, 2) : '0.00'; ?></td>
+                    <?php } else { ?>
+                        <?php 
+                        $rwVoucher = mysql_fetch_array(mysql_query("select vouchrno from bq_opbillhdtl where bill_no='".$row['bill_no']."' LIMIT 1"));
+                        $vouchrNo = isset($rwVoucher['vouchrno']) ? $rwVoucher['vouchrno'] : '';
 
-if(isset($_GET['venue']) && $_GET['venue']!=''){
-$scg=mysql_query("select sum(cgst)AS cgst from bq_opbillhdr where cgst>0 AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND venue='".$_GET['venue']."'  AND bill_status!='3'");
-}else{
-$scg=mysql_query("select sum(cgst)AS cgst from bq_opbillhdr where cgst>0 AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND bill_status!='3'");	
-}
-$rcg=mysql_fetch_array($scg);
+                        foreach ($taxCodes as $tc) {
+                            $sqS = mysql_query("select sum(taxamt) as txAmt from bq_opvchrtaxdtl where vouchrno='".$vouchrNo."' AND taxcode='".$tc."' AND bill_status!='3'");
+                            $rotS = mysql_fetch_array($sqS);
+                            $tAmt = !empty($rotS['txAmt']) ? (float)$rotS['txAmt'] : 0.00;
+                            $pageTaxTotals[$tc] += $tAmt;
+                        ?>
+                            <td class="text-right"><?php echo ($tAmt > 0) ? number_format($tAmt, 2) : '0.00'; ?></td>
+                        <?php } ?>
+                    <?php } ?>
 
-if(isset($_GET['venue']) && $_GET['venue']!=''){
-$ssg=mysql_query("select sum(sgst)AS sgst from bq_opbillhdr where sgst>0 AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND venue='".$_GET['venue']."' AND bill_status!='3'");
-}else{
-$ssg=mysql_query("select sum(sgst)AS sgst from bq_opbillhdr where sgst>0 AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND bill_status!='3'");	
-}
-$rsg=mysql_fetch_array($ssg);
-	
-?>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php  echo sprintf("%01.2f",$rcg['cgst']); ?></td>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php  echo sprintf("%01.2f",$rsg['sgst']); ?></td>
+                    <td class="text-right"><?php echo ($discAmt > 0) ? number_format($discAmt, 2) : '0.00'; ?></td>
+                    <td class="text-right"><?php echo ($rndRate != 0) ? number_format($rndRate, 2) : '0.00'; ?></td>
+                    <td class="text-right"><b><?php echo number_format($grandTotal, 2); ?></b></td>
+                    <td><?php echo htmlspecialchars(strtoupper($row['added_by'])); ?></td>
+                </tr>
+            <?php 
+                } 
+            } else { 
+            ?>
+                <tr>
+                    <td colspan="<?php echo $colSpanTotal; ?>" style="padding: 20px 10px !important; color: #777777; text-align: center; font-size: 13px;">
+                        No Hall Wise Sales Report records found for the selected criteria
+                    </td>
+                </tr>
+            <?php } ?>
+            </tbody>
 
-<?php }else{ ?>
-<?php
-$sTS=mysql_query("select * from bq_taxstruct where status='1' group by tax_code");
-$txAMt=0;
-while($rwS=mysql_fetch_array($sTS)){
-	
-	$rw=mysql_fetch_array(mysql_query("select vouchrno from bq_opbillhdtl where bill_no='".$row['bill_no']."' "));
+            <?php if ($totalRecords > 0) { ?>
+            <tfoot>
+                <tr class="totals-row">
+                    <td colspan="6" class="text-right"><b>PAGE TOTAL:</b></td>
+                    <td class="text-right"><b><?php echo number_format($pagePax); ?></b></td>
 
-	$sqS=mysql_query("select sum(taxamt)AS txAMtt from bq_opvchrtaxdtl where taxcode='".$rwS['tax_code']."' AND str_to_date(vchrdate,'%d/%m/%Y') >= '$frm' AND str_to_date(vchrdate,'%d/%m/%Y') <= '$tod' AND bill_status!='3' group by taxcode");
-	$rotS=mysql_fetch_array($sqS);
-		if($rotS['txAMtt']!="" && $rotS['txAMtt']!="0"){
-			$txAMtt=sprintf("%01.2f",$rotS['txAMtt']);
-		}else if($rotS['txAMtt']==0.00){
-			$txAMtt="";
-		}
-?>
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php echo sprintf("%01.2f",$txAMtt); ?></td>
-<?php /* } */ } } ?>
-<?php
-/* $rRndT=mysql_fetch_array(mysql_query("select SUM(itemrate)AS rndOf from bq_opbillhdtl where itemcode='RND' AND str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod'")); */
-$rRndT=mysql_fetch_array(mysql_query("select SUM(roundoff)AS rndOf,SUM(advamt)AS adv from bq_opbillhdr where str_to_date(bill_date,'%d/%m/%Y') >= '$frm' AND str_to_date(bill_date,'%d/%m/%Y') <= '$tod' AND bill_status!='3'"));
-?>
+                    <?php foreach ($grpCodes as $gc) { ?>
+                        <td class="text-right"><b><?php echo number_format($pageGrpTotals[$gc['grpcode']], 2); ?></b></td>
+                    <?php } ?>
 
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php echo  sprintf("%01.2f",$rwbl['discable']); ?></td>	
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php echo  sprintf("%01.2f",$rRndT['rndOf']); ?></td>	
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php echo  round($rwbl['billable']+$rRndT['rndOf']+$rRndT['adv']); ?></td>	
-<td width="" class="fstChUPPRCase" style="text-align:right;width:100px;font-weight:bold;color:<?php echo $bgcolor; ?>"><?php echo strtoupper($row['added_by']); ?></td>	
-</tr>	
+                    <td class="text-right"><b><?php echo number_format($pageNet, 2); ?></b></td>
 
-</tbody>	
-</table>
-	</div>
-	</div>
-	</div>
-	
-</div>
+                    <?php if ($hasGST) { ?>
+                        <td class="text-right"><b><?php echo number_format($pageCGST, 2); ?></b></td>
+                        <td class="text-right"><b><?php echo number_format($pageSGST, 2); ?></b></td>
+                    <?php } else { ?>
+                        <?php foreach ($taxCodes as $tc) { ?>
+                            <td class="text-right"><b><?php echo number_format($pageTaxTotals[$tc], 2); ?></b></td>
+                        <?php } ?>
+                    <?php } ?>
 
+                    <td class="text-right"><b><?php echo number_format($pageDisc, 2); ?></b></td>
+                    <td class="text-right"><b><?php echo number_format($pageRnd, 2); ?></b></td>
+                    <td class="text-right"><b><?php echo number_format($pageGrand, 2); ?></b></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+            <?php } ?>
+        </table>
+    </div>
+
+    <!-- Pagination Controls Bar -->
+    <div class="mypay-pagination-bar">
+        <div class="mypay-page-info">
+            <span>Showing <b><?php echo $startRecord; ?></b> to <b><?php echo $endRecord; ?></b> of <b><?php echo $totalRecords; ?></b> entries</span>
+            <span>&bull;</span>
+            <span>Show:</span>
+            <select id="limitSelect" class="mypay-page-select" onchange="changeLimit(this.value);">
+                <option value="10" <?php if($limit == 10) echo 'selected'; ?>>10</option>
+                <option value="25" <?php if($limit == 25) echo 'selected'; ?>>25</option>
+                <option value="50" <?php if($limit == 50) echo 'selected'; ?>>50</option>
+                <option value="100" <?php if($limit == 100) echo 'selected'; ?>>100</option>
+                <option value="500" <?php if($limit == 500) echo 'selected'; ?>>500</option>
+            </select>
+            <span>entries</span>
+        </div>
+
+        <div class="mypay-pagination">
+            <!-- First & Prev -->
+            <?php if ($page > 1) { ?>
+                <a href="<?php echo getPageUrl(1, $frDateParam, $toDateParam, $venueParam, $valParam, $limit); ?>" class="mypay-page-link" title="First Page">&laquo;</a>
+                <a href="<?php echo getPageUrl($page - 1, $frDateParam, $toDateParam, $venueParam, $valParam, $limit); ?>" class="mypay-page-link" title="Previous Page">&lsaquo;</a>
+            <?php } else { ?>
+                <span class="mypay-page-link disabled">&laquo;</span>
+                <span class="mypay-page-link disabled">&lsaquo;</span>
+            <?php } ?>
+
+            <!-- Page Number Links -->
+            <?php
+            $startPage = max(1, $page - 2);
+            $endPage = min($totalPages, $page + 2);
+
+            if ($startPage > 1) {
+                echo '<a href="' . getPageUrl(1, $frDateParam, $toDateParam, $venueParam, $valParam, $limit) . '" class="mypay-page-link">1</a>';
+                if ($startPage > 2) {
+                    echo '<span class="mypay-page-link disabled" style="cursor:default;">...</span>';
+                }
+            }
+
+            for ($p = $startPage; $p <= $endPage; $p++) {
+                if ($p == $page) {
+                    echo '<span class="mypay-page-link active">' . $p . '</span>';
+                } else {
+                    echo '<a href="' . getPageUrl($p, $frDateParam, $toDateParam, $venueParam, $valParam, $limit) . '" class="mypay-page-link">' . $p . '</a>';
+                }
+            }
+
+            if ($endPage < $totalPages) {
+                if ($endPage < $totalPages - 1) {
+                    echo '<span class="mypay-page-link disabled" style="cursor:default;">...</span>';
+                }
+                echo '<a href="' . getPageUrl($totalPages, $frDateParam, $toDateParam, $venueParam, $valParam, $limit) . '" class="mypay-page-link">' . $totalPages . '</a>';
+            }
+            ?>
+
+            <!-- Next & Last -->
+            <?php if ($page < $totalPages) { ?>
+                <a href="<?php echo getPageUrl($page + 1, $frDateParam, $toDateParam, $venueParam, $valParam, $limit); ?>" class="mypay-page-link" title="Next Page">&rsaquo;</a>
+                <a href="<?php echo getPageUrl($totalPages, $frDateParam, $toDateParam, $venueParam, $valParam, $limit); ?>" class="mypay-page-link" title="Last Page">&raquo;</a>
+            <?php } else { ?>
+                <span class="mypay-page-link disabled">&rsaquo;</span>
+                <span class="mypay-page-link disabled">&raquo;</span>
+            <?php } ?>
+        </div>
+    </div>
 
 </div>
+
+<?php include("../../footer.php"); ?>
 </body>
- </form>
+</html>
